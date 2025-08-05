@@ -315,7 +315,8 @@ function randomTargets(e) {
   e.preventDefault();
   input.targets.forEach((target, i) => {
     if (target.value != 0) {
-      targetInputChange(e, i, clamp(Math.round(Number(target.value) + Number(target.value) * getRandomInt(-1, 2) * 0.1), 1, 40));
+      // targetInputChange(e, i, clamp(Math.round(Number(target.value) + Number(target.value) * getRandomInt(-1, 2) * 0.1), 1, 40));
+      targetInputChange(e, i, getRandomInt(1, 40));
     }
   });
 }
@@ -334,7 +335,7 @@ function decreaseTargets(e) {
   e.preventDefault();
   input.targets.forEach((target, i) => {
     if (target.value != 0) {
-      targetInputChange(e, i, Math.round(Math.max(1, Number(searchData.target.stats[i]) - (40 / 7))));
+      targetInputChange(e, i, Math.floor(Math.max(1, Number(searchData.target.stats[i]) * 0.9)));
     }
   });
 }
@@ -343,7 +344,7 @@ function increaseTargets(e) {
   e.preventDefault();
   input.targets.forEach((target, i) => {
     if (target.value != 0) {
-      targetInputChange(e, i, Math.round(Math.min(40, Number(searchData.target.stats[i]) + (40 / 7))));
+      targetInputChange(e, i, Math.ceil(Math.min(40, Number(searchData.target.stats[i]) * 1.1)));
     }
   });
 }

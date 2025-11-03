@@ -249,7 +249,7 @@ function downloadTable(e) {
     queries.results.at(queries.current).forEach((result) => {
       result = parseResult(result.id, result.delta);
       let row = [];
-      row.push(`${result.glider.code}-${result.id}`);
+      row.push(result.id);
       row.push(result.glider.name);
       result.rig.forEach((part) => {
         row.push(part.code);

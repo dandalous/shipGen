@@ -4,8 +4,10 @@
   --foreground-color-hover: rgb(211, 246, 255);
   --lighten: rgba(208, 233, 232, 0.25);
   --panel-color: rgb(11, 19, 30);
+  --panel-color-mid: rgb(15, 28, 44);
   --panel-color-hover: rgb(20, 36, 58);
   --border-color: rgb(44, 98, 169);
+  --border-color-darker: rgb(13, 58, 117);
   --border-color-dim: rgba(44, 98, 169, 0.25);
   --border-color-hover: rgb(98, 194, 220);
   --power-color: rgb(117, 206, 206);
@@ -14,6 +16,8 @@
   --accent-color: rgb(40, 105, 189);
   --good-color: rgb(153, 255, 51);
   --bad-color: rgb(229, 43, 80);
+  --good-color-opaque: rgb(30, 47, 19);
+  --bad-color-opaque: rgb(43, 14, 22);
   --good-color-shadow: rgba(153, 255, 51, 0.25);
   --bad-color-shadow: rgba(229, 43, 80, 0.25);
   --good-color-dim: rgba(153, 255, 51, 0.15);
@@ -28,8 +32,8 @@
   --anti-border: -2px;
   --power-min-value: 0%;
   --power-max-value: 100%;
-  --transition: background-color 150ms ease, color 150ms ease, opacity 150ms ease, text-shadow 150ms ease,
-    background-image 150ms ease, border-bottom 150ms ease, filter 150ms ease;
+  --transition: background-color 100ms ease, color 100ms ease, opacity 100ms ease, text-shadow 100ms ease,
+    background-image 100ms ease, border-bottom 100ms ease, filter 100ms ease;
 }
 
 * {
@@ -59,8 +63,8 @@
 body {
   background-color: var(--background-color);
   background-image: url("../img/tile.png");
-  animation: bg-scrolling-reverse 3s infinite;
-  animation-timing-function: linear;
+  /* animation: bg-scrolling-reverse 3s infinite; */
+  /* animation-timing-function: linear; */
   height: 100vh;
   width: 100vw;
   padding: 0;
@@ -320,7 +324,7 @@ h1 {
 }
 
 #table-stats #header-target-id {
-  border-top: var(--border-width) solid var(--bad-color);
+  border-top: var(--border-width) dashed var(--bad-color);
 }
 
 #table-stats #header-comparison-id {
@@ -337,13 +341,13 @@ h1 {
 #table-stats .header-target {
   background-color: var(--bad-color-shadow);
   text-shadow: 0 0 0.5em var(--bad-color-shadow);
-  border-left: var(--border-width) solid var(--bad-color-dim);
-  border-bottom: var(--border-width) solid var(--bad-color);
+  border-left: var(--border-width) dashed var(--bad-color-dim);
+  border-bottom: var(--border-width) dashed var(--bad-color);
   width: 3.7em;
 }
 
 #table-stats .header-target:first-child {
-  border-left: var(--border-width) solid var(--bad-color);
+  border-left: var(--border-width) dashed var(--bad-color);
 }
 
 #table-stats .header-comparison {
@@ -373,14 +377,14 @@ h1 {
 #table-stats .cell-target {
   background-color: var(--bad-color-dim);
   border-left: var(--border-width) solid var(--bad-color-dim);
-  border-bottom: var(--border-width) solid var(--bad-color);
+  border-bottom: var(--border-width) dashed var(--bad-color);
   text-align: center;
   font-style: oblique;
   font-weight: bolder;
 }
 
 #table-stats .cell-target:first-child {
-  border-left: var(--border-width) solid var(--bad-color);
+  border-left: var(--border-width) dashed var(--bad-color);
 }
 
 #table-stats .cell-comparison {
@@ -1117,4 +1121,32 @@ h1 {
 #tbody-results .selected td {
   color: var(--foreground-color-hover);
   border-bottom: var(--border-width) solid var(--border-color-hover) !important;
+}
+
+#tbody-results .targeted:not(.selected) {
+  background: linear-gradient(var(--panel-color) 0%, var(--panel-color) 50%, var(--bad-color-opaque) 100%);
+  cursor: pointer;
+}
+
+#tbody-results .targeted:not(.selected) td {
+  color: var(--foreground-color-hover);
+  border-bottom: var(--border-width) dashed var(--bad-color) !important;
+}
+
+#tbody-results .targeted:not(.selected) td:hover {
+  background: var(--bad-color-opaque) !important;
+}
+
+#tbody-results .pinned:not(.selected, .targeted) {
+  background: linear-gradient(var(--panel-color) 0%, var(--panel-color) 50%, var(--good-color-opaque) 100%);
+  cursor: pointer;
+}
+
+#tbody-results .pinned:not(.selected, .targeted) td {
+  color: var(--foreground-color-hover);
+  border-bottom: var(--border-width) solid var(--good-color) !important;
+}
+
+#tbody-results .pinned:not(.selected, .targeted) td:hover {
+  background: var(--good-color-opaque) !important;
 }

@@ -2,26 +2,22 @@
   "graphs": {
     "speed": [900, 908, 917, 926, 934, 941, 947, 950, 952, 959, 969, 981, 996, 1013, 1031, 1049, 1069, 1088, 1108, 1127, 1145, 1162, 1178, 1185, 1191, 1198, 1203, 1208, 1213, 1218, 1222, 1226, 1229, 1233, 1236, 1238, 1241, 1243, 1245, 1246, 1248]
   },
+  "weights": [8, 10, 12, 5, 6, 5],
   "cheatcodes": [
     {
-      "code": ["BASE", "BASED"],
+      "code": ["BASE"],
       "gliders": [],
       "parts": [[0], [0], [0], [0], [0], [0]]
     },
     {
-      "code": ["META", "SRRL", "CLASSX", "ELITE"],
+      "code": ["META"],
       "gliders": [],
       "parts": [[13], [12, 13, 14, 16], [10, 11, 12], [11, 12], [8, 12, 13], [9, 10, 11, 12, 15, 16]]
     },
     {
-      "code": ["TWOKO", "TWKO"],
+      "code": ["KOKO"],
       "gliders": [],
-      "parts": [[13], [12, 13, 14, 16], [10, 11, 12], [11], [13], [9, 10, 11, 12, 15, 16]]
-    },
-    {
-      "code": ["AKKO"],
-      "gliders": [],
-      "parts": [[13], [12, 13, 14, 16], [10, 11, 12], [12], [13], [9, 10, 11, 12, 15, 16]]
+      "parts": [[13], [12, 13, 14, 16], [10, 11, 12], [11, 12], [13], [9, 10, 11, 12, 15, 16]]
     },
     {
       "code": ["ROKI", "STANDARD"],
@@ -39,64 +35,39 @@
       "parts": [[13], [16], [11], [11], [12], [12]]
     },
     {
-      "code": ["PRETHRUST", "CWOTC"],
+      "code": ["PRETHRUST"],
       "gliders": [9],
       "parts": [[9], [16], [12], [13], [6, 8], [10, 16]]
     },
     {
-      "code": ["YESTHRUST", "ROCKETBOY", "GOTTAGOPOO"],
+      "code": ["GOTTAGOPOO"],
       "gliders": [3],
       "parts": [[12], [10], [10], [8], [14], [10]]
     },
     {
-      "code": ["BRICKEDOUT", "BOLDNBRASH"],
+      "code": ["BRICKEDOUT"],
       "gliders": [1],
       "parts": [[13], [0], [0], [5], [9], [0]]
     },
     {
-      "code": ["CANNONASS"],
-      "gliders": [8],
-      "parts": [[13], [12], [12], [8], [9], [16]]
-    },
-    {
-      "code": ["GLORYDAYS", "REDOUT1"],
+      "code": ["GLORYDAYS"],
       "gliders": [0, 6, 9, 11],
       "parts": [[11], [0], [12], [14], [12], [12]]
     },
     {
-      "code": ["SIXOCLOCK", "ENDEREYE", "EYESAURON", "PHYREXIA"],
-      "gliders": [9],
-      "parts": [[5], [16], [0], [11], [8], [9]]
+      "code": ["MITSUBISHI"],
+      "gliders": [5],
+      "parts": [[6], [4], [15], [13], [8], [1]]
     },
     {
-      "code": ["BOWTIED", "MLADY", "FANCY", "REDRIBBON"],
-      "gliders": [6],
-      "parts": [[11], [10], [13], [8], [14], [12]]
+      "code": ["CHEVRON"],
+      "gliders": [2], 
+      "parts": [[13], [11], [11], [0], [7], [14]]
     },
     {
-      "code": ["1000POINTS", "GRANDDAD"],
+      "code": ["1000POINTS"],
       "gliders": [4],
       "parts": [[14], [12], [11], [14], [6], [10]]
-    },
-    {
-      "code": ["PERFECT"],
-      "gliders": [4],
-      "parts": [[0], [0], [0], [0], [0], [0]]
-    },
-    {
-      "code": ["PERFECTER"],
-      "gliders": [9],
-      "parts": [[8], [10], [5], [6], [7], [5]]
-    },
-    {
-      "code": ["PERFECTEST"],
-      "gliders": [7],
-      "parts": [[13], [14], [16], [11], [8], [13]]
-    },
-    {
-      "code": ["ILLUMINATI", "CONSPIRACY", "TRIANGLE"],
-      "gliders": [6],
-      "parts": [[9], [10], [12], [14], [8], [10]]
     },
     {
       "code": ["SIGLUNARE"],
@@ -173,7 +144,7 @@
       "nick": "Conq",
       "code": "CNQ",
       "desc": "Raw power and strong strafing. A stubborn-handling ship that can take a hit.",
-      "power": 184,
+      "power": 186,
       "stats": [4, 3, 7, 1, 0, 7]
     },
     {
@@ -181,7 +152,7 @@
       "nick": "Helix",
       "code": "HEL",
       "desc": "A competitive engine package with solid driveability.",
-      "power": 184,
+      "power": 182,
       "stats": [3, 5, 5, 4, 3, 2]
     },
     {
@@ -189,7 +160,7 @@
       "nick": "Asera",
       "code": "ASE",
       "desc": "'I AM AN ALIEN'. Asera ships boost like no other.",
-      "power": 184,
+      "power": 185,
       "stats": [5, 8, 2, 3, 1, 4]
     },
     {
@@ -205,7 +176,7 @@
       "nick": "Wallace",
       "code": "WRG",
       "desc": "A thoroughbred racing machine at its core, WALLACE-RG ships handle like no other.",
-      "power": 184,
+      "power": 183,
       "stats": [4, 2, 4, 4, 8, 3]
     },
     {
@@ -221,7 +192,7 @@
       "nick": "Mantis",
       "code": "MAN",
       "desc": "A mean engine that stays agile but has subpar durability.",
-      "power": 184,
+      "power": 183,
       "stats": [2, 7, 4, 3, 4, 2]
     },
     {
@@ -237,7 +208,7 @@
       "nick": "Koen",
       "code": "KGW",
       "desc": "The OG masters of the tank, a really stable platform.",
-      "power": 184,
+      "power": 186,
       "stats": [6, 2, 2, 8, 4, 6]
     },
     {
@@ -245,7 +216,7 @@
       "nick": "Bmoth",
       "code": "BEH",
       "desc": "The tank among tanks, made on Io to weather any condition.",
-      "power": 184,
+      "power": 186,
       "stats": [8, 4, 3, 1, 1, 7]
     },
     {
@@ -253,7 +224,7 @@
       "nick": "Buran",
       "code": "BRN",
       "desc": "Sturdy, with strong Thrust, and rapid up-to-speed times, but low in driveability.",
-      "power": 184,
+      "power": 185,
       "stats": [8, 6, 2, 2, 2, 3]
     }
   ],

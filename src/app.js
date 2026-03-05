@@ -90,43 +90,49 @@ fetch("./src/data.json")
 
 function scaleChange(e) {
   e.preventDefault();
+  output.headings.forEach((head) => head.classList.remove("active") && head.classList.add("asc"));
   if (output.table.innerHTML != "") {
-    output.table.innerHTML = parseResults(
-      Array.from(queries.results.at(queries.current), (result) => parseResult(result.id, result.delta)),
-      queries.inputs.at(queries.current)
+    let ids = Array.from(pinnedRigs, (rig) => rig.id);
+    let candidates = Array.from(
+      queries.results.at(queries.current).filter((result) => ids.indexOf(result.id) === -1),
+      (result) => parseResult(result.id, result.delta),
     );
+    output.table.innerHTML = parseResults(pinnedRigs.concat(candidates), queries.inputs.at(queries.current));
   }
   updateStatCharts(0, searchData.target.stats, selectedRig.id != "" ? parseResult(selectedRig.id) : null);
 }
 
 function quickSelect(e, parts) {
   e.preventDefault();
-  let active = document.querySelector(`.part-selector:not(.hide)`);
-  let type = active.id.split("-")[1];
-  let checkboxes = document.querySelectorAll(`#${active.id} input[type = "checkbox"]`);
-  switch (parts) {
-    case "base":
-      checkboxes.forEach((checkbox) => (checkbox.checked = checkbox.classList.contains("part-class-C")));
-      break;
-    case "B":
-      checkboxes.forEach((checkbox) => (checkbox.checked = checkbox.classList.contains("part-class-C") | checkbox.classList.contains("part-class-B")));
-      break;
-    case "A":
-      checkboxes.forEach((checkbox) => (checkbox.checked = checkbox.classList.contains("part-class-B") | checkbox.classList.contains("part-class-A")));
-      break;
-    case "S":
-      checkboxes.forEach((checkbox) => (checkbox.checked = checkbox.classList.contains("part-class-A") | checkbox.classList.contains("part-class-S")));
-      break;
-    case "X":
-      checkboxes.forEach((checkbox) => (checkbox.checked = checkbox.classList.contains("part-class-S") | checkbox.classList.contains("part-class-X")));
-      break;
-    case "all":
-      checkboxes.forEach((checkbox) => (checkbox.checked = true));
-      break;
-    default:
-      break;
-  }
-  partsCheck(e, partType.indexOf(type), type);
+  let isCtrl = e.ctrlKey;
+  let active = isCtrl ? document.querySelectorAll(`.part-selector`) : [document.querySelector(`.part-selector:not(.hide)`)];
+  active.forEach((selector) => {
+    let type = selector.id.split("-")[1];
+    let checkboxes = document.querySelectorAll(`#${selector.id} input[type = "checkbox"]`);
+    switch (parts) {
+      case "base":
+        checkboxes.forEach((checkbox) => (checkbox.checked = checkbox.classList.contains("part-class-C")));
+        break;
+      case "B":
+        checkboxes.forEach((checkbox) => (checkbox.checked = checkbox.classList.contains("part-class-C") | checkbox.classList.contains("part-class-B")));
+        break;
+      case "A":
+        checkboxes.forEach((checkbox) => (checkbox.checked = checkbox.classList.contains("part-class-B") | checkbox.classList.contains("part-class-A")));
+        break;
+      case "S":
+        checkboxes.forEach((checkbox) => (checkbox.checked = checkbox.classList.contains("part-class-A") | checkbox.classList.contains("part-class-S")));
+        break;
+      case "X":
+        checkboxes.forEach((checkbox) => (checkbox.checked = checkbox.classList.contains("part-class-S") | checkbox.classList.contains("part-class-X")));
+        break;
+      case "all":
+        checkboxes.forEach((checkbox) => (checkbox.checked = true));
+        break;
+      default:
+        break;
+    }
+    partsCheck(e, partType.indexOf(type), type);
+  });
 }
 
 function powerChange(e, range) {
@@ -162,8 +168,8 @@ function partsCheck(e, i, type) {
   let checkedPowers = Array.from(checked, (part) => redoutDB.parts[i].details[Number(part.value)].power);
   partPowers.min[i] = Math.min(...checkedPowers);
   partPowers.max[i] = Math.max(...checkedPowers);
-  input.power.min.value = 184 + partPowers.min.reduceRight((x, y) => x + y, 0) - 25;
-  input.power.max.value = 184 + partPowers.max.reduceRight((x, y) => x + y, 0) + 25;
+  input.power.min.value = 182 + partPowers.min.reduceRight((x, y) => x + y, 0) - 25;
+  input.power.max.value = 186 + partPowers.max.reduceRight((x, y) => x + y, 0) + 25;
   if (checked.length == 0) quickSelect(e, "base");
   document.querySelector(`#label-${type}`).innerHTML = `${checked.length || 1}`;
   powerChange();
@@ -173,6 +179,10 @@ function glidersCheck(e) {
   e.preventDefault();
   let checked = document.querySelectorAll(`#select-ship input[type = "checkbox"]:checked`);
   if (checked.length == 0) document.querySelectorAll(`#select-ship input[type = "checkbox"]`).forEach((checkbox) => (checkbox.checked = true));
+  if (checked.length == 12) {
+    document.querySelectorAll(`#select-ship input[type = "checkbox"]`).forEach((checkbox) => (checkbox.checked = false));
+    e.srcElement.checked = true;
+  }
 }
 
 function changeChart(e, chart) {
@@ -199,45 +209,53 @@ function changeParts(e, part) {
   document.getElementById(`select-${part}`).classList.remove("hide");
 }
 
-function columnSort(e, isNumber = false) {
+function columnSort(e) {
   e.preventDefault();
   if (output.table.innerHTML != "") {
+    let ids = Array.from(pinnedRigs, (rig) => rig.id);
+    let candidates = Array.from(
+      queries.results.at(queries.current).filter((result) => ids.indexOf(result.id) === -1),
+      (result) => parseResult(result.id, result.delta),
+    );
     if (e.currentTarget.classList.contains("active")) {
       e.currentTarget.classList.toggle("asc");
       if (e.currentTarget.classList.contains("asc")) {
         // Reset order
         output.headings.forEach((head) => head.classList.remove("active"));
-        queries.results.at(queries.current).sort((a, b) => {
+        candidates.sort((a, b) => {
           return a.delta - b.delta;
         });
-        output.table.innerHTML = parseResults(
-          Array.from(queries.results.at(queries.current), (result) => parseResult(result.id, result.delta)),
-          queries.inputs.at(queries.current)
-        );
+        output.table.innerHTML = parseResults(pinnedRigs.concat(candidates), queries.inputs.at(queries.current));
         return;
       }
     }
     output.headings.forEach((head) => head.classList.remove("active"));
-    let column = e.currentTarget.cellIndex;
+    let i = e.currentTarget.cellIndex;
     let isAscending = e.currentTarget.classList.contains("asc") ? -1 : 1;
-    let moveOperations = [];
-    [...output.table.querySelectorAll("tr")]
-      .sort((a, b) => {
-        let firstRow = isNumber ? Number(a.querySelectorAll("td")[column].textContent.toLowerCase()) : a.querySelectorAll("td")[column].textContent.toLowerCase(),
-          secondRow = isNumber ? Number(b.querySelectorAll("td")[column].textContent.toLowerCase()) : b.querySelectorAll("td")[column].textContent.toLowerCase();
-        let direction = isAscending * (firstRow < secondRow ? -1 : 1);
-        moveOperations.push(direction);
-        return direction;
-      })
-      .map((sorted_row, i) => {
-        output.table.appendChild(sorted_row);
-      });
-    let sortIteration = -1;
-    queries.results.at(queries.current).sort((a, b) => {
-      sortIteration++;
-      return moveOperations[sortIteration];
-    });
+    candidateSort(candidates, i, isAscending);
+
+    output.table.innerHTML = parseResults(pinnedRigs.concat(candidates), queries.inputs.at(queries.current));
     e.currentTarget.classList.add("active");
+  }
+}
+
+function candidateSort(candidates, i, isAscending) {
+  if (i == 0) {
+    candidates.sort((a, b) => {
+      return isAscending * (a.id < b.id ? 1 : -1); // ID
+    });
+  } else if (i >= 1 && i <= 6) {
+    candidates.sort((a, b) => {
+      return isAscending * (a.rig[i - 1].power < b.rig[i - 1].power ? -1 : 1); // Rig
+    });
+  } else if (i == 7) {
+    candidates.sort((a, b) => {
+      return isAscending * (a.power < b.power ? -1 : 1); // Power
+    });
+  } else if (i >= 8 && i <= 13) {
+    candidates.sort((a, b) => {
+      return isAscending * (a.stats[i - 8] < b.stats[i - 8] ? -1 : 1); // Stats
+    });
   }
 }
 
@@ -315,7 +333,6 @@ function randomTargets(e) {
   e.preventDefault();
   input.targets.forEach((target, i) => {
     if (target.value != 0) {
-      // targetInputChange(e, i, clamp(Math.round(Number(target.value) + Number(target.value) * getRandomInt(-1, 2) * 0.1), 1, 40));
       targetInputChange(e, i, getRandomInt(1, 40));
     }
   });
@@ -325,7 +342,9 @@ function clamp(val, min, max) {
   return val > max ? max : val < min ? min : val;
 }
 
-function getRandomInt(min, max) {
+function getRandomInt(a, b) {
+  let min = a < b ? a : b;
+  let max = a >= b ? a : b;
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min) + min);
@@ -382,10 +401,25 @@ function shiftTargetsLeft(e) {
 }
 
 let selectedRig = { glider: [{ code: "" }], id: "" };
+let pinnedRigs = [];
+
+function idClick(e, cell) {
+  e.preventDefault();
+  let result = parseResult(cell.parentElement.title);
+  let ids = Array.from(pinnedRigs, (rig) => rig.id);
+  if (ids.indexOf(result.id) === -1) {
+    if (pinnedRigs.unshift(result) > 12) pinnedRigs.shift();
+    if (ids.unshift(result.id) > 12) ids.shift();
+  } else {
+    pinnedRigs.splice(ids.indexOf(result.id), 1);
+    ids.splice(ids.indexOf(result.id), 1);
+  }
+}
+
 // Set Comparison to row hovered
 function rowHover(e, row) {
   e.preventDefault();
-  let result = parseResult(queries.results.at(queries.current)[row.rowIndex - 3].id);
+  let result = parseResult(row.title);
   searchData.comparison.stats = result.stats;
   searchData.comparison.power = result.power;
   updateStatCharts(1, result.stats, result);
@@ -395,15 +429,26 @@ function rowHover(e, row) {
 // If ID is already selected, set Target and do a quick search of related results
 function rowClick(e, row) {
   e.preventDefault();
-  let result = parseResult(queries.results.at(queries.current)[row.rowIndex - 3].id);
+  let result = parseResult(row.title);
+  let ids = Array.from(pinnedRigs, (rig) => rig.id);
+  let oldRig = selectedRig;
+  selectedRig = result;
   searchData.comparison.power = result.power;
   searchData.comparison.stats = result.stats;
   updateStatCharts(1, result.stats, result);
   output.info.innerHTML = "Click again to search similar";
   output.info.style.setProperty("filter", "invert(0%)");
-  document.querySelectorAll(`#tbody-results tr`).forEach((row) => row.classList.remove("selected"));
-  row.classList.add("selected");
-  if (result.id === selectedRig.id) {
+  let candidates = Array.from(
+    queries.results.at(queries.current).filter((result) => ids.indexOf(result.id) === -1),
+    (result) => parseResult(result.id, result.delta),
+  );
+  let active = Array.from(output.headings).filter((head) => head.classList.contains("active"))[0];
+  if (active) {
+    let isAscending = active.classList.contains("asc") ? -1 : 1;
+    candidateSort(candidates, active.cellIndex, isAscending);
+  }
+  output.table.innerHTML = parseResults(pinnedRigs.concat(candidates), queries.inputs.at(queries.current));
+  if (result.id === oldRig.id) {
     input.targets.forEach((target, i) => {
       targetInputChange(null, i, result.stats[i] || 1);
     });
@@ -411,7 +456,6 @@ function rowClick(e, row) {
     updateStatCharts(0, result.stats, result);
     querySubmit(e, true);
   }
-  selectedRig = result;
 }
 
 function statChange(comparison, target) {
@@ -450,9 +494,9 @@ function powerDelta(comparison, target) {
 }
 
 function updateStatCharts(dataset, data, result = null) {
-  chartRadar, (chartBars.data.datasets[dataset].data = data);
-  chartRadar, (chartBars.data.datasets[dataset].label = result ? result.id : "Target");
-  chartRadar, (chartBars.data.datasets[dataset].hidden = false);
+  (chartRadar, (chartBars.data.datasets[dataset].data = data));
+  (chartRadar, (chartBars.data.datasets[dataset].label = result ? result.id : "Target"));
+  (chartRadar, (chartBars.data.datasets[dataset].hidden = false));
 
   let changes = statChange(searchData.comparison.stats, searchData.target.stats);
   let chartTable = dataset ? output.chart.comparison : output.chart.target;

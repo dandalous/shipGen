@@ -15,8 +15,21 @@ function parseResult(id, delta = 0) {
   return { id: id.join("-"), glider: glider[0], rig: rig, power: power, stats: stats, delta: delta };
 }
 
+function getRange(a, b) {
+  let min = a < b ? a : b;
+  let max = a >= b ? a : b;
+  let range = new Array(Math.max(Number(max) - Number(min), 1)).fill(0);
+  range = range.map((slot, i) => min + i);
+  console.log(range);
+  return range;
+}
+
 async function querySubmit(e, quickSearch = false) {
-  if (e) e.preventDefault();
+  let isRandom = false;
+  if (e) {
+    e.preventDefault();
+    isRandom = e.ctrlKey;
+  }
 
   if (queries.searching) return 0;
   queries.searching = true;
@@ -33,11 +46,62 @@ async function querySubmit(e, quickSearch = false) {
     stats: Array.from(input.targets, (target) => Number(target.value)),
     greaterOnly: input.option.greaterOnly.checked,
     limit: 120,
+    selectedRig: selectedRig,
+    isRatio: false,
+    precision: 1,
   };
-  
+
+  selectedRig = { glider: [{ code: "" }], id: "" };
+
   // Parse the ShipGen ID (if any specified)
   let gliderCodes = Array.from(redoutDB.gliders, (glider) => glider.code);
   let idSpecified = false;
+  // Shuffle mode
+  if (isRandom) {
+    query.gliders = getRange(getRandomInt(0, redoutDB.gliders.length - 1), getRandomInt(0, redoutDB.gliders.length - 1));
+    query.parts[0] = getRange(getRandomInt(0, redoutDB.parts[0].details.length - 1), getRandomInt(0, redoutDB.parts[0].details.length - 1));
+    query.parts[1] = getRange(getRandomInt(0, redoutDB.parts[1].details.length - 1), getRandomInt(0, redoutDB.parts[1].details.length - 1));
+    query.parts[2] = getRange(getRandomInt(0, redoutDB.parts[2].details.length - 1), getRandomInt(0, redoutDB.parts[2].details.length - 1));
+    query.parts[3] = getRange(getRandomInt(0, redoutDB.parts[3].details.length - 1), getRandomInt(0, redoutDB.parts[3].details.length - 1));
+    query.parts[4] = getRange(getRandomInt(0, redoutDB.parts[4].details.length - 1), getRandomInt(0, redoutDB.parts[4].details.length - 1));
+    query.parts[5] = getRange(getRandomInt(0, redoutDB.parts[5].details.length - 1), getRandomInt(0, redoutDB.parts[5].details.length - 1));
+    query.stats = [getRandomInt(1, 40), getRandomInt(1, 40), getRandomInt(1, 40), getRandomInt(1, 40), getRandomInt(1, 40), getRandomInt(1, 40)];
+    query.power = [175, 1150];
+    quickSearch = true;
+  }
+  // Possible Ratio code
+  if (input.id.value.includes(":", "@") && !input.id.value.includes("-") && !quickSearch) {
+    let id = input.id.value.split("@");
+    query.precision = id[1] ? Math.max(id[1], 1) : 1;
+    let ratios = id[0].split(":").map((ratio) => Number(ratio));
+    let proportions = [];
+    let sum = 1;
+    switch (ratios.length) {
+      case 2:
+        query.isRatio = true;
+        proportions = ratios.concat(ratios).concat(ratios);
+        sum = proportions.reduce((a, b) => a + b, 0);
+        query.stats = proportions.map((proportion) => (proportion / sum).toPrecision(query.precision));
+        quickSearch = true;
+        break;
+      case 3:
+        query.isRatio = true;
+        proportions = ratios.concat(ratios);
+        sum = proportions.reduce((a, b) => a + b, 0);
+        query.stats = proportions.map((proportion) => (proportion / sum).toPrecision(query.precision));
+        quickSearch = true;
+        break;
+      case 6:
+        query.isRatio = true;
+        proportions = ratios;
+        sum = proportions.reduce((a, b) => a + b, 0);
+        query.stats = proportions.map((proportion) => (proportion / sum).toPrecision(query.precision));
+        quickSearch = true;
+        break;
+      default:
+        break;
+    }
+  }
   input.id.value.split("-").forEach((id) => {
     if (!quickSearch && id) {
       idSpecified = true;
@@ -116,7 +180,11 @@ async function querySubmit(e, quickSearch = false) {
   // Parse and display them in the body of the table...
   if (results) {
     console.time("Parsing");
-    let candidates = Array.from(results, (result) => parseResult(result.id, result.delta));
+    let pinnedIds = Array.from(pinnedRigs, (rig) => rig.id);
+    let candidates = Array.from(
+      results.filter((result) => pinnedIds.indexOf(result.id) === -1),
+      (result) => parseResult(result.id, result.delta),
+    );
     // Sort by delta ascending
     output.headings.forEach((head) => {
       head.classList.remove("active");
@@ -125,7 +193,7 @@ async function querySubmit(e, quickSearch = false) {
     candidates.sort(function (a, b) {
       return a.delta - b.delta;
     });
-    output.table.innerHTML = parseResults(candidates, query);
+    output.table.innerHTML = parseResults(pinnedRigs.concat(candidates), query);
     console.timeEnd("Parsing");
   }
 
@@ -193,20 +261,44 @@ async function runQuery(query, count) {
                     rig.forEach((part) => (power += part.power));
                     if (query.power[0] <= power && power <= query.power[1]) {
                       const stats = addArrays([glider.stats, ...Array.from(rig, (part) => part.stats)]);
-                      const delta = calculateDelta(stats, query.stats, query.greaterOnly);
-                      if (delta <= maxDelta) {
-                        maxDelta = 0;
-                        const candidate = {
-                          id: `${glider.code}-${Array.from(rig, (part) => part.id).join("")}`,
-                          delta: delta,
-                        };
-                        candidates[worst] = candidate;
-                        candidates.forEach((candidate, i) => {
-                          if (candidate.delta > maxDelta) {
-                            maxDelta = candidate.delta;
-                            worst = i;
-                          }
-                        });
+                      // Ratio mode
+                      if (query.isRatio) {
+                        sum = stats.reduce((a, b) => a + b, 0);
+                        ratios = stats.map((stat) => (stat / sum).toPrecision(query.precision));
+                        let isBalanced = ratios.join() == query.stats.join();
+
+                        if (isBalanced) {
+                          maxDelta = 0;
+                          const candidate = {
+                            id: `${glider.code}-${Array.from(rig, (part) => part.id).join("")}`,
+                            delta: sum,
+                          };
+                          candidates[worst] = candidate;
+                          candidates.forEach((candidate, i) => {
+                            if (candidate.delta > maxDelta) {
+                              maxDelta = candidate.delta;
+                              worst = i;
+                            }
+                          });
+                        }
+                      }
+                      // Normal mode
+                      else {
+                        const delta = calculateDelta(stats, query.stats, query.greaterOnly);
+                        if (delta <= maxDelta) {
+                          maxDelta = 0;
+                          const candidate = {
+                            id: `${glider.code}-${Array.from(rig, (part) => part.id).join("")}`,
+                            delta: delta,
+                          };
+                          candidates[worst] = candidate;
+                          candidates.forEach((candidate, i) => {
+                            if (candidate.delta > maxDelta) {
+                              maxDelta = candidate.delta;
+                              worst = i;
+                            }
+                          });
+                        }
                       }
                     }
                   });
@@ -284,8 +376,9 @@ async function runQueryThreaded(query, count) {
 
 function parseResults(candidates, query) {
   let html = "";
+  let pinnedIds = Array.from(pinnedRigs, (rig) => rig.id);
   candidates.forEach((candidate) => {
-    html += `<tr ${`${selectedRig.id}` === `${candidate.id}` && "class=selected"} onmouseover='rowHover(event, this)' onclick='rowClick(event, this)'><td class='results-cell-bottom results-cell-right cell-ship' title="${candidate.glider.name} (${candidate.glider.code}) {${candidate.glider.power}} [${candidate.glider.stats}]\n\n${candidate.glider.desc}"><img src='./img/${candidate.glider.code}.webp'></img><span>${candidate.id}</span></td>`;
+    html += `<tr class='${selectedRig.id === candidate.id && "selected"} ${query.selectedRig.id === candidate.id && "targeted"} ${pinnedIds.indexOf(candidate.id) !== -1 && "pinned"}' onmouseover='rowHover(event, this)' onclick='rowClick(event, this)' title='${candidate.id}'><td onclick='idClick(event, this)' class='results-cell-bottom results-cell-right cell-ship' title="${candidate.glider.name} (${candidate.glider.code}) {${candidate.glider.power}} [${candidate.glider.stats}]\n\n${candidate.glider.desc}"><img src='./img/${candidate.glider.code}.webp'></img><span>${candidate.id}</span></td>`;
     candidate.rig.forEach((part) => {
       html += `<td class='results-cell-bottom cell-class-${part.class}' title="${part.name} (${part.class}) {${part.power}} [${part.stats}]\n\n${part.desc}">${part.code}</td>`;
     });

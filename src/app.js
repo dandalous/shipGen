@@ -52,8 +52,9 @@ const deltaFormat = ["en-US", { style: "percent", maximumSignificantDigits: 2, s
 const chartFormat = ["en-US", { style: "percent", maximumSignificantDigits: 2 }];
 const statFormat = ["en-US", { maximumSignificantDigits: 2 }];
 
-// If there are previous queries saved in local storage, use them
+// If there are previous queries or pinned saved in local storage, use them
 let lastQuery = JSON.parse(localStorage.getItem("lastQuery"));
+let lastPinned = JSON.parse(localStorage.getItem("lastPinned"));
 
 // Read data.json to store it in redoutDB and populate some web elements
 const partCode = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "J", "K"];
@@ -85,6 +86,13 @@ fetch("./src/data.json")
       input.power.max.value = lastQuery.power[1];
       input.targets.forEach((target, i) => targetInputChange(target, i, lastQuery.stats[i]));
     }
+    if (lastPinned) {
+      pinnedRigs = lastPinned;
+      output.table.innerHTML = parseResults(
+        Array.from(pinnedRigs, (rig) => parseResult(rig)),
+        queries.inputs.at(queries.current),
+      );
+    }
     powerChange();
   });
 
@@ -92,14 +100,14 @@ function scaleChange(e) {
   e.preventDefault();
   output.headings.forEach((head) => head.classList.remove("active") && head.classList.add("asc"));
   if (output.table.innerHTML != "") {
-    let ids = Array.from(pinnedRigs, (rig) => rig.id);
+    let pinnedCandidates = Array.from(pinnedRigs, (rig) => parseResult(rig));
     let candidates = Array.from(
-      queries.results.at(queries.current).filter((result) => ids.indexOf(result.id) === -1),
+      queries.results.at(queries.current).filter((result) => pinnedRigs.indexOf(result.id) === -1),
       (result) => parseResult(result.id, result.delta),
     );
-    output.table.innerHTML = parseResults(pinnedRigs.concat(candidates), queries.inputs.at(queries.current));
+    output.table.innerHTML = parseResults(pinnedCandidates.concat(candidates), queries.inputs.at(queries.current));
   }
-  updateStatCharts(0, searchData.target.stats, selectedRig.id != "" ? parseResult(selectedRig.id) : null);
+  updateStatCharts(0, searchData.target.stats, selectedRig != "" ? parseResult(selectedRig) : null);
 }
 
 function quickSelect(e, parts) {
@@ -212,11 +220,12 @@ function changeParts(e, part) {
 function columnSort(e) {
   e.preventDefault();
   if (output.table.innerHTML != "") {
-    let ids = Array.from(pinnedRigs, (rig) => rig.id);
+    let pinnedCandidates = Array.from(pinnedRigs, (rig) => parseResult(rig));
     let candidates = Array.from(
-      queries.results.at(queries.current).filter((result) => ids.indexOf(result.id) === -1),
+      queries.results.at(queries.current).filter((result) => pinnedRigs.indexOf(result.id) === -1),
       (result) => parseResult(result.id, result.delta),
     );
+    output.table.innerHTML = parseResults(pinnedCandidates.concat(candidates), queries.inputs.at(queries.current));
     if (e.currentTarget.classList.contains("active")) {
       e.currentTarget.classList.toggle("asc");
       if (e.currentTarget.classList.contains("asc")) {
@@ -225,7 +234,7 @@ function columnSort(e) {
         candidates.sort((a, b) => {
           return a.delta - b.delta;
         });
-        output.table.innerHTML = parseResults(pinnedRigs.concat(candidates), queries.inputs.at(queries.current));
+        output.table.innerHTML = parseResults(pinnedCandidates.concat(candidates), queries.inputs.at(queries.current));
         return;
       }
     }
@@ -234,7 +243,7 @@ function columnSort(e) {
     let isAscending = e.currentTarget.classList.contains("asc") ? -1 : 1;
     candidateSort(candidates, i, isAscending);
 
-    output.table.innerHTML = parseResults(pinnedRigs.concat(candidates), queries.inputs.at(queries.current));
+    output.table.innerHTML = parseResults(pinnedCandidates.concat(candidates), queries.inputs.at(queries.current));
     e.currentTarget.classList.add("active");
   }
 }
@@ -295,7 +304,7 @@ function targetInputChange(e, i, value = -1) {
   input.targets[i].value == 0 ? input.targets[i].classList.add("input-ignored") : input.targets[i].classList.remove("input-ignored");
   searchData.target.stats[i] = input.targets[i].value;
   if (e) {
-    selectedRig = { glider: [{ code: "" }], id: "" };
+    selectedRig = "";
     searchData.target.power = 0;
     updateStatCharts(0, searchData.target.stats);
   }
@@ -311,7 +320,7 @@ function resetClick(e) {
   document.getElementById("form-query").reset();
   input.targets.forEach((target, i) => targetInputChange(null, i, target.value));
   searchData.target.power = 0;
-  selectedRig = { glider: [{ code: "" }], id: "" };
+  selectedRig = "";
   updateStatCharts(0, searchData.target.stats);
   redoutDB.parts.forEach((part, i) => partsCheck(e, i, part.type));
   powerChange();
@@ -378,7 +387,7 @@ function shiftTargetsRight(e) {
     targetInputChange(null, i, newTargets[i]);
   });
   searchData.target.power = 0;
-  selectedRig = { glider: [{ code: "" }], id: "" };
+  selectedRig = "";
   updateStatCharts(0, searchData.target.stats);
 }
 
@@ -396,23 +405,45 @@ function shiftTargetsLeft(e) {
     targetInputChange(null, i, newTargets[i]);
   });
   searchData.target.power = 0;
-  selectedRig = { glider: [{ code: "" }], id: "" };
+  selectedRig = "";
   updateStatCharts(0, searchData.target.stats);
 }
 
-let selectedRig = { glider: [{ code: "" }], id: "" };
+let selectedRig = "";
 let pinnedRigs = [];
+let pinningID = false;
 
 function idClick(e, cell) {
   e.preventDefault();
   let result = parseResult(cell.parentElement.title);
-  let ids = Array.from(pinnedRigs, (rig) => rig.id);
-  if (ids.indexOf(result.id) === -1) {
-    if (pinnedRigs.unshift(result) > 12) pinnedRigs.shift();
-    if (ids.unshift(result.id) > 12) ids.shift();
+  if (pinnedRigs.indexOf(result.id) === -1) {
+    pinnedRigs.push(result.id);
   } else {
-    pinnedRigs.splice(ids.indexOf(result.id), 1);
-    ids.splice(ids.indexOf(result.id), 1);
+    pinnedRigs.splice(pinnedRigs.indexOf(result.id), 1);
+  }
+  try {
+    localStorage.setItem("lastPinned", JSON.stringify(pinnedRigs));
+  } catch (e) {
+    console.warn(e);
+  }
+  let pinnedCandidates = Array.from(pinnedRigs, (rig) => parseResult(rig));
+  let candidates = Array.from(
+    queries.results.at(queries.current).filter((result) => pinnedRigs.indexOf(result.id) === -1),
+    (result) => parseResult(result.id, result.delta),
+  );
+  output.table.innerHTML = parseResults(pinnedCandidates.concat(candidates), queries.inputs.at(queries.current));
+  pinningID = true;
+}
+
+// Get true Power rating
+function powerHover(e, cell) {
+  e.preventDefault();
+  let rig = parseResult(cell.parentElement.title);
+  let truePower = 0;
+  rig.stats.forEach((stat, i) => (truePower += stat * redoutDB.weights[i]));
+  if (truePower != rig.power && cell.title == "") {
+    cell.classList.add("cell-power-fault");
+    cell.title = `Power rating discrepancy!\nTrue power: ${truePower}`;
   }
 }
 
@@ -429,17 +460,21 @@ function rowHover(e, row) {
 // If ID is already selected, set Target and do a quick search of related results
 function rowClick(e, row) {
   e.preventDefault();
-  let result = parseResult(row.title);
-  let ids = Array.from(pinnedRigs, (rig) => rig.id);
+  if (pinningID) {
+    pinningID = false;
+    return;
+  }
   let oldRig = selectedRig;
-  selectedRig = result;
+  selectedRig = row.title;
+  let result = parseResult(selectedRig);
+  let pinnedCandidates = Array.from(pinnedRigs, (rig) => parseResult(rig));
   searchData.comparison.power = result.power;
   searchData.comparison.stats = result.stats;
   updateStatCharts(1, result.stats, result);
   output.info.innerHTML = "Click again to search similar";
   output.info.style.setProperty("filter", "invert(0%)");
   let candidates = Array.from(
-    queries.results.at(queries.current).filter((result) => ids.indexOf(result.id) === -1),
+    queries.results.at(queries.current).filter((result) => pinnedRigs.indexOf(result.id) === -1),
     (result) => parseResult(result.id, result.delta),
   );
   let active = Array.from(output.headings).filter((head) => head.classList.contains("active"))[0];
@@ -447,8 +482,8 @@ function rowClick(e, row) {
     let isAscending = active.classList.contains("asc") ? -1 : 1;
     candidateSort(candidates, active.cellIndex, isAscending);
   }
-  output.table.innerHTML = parseResults(pinnedRigs.concat(candidates), queries.inputs.at(queries.current));
-  if (result.id === oldRig.id) {
+  output.table.innerHTML = parseResults(pinnedCandidates.concat(candidates), queries.inputs.at(queries.current));
+  if (result.id === oldRig) {
     input.targets.forEach((target, i) => {
       targetInputChange(null, i, result.stats[i] || 1);
     });

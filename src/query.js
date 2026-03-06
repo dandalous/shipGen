@@ -1,6 +1,6 @@
 let queries = {
-  inputs: [],
-  results: [],
+  inputs: [{ stats: Array.from(input.targets, (target) => Number(target.value)), selectedRig: selectedRig }],
+  results: [[]],
   current: -1,
   searching: false,
 };
@@ -20,7 +20,6 @@ function getRange(a, b) {
   let max = a >= b ? a : b;
   let range = new Array(Math.max(Number(max) - Number(min), 1)).fill(0);
   range = range.map((slot, i) => min + i);
-  console.log(range);
   return range;
 }
 
@@ -47,11 +46,11 @@ async function querySubmit(e, quickSearch = false) {
     greaterOnly: input.option.greaterOnly.checked,
     limit: 120,
     selectedRig: selectedRig,
-    isRatio: false,
-    precision: 1,
+    ratios: false,
+    // precision: 3,
   };
 
-  selectedRig = { glider: [{ code: "" }], id: "" };
+  selectedRig = "";
 
   // Parse the ShipGen ID (if any specified)
   let gliderCodes = Array.from(redoutDB.gliders, (glider) => glider.code);
@@ -72,30 +71,27 @@ async function querySubmit(e, quickSearch = false) {
   // Possible Ratio code
   if (input.id.value.includes(":", "@") && !input.id.value.includes("-") && !quickSearch) {
     let id = input.id.value.split("@");
-    query.precision = id[1] ? Math.max(id[1], 1) : 1;
+    // query.precision = Math.pow(10, id[1] ? id[1] : query.precision);
     let ratios = id[0].split(":").map((ratio) => Number(ratio));
     let proportions = [];
-    let sum = 1;
+    let sum = 0;
     switch (ratios.length) {
       case 2:
-        query.isRatio = true;
         proportions = ratios.concat(ratios).concat(ratios);
         sum = proportions.reduce((a, b) => a + b, 0);
-        query.stats = proportions.map((proportion) => (proportion / sum).toPrecision(query.precision));
+        query.ratios = proportions.map((proportion) => ((proportion / sum) * 1000) | 0);
         quickSearch = true;
         break;
       case 3:
-        query.isRatio = true;
         proportions = ratios.concat(ratios);
         sum = proportions.reduce((a, b) => a + b, 0);
-        query.stats = proportions.map((proportion) => (proportion / sum).toPrecision(query.precision));
+        query.ratios = proportions.map((proportion) => ((proportion / sum) * 1000) | 0);
         quickSearch = true;
         break;
       case 6:
-        query.isRatio = true;
         proportions = ratios;
         sum = proportions.reduce((a, b) => a + b, 0);
-        query.stats = proportions.map((proportion) => (proportion / sum).toPrecision(query.precision));
+        query.ratios = proportions.map((proportion) => ((proportion / sum) * 1000) | 0);
         quickSearch = true;
         break;
       default:
@@ -148,7 +144,7 @@ async function querySubmit(e, quickSearch = false) {
   query.parts.forEach((part) => {
     count = count * part.length;
   });
-  output.info.innerHTML = `Searching ${count.toLocaleString()} combinations`;
+  output.info.innerHTML = `Searching ${count.toLocaleString()} builds`;
   output.info.style.setProperty("filter", "invert(0%)");
   let results;
   if (queries.current != -1) {
@@ -180,9 +176,9 @@ async function querySubmit(e, quickSearch = false) {
   // Parse and display them in the body of the table...
   if (results) {
     console.time("Parsing");
-    let pinnedIds = Array.from(pinnedRigs, (rig) => rig.id);
+    let pinnedCandidates = Array.from(pinnedRigs, (rig) => parseResult(rig));
     let candidates = Array.from(
-      results.filter((result) => pinnedIds.indexOf(result.id) === -1),
+      results.filter((result) => pinnedRigs.indexOf(result.id) === -1),
       (result) => parseResult(result.id, result.delta),
     );
     // Sort by delta ascending
@@ -193,7 +189,7 @@ async function querySubmit(e, quickSearch = false) {
     candidates.sort(function (a, b) {
       return a.delta - b.delta;
     });
-    output.table.innerHTML = parseResults(pinnedRigs.concat(candidates), query);
+    output.table.innerHTML = parseResults(pinnedCandidates.concat(candidates), query);
     console.timeEnd("Parsing");
   }
 
@@ -261,44 +257,28 @@ async function runQuery(query, count) {
                     rig.forEach((part) => (power += part.power));
                     if (query.power[0] <= power && power <= query.power[1]) {
                       const stats = addArrays([glider.stats, ...Array.from(rig, (part) => part.stats)]);
-                      // Ratio mode
-                      if (query.isRatio) {
-                        sum = stats.reduce((a, b) => a + b, 0);
-                        ratios = stats.map((stat) => (stat / sum).toPrecision(query.precision));
-                        let isBalanced = ratios.join() == query.stats.join();
-
-                        if (isBalanced) {
-                          maxDelta = 0;
-                          const candidate = {
-                            id: `${glider.code}-${Array.from(rig, (part) => part.id).join("")}`,
-                            delta: sum,
-                          };
-                          candidates[worst] = candidate;
-                          candidates.forEach((candidate, i) => {
-                            if (candidate.delta > maxDelta) {
-                              maxDelta = candidate.delta;
-                              worst = i;
-                            }
-                          });
-                        }
+                      let delta = 0;
+                      // Ratio mode or Stat mode
+                      if (query.ratios) {
+                        let sum = stats.reduce((a, b) => a + b, 0);
+                        let ratios = stats.map((stat) => ((stat / sum) * 1000) | 0);
+                        delta = calculateDelta(ratios, query.ratios, query.greaterOnly);
+                      } else {
+                        delta = calculateDelta(stats, query.stats, query.greaterOnly);
                       }
-                      // Normal mode
-                      else {
-                        const delta = calculateDelta(stats, query.stats, query.greaterOnly);
-                        if (delta <= maxDelta) {
-                          maxDelta = 0;
-                          const candidate = {
-                            id: `${glider.code}-${Array.from(rig, (part) => part.id).join("")}`,
-                            delta: delta,
-                          };
-                          candidates[worst] = candidate;
-                          candidates.forEach((candidate, i) => {
-                            if (candidate.delta > maxDelta) {
-                              maxDelta = candidate.delta;
-                              worst = i;
-                            }
-                          });
-                        }
+                      if (delta <= maxDelta) {
+                        maxDelta = 0;
+                        const candidate = {
+                          id: `${glider.code}-${Array.from(rig, (part) => part.id).join("")}`,
+                          delta: delta,
+                        };
+                        candidates[worst] = candidate;
+                        candidates.forEach((candidate, i) => {
+                          if (candidate.delta > maxDelta) {
+                            maxDelta = candidate.delta;
+                            worst = i;
+                          }
+                        });
                       }
                     }
                   });
@@ -311,14 +291,14 @@ async function runQuery(query, count) {
 
       const mergedResults = candidates.filter((candidate) => candidate.delta != 9999);
       console.timeEnd("Query");
-      console.warn(`Searched ${count.toLocaleString()} combinations on a single thread!`);
+      console.warn(`Searched ${count.toLocaleString()} builds on a single thread!`);
       if (mergedResults.length === 0) {
         reject("No results found!");
         output.info.innerHTML = "No results found!";
         output.info.style.setProperty("filter", "invert(100%)");
       } else {
         console.info(`Showing top ${mergedResults.length} result(s)`);
-        output.info.innerHTML = `Searched ${count.toLocaleString()} combinations`;
+        output.info.innerHTML = `Searched ${count.toLocaleString()} builds`;
         output.info.style.setProperty("filter", "invert(0%)");
         resolve(mergedResults);
       }
@@ -353,14 +333,14 @@ async function runQueryThreaded(query, count) {
             const mergedResults = [].concat(...workers.results);
 
             console.timeEnd("Query");
-            console.info(`Searched ${count.toLocaleString()} combinations with ${workers.count} thread(s)`);
+            console.info(`Searched ${count.toLocaleString()} builds with ${workers.count} thread(s)`);
             if (mergedResults.length === 0) {
               reject("No results found!");
               output.info.innerHTML = "No results found!";
               output.info.style.setProperty("filter", "invert(100%)");
             } else {
               console.info(`Showing top ${mergedResults.length} result(s)`);
-              output.info.innerHTML = `Searched ${count.toLocaleString()} combinations`;
+              output.info.innerHTML = `Searched ${count.toLocaleString()} builds`;
               output.info.style.setProperty("filter", "invert(0%)");
               resolve(mergedResults);
             }
@@ -376,14 +356,15 @@ async function runQueryThreaded(query, count) {
 
 function parseResults(candidates, query) {
   let html = "";
-  let pinnedIds = Array.from(pinnedRigs, (rig) => rig.id);
+  let prehtml = "";
   candidates.forEach((candidate) => {
-    html += `<tr class='${selectedRig.id === candidate.id && "selected"} ${query.selectedRig.id === candidate.id && "targeted"} ${pinnedIds.indexOf(candidate.id) !== -1 && "pinned"}' onmouseover='rowHover(event, this)' onclick='rowClick(event, this)' title='${candidate.id}'><td onclick='idClick(event, this)' class='results-cell-bottom results-cell-right cell-ship' title="${candidate.glider.name} (${candidate.glider.code}) {${candidate.glider.power}} [${candidate.glider.stats}]\n\n${candidate.glider.desc}"><img src='./img/${candidate.glider.code}.webp'></img><span>${candidate.id}</span></td>`;
+    html += `<tr class='${selectedRig === candidate.id && "selected"} ${query.selectedRig === candidate.id && "targeted"} ${pinnedRigs.indexOf(candidate.id) !== -1 && "pinned"}' onmouseover='rowHover(event, this)' onclick='rowClick(event, this)' title='${candidate.id}'><td onclick='idClick(event, this)' class='results-cell-bottom results-cell-right cell-ship' title="${candidate.glider.name} (${candidate.glider.code}) {${candidate.glider.power}} [${candidate.glider.stats}]\n\n${candidate.glider.desc}"><img src='./img/${candidate.glider.code}.webp'></img><span>${candidate.id}</span></td>`;
     candidate.rig.forEach((part) => {
       html += `<td class='results-cell-bottom cell-class-${part.class}' title="${part.name} (${part.class}) {${part.power}} [${part.stats}]\n\n${part.desc}">${part.code}</td>`;
     });
-    html += `<td class='results-cell-bottom results-cell-left results-cell-right cell-power'><span>${candidate.power}</span></td>`;
+    html += `<td class='results-cell-bottom results-cell-left results-cell-right cell-power' onmouseover='powerHover(event, this)'><span>${candidate.power}</span></td>`;
     candidate.stats.forEach((stat, i) => {
+      // Stat quality
       let statType = "";
       if (stat > query.stats[i] * 1.1) {
         statType = "cell-good";
@@ -395,6 +376,7 @@ function parseResults(candidates, query) {
       if (i === 2) {
         statEstimation = `\n\n${redoutDB.graphs.speed[stat]} km/h (${Math.round(redoutDB.graphs.speed[stat] / 1.609344)} mph)`;
       }
+      // Delta tooltips
       let delta = stat - query.stats[i];
       let deltaPercentage = (delta / 40).toLocaleString(...deltaFormat);
       let statPercentage = ((100 * stat) / 40).toLocaleString(...statFormat);

@@ -51,44 +51,28 @@ function runQuery(query, glider, parts, count) {
               rig.forEach((part) => (power += part.power));
               if (query.power[0] <= power && power <= query.power[1]) {
                 const stats = addArrays([glider.stats, ...Array.from(rig, (part) => part.stats)]);
-                // Ratio mode
-                if (query.isRatio) {
-                  sum = stats.reduce((a, b) => a + b, 0);
-                  ratios = stats.map((stat) => (stat / sum).toPrecision(query.precision));
-                  let isBalanced = ratios.join() == query.stats.join();
-
-                  if (isBalanced) {
-                    maxDelta = 0;
-                    const candidate = {
-                      id: `${glider.code}-${Array.from(rig, (part) => part.id).join("")}`,
-                      delta: sum,
-                    };
-                    candidates[worst] = candidate;
-                    candidates.forEach((candidate, i) => {
-                      if (candidate.delta > maxDelta) {
-                        maxDelta = candidate.delta;
-                        worst = i;
-                      }
-                    });
-                  }
+                let delta = 0;
+                // Ratio mode or Stat mode
+                if (query.ratios) {
+                  let sum = stats.reduce((a, b) => a + b, 0);
+                  let ratios = stats.map((stat) => ((stat / sum) * 1000) | 0);
+                  delta = calculateDelta(ratios, query.ratios, query.greaterOnly);
+                } else {
+                  delta = calculateDelta(stats, query.stats, query.greaterOnly);
                 }
-                // Normal mode
-                else {
-                  const delta = calculateDelta(stats, query.stats, query.greaterOnly);
-                  if (delta <= maxDelta) {
-                    maxDelta = 0;
-                    const candidate = {
-                      id: `${glider.code}-${Array.from(rig, (part) => part.id).join("")}`,
-                      delta: delta,
-                    };
-                    candidates[worst] = candidate;
-                    candidates.forEach((candidate, i) => {
-                      if (candidate.delta > maxDelta) {
-                        maxDelta = candidate.delta;
-                        worst = i;
-                      }
-                    });
-                  }
+                if (delta <= maxDelta) {
+                  maxDelta = 0;
+                  const candidate = {
+                    id: `${glider.code}-${Array.from(rig, (part) => part.id).join("")}`,
+                    delta: delta,
+                  };
+                  candidates[worst] = candidate;
+                  candidates.forEach((candidate, i) => {
+                    if (candidate.delta > maxDelta) {
+                      maxDelta = candidate.delta;
+                      worst = i;
+                    }
+                  });
                 }
               }
             });

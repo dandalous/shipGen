@@ -13,6 +13,9 @@
   --power-color: rgb(117, 206, 206);
   --power-foreground-color: rgb(11, 32, 53);
   --power-glow-color: rgb(202, 255, 255);
+  --power-fault-color: rgb(138, 49, 49);
+  --power-fault-foreground-color: rgb(244, 223, 202);
+  --power-fault-glow-color: rgb(53, 0, 0);
   --accent-color: rgb(40, 105, 189);
   --good-color: rgb(153, 255, 51);
   --bad-color: rgb(229, 43, 80);
@@ -52,6 +55,16 @@
 
 .darken {
   background-color: var(--darken);
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
 }
 
 @keyframes bg-scrolling-reverse {
@@ -1074,6 +1087,12 @@ h1 {
   color: var(--power-foreground-color) !important;
 }
 
+.cell-power-fault:hover > span {
+  background: radial-gradient(var(--power-fault-glow-color) 0%, var(--power-fault-color) 100%) !important;
+  color: var(--power-fault-foreground-color) !important;
+  text-shadow: none !important;
+}
+
 #table-results .cell-good {
   color: var(--good-color) !important;
   text-shadow: 0 0 0.5em var(--good-color-shadow);
@@ -1123,30 +1142,30 @@ h1 {
   border-bottom: var(--border-width) solid var(--border-color-hover) !important;
 }
 
-#tbody-results .targeted:not(.selected) {
-  background: linear-gradient(var(--panel-color) 0%, var(--panel-color) 50%, var(--bad-color-opaque) 100%);
-  cursor: pointer;
-}
-
-#tbody-results .targeted:not(.selected) td {
-  color: var(--foreground-color-hover);
-  border-bottom: var(--border-width) dashed var(--bad-color) !important;
-}
-
-#tbody-results .targeted:not(.selected) td:hover {
-  background: var(--bad-color-opaque) !important;
-}
-
-#tbody-results .pinned:not(.selected, .targeted) {
+#tbody-results .pinned:not(.selected) {
   background: linear-gradient(var(--panel-color) 0%, var(--panel-color) 50%, var(--good-color-opaque) 100%);
   cursor: pointer;
 }
 
-#tbody-results .pinned:not(.selected, .targeted) td {
+#tbody-results .pinned:not(.selected) td {
   color: var(--foreground-color-hover);
   border-bottom: var(--border-width) solid var(--good-color) !important;
 }
 
-#tbody-results .pinned:not(.selected, .targeted) td:hover {
+#tbody-results .pinned:not(.selected) td:hover {
   background: var(--good-color-opaque) !important;
+}
+
+#tbody-results .targeted:not(.selected, .pinned) {
+  background: linear-gradient(var(--panel-color) 0%, var(--panel-color) 50%, var(--bad-color-opaque) 100%);
+  cursor: pointer;
+}
+
+#tbody-results .targeted:not(.selected, .pinned) td {
+  color: var(--foreground-color-hover);
+  border-bottom: var(--border-width) dashed var(--bad-color) !important;
+}
+
+#tbody-results .targeted:not(.selected, .pinned) td:hover {
+  background: var(--bad-color-opaque) !important;
 }

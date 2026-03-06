@@ -72,7 +72,7 @@
           <table class="table-query">
             <thead>
               <tr class="row-headings">
-                <th id="button-query" class="border-bottom" onclick="querySubmit(event)" title="Search combinations">
+                <th id="button-query" class="border-bottom" onclick="querySubmit(event)" title="Search builds">
                   <button type="submit" style="display:none;" onclick="querySubmit(event)"></button>
                   <i id="query-icon" class="fa-solid fa-magnifying-glass fa-fw"></i>
                 </th>
@@ -217,8 +217,8 @@
             </tr>
             <tr class="row-query" id="row-query">
               <th class="column-ship border-right border-bottom"
-                title="Search ship(s) and ID&#013;&#013;When a ship or part code is given, it'll take priority over all other ship or part selections. Ratios can be set in 2, 3, and 6 numbers divided by ':' and precision is specified with '@' (default 1).">
-                <input list="ship-datalist" pattern="[a-zA-Z0-9:.@\-]{3,99}" size="9" id="select-id" class="column-input"
+                title="Search ship(s) and ID&#013;&#013;When a ship or part code is given, it'll take priority over all other ship or part selections. Ratios can be paired in 2, 3, or 6 numbers divided by ':'">
+                <input list="ship-datalist" pattern="[a-zA-Z0-9:.\-]{3,99}" size="9" id="select-id" class="column-input"
                   type="search" placeholder="ANY-XXXXXX" autocomplete="off" onchange="selectIDChange(event)" />
                 <datalist id="ship-datalist">
                   <option value="ANY"></option>
@@ -367,7 +367,7 @@
               </th>
             </tr>
           </thead>
-          <tbody id="tbody-results"></tbody>
+          <tbody id="tbody-results" class="noselect"></tbody>
         </table>
       </div>
     </div>

@@ -21,9 +21,9 @@ let searchData = {
   },
   target: {
     power: 0,
-    stats: Array.from(input.targets, (target) => target.value),
-  }
-}
+    stats: Array.from(input.targets, (target) => Number(target.value)),
+  },
+};
 
 const chartAspectRatio = 1;
 const chartIcons = ["\u002b", "\uf5b0", "\uf625", "\uf076", "\uf021", "\uf337"];
@@ -95,7 +95,7 @@ let chartRadar = new Chart(ctxRadar, {
             weight: "bold",
             size: 14,
           },
-        }
+        },
       },
       tooltip: {
         callbacks: {
@@ -108,8 +108,8 @@ let chartRadar = new Chart(ctxRadar, {
             if (context.parsed.r !== null) {
               let stat = Math.round(context.parsed.r);
               label += `${stat} (${(stat / 40).toLocaleString(...chartFormat)})`;
-              if (context.dataIndex == 2)
-                return [label, `${redoutDB.graphs.speed[stat]} km/h (${Math.round(redoutDB.graphs.speed[stat] / 1.609344)} mph)`];
+              // label += `${stat}`;
+              if (context.dataIndex == 2) return [label, `${redoutDB.graphs.speed[stat]} km/h (${Math.round(redoutDB.graphs.speed[stat] / 1.609344)} mph)`];
             }
             return label;
           },
@@ -143,15 +143,15 @@ let chartRadar = new Chart(ctxRadar, {
         suggestedMax: 40 * (4 / 7),
         beginAtZero: true,
         ticks: {
+          callback: function (value, index, ticks) {
+            return input.option.percentageScale.checked ? ((value * 100) / 40).toLocaleString(...statFormat) : value.toLocaleString(...statFormat);
+          },
           // display: false,
           display: !window.mobileCheck(),
           showLabelBackdrop: false,
           textStrokeColor: "black",
           textStrokeWidth: 2,
           stepSize: 40 / 7,
-          format: {
-            maximumSignificantDigits: 2,
-          },
           z: 0,
         },
         pointLabels: {
@@ -184,11 +184,11 @@ let chartBars = new Chart(ctxBars, {
         suggestedMax: 40,
         beginAtZero: true,
         ticks: {
+          callback: function (value, index, ticks) {
+            return input.option.percentageScale.checked ? ((value * 100) / 40).toLocaleString(...statFormat) : value.toLocaleString(...statFormat);
+          },
           display: !window.mobileCheck(),
           stepSize: 40 / 7,
-          format: {
-            maximumSignificantDigits: 2,
-          },
         },
       },
       y: {
@@ -214,7 +214,7 @@ let chartBars = new Chart(ctxBars, {
             weight: "bold",
             size: 14,
           },
-        }
+        },
       },
       tooltip: {
         callbacks: {
@@ -227,8 +227,8 @@ let chartBars = new Chart(ctxBars, {
             if (context.parsed.x !== null) {
               let stat = Math.round(context.parsed.x);
               label += `${stat} (${(stat / 40).toLocaleString(...chartFormat)})`;
-              if (context.dataIndex == 2)
-                return [label, `${redoutDB.graphs.speed[stat]} km/h (${Math.round(redoutDB.graphs.speed[stat] / 1.609344)} mph)`];
+              // label += `${stat}`;
+              if (context.dataIndex == 2) return [label, `${redoutDB.graphs.speed[stat]} km/h (${Math.round(redoutDB.graphs.speed[stat] / 1.609344)} mph)`];
             }
             return label;
           },

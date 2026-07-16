@@ -1,5 +1,5 @@
 let queries = {
-  inputs: [{ stats: Array.from(input.targets, (target) => Number(target.value)), selectedRig: selectedRig }],
+  inputs: [{ stats: Array.from(input.targets, (target) => Number(target.value)), targetedRig: targetedRig }],
   results: [[]],
   current: -1,
   searching: false,
@@ -12,7 +12,9 @@ function parseResult(id, delta = 0) {
   let power = glider[0].power;
   rig.forEach((part) => (power += part.power));
   const stats = addArrays([glider[0].stats, ...Array.from(rig, (part) => part.stats)]);
-  return { id: id.join("-"), glider: glider[0], rig: rig, power: power, stats: stats, delta: delta };
+  let weightedPower = 0;
+  stats.forEach((stat, i) => (weightedPower += stat * redoutDB.weights[i]));
+  return { id: id.join("-"), glider: glider[0], rig: rig, power: power, weightedPower: weightedPower, stats: stats, delta: delta };
 }
 
 function getRange(a, b) {
@@ -42,15 +44,15 @@ async function querySubmit(e, quickSearch = false) {
     power: [Number(input.power.min.value), Number(input.power.max.value)],
     gliders: Array.from(document.querySelectorAll(`#select-ship input[type="checkbox"]:checked`), (ship) => Number(ship.value)),
     parts: Array.from(input.types, (type) => Array.from(document.querySelectorAll(`#${type.id} input[type="checkbox"]:checked`), (part) => Number(part.value))),
-    stats: Array.from(input.targets, (target) => Number(target.value)),
+    stats: Array.from(searchData.target.stats, (stat) => stat),
     greaterOnly: input.option.greaterOnly.checked,
     limit: 120,
-    selectedRig: selectedRig,
+    targetedRig: targetedRig,
     ratios: false,
     // precision: 3,
   };
 
-  selectedRig = "";
+  // selectedRig = "";
 
   // Parse the ShipGen ID (if any specified)
   let gliderCodes = Array.from(redoutDB.gliders, (glider) => glider.code);
@@ -358,14 +360,14 @@ function parseResults(candidates, query) {
   let html = "";
   let prehtml = "";
   candidates.forEach((candidate) => {
-    html += `<tr class='${selectedRig === candidate.id && "selected"} ${query.selectedRig === candidate.id && "targeted"} ${pinnedRigs.indexOf(candidate.id) !== -1 && "pinned"}' onmouseover='rowHover(event, this)' onclick='rowClick(event, this)' title='${candidate.id}'><td onclick='idClick(event, this)' class='results-cell-bottom results-cell-right cell-ship' title="${candidate.glider.name} (${candidate.glider.code}) {${candidate.glider.power}} [${candidate.glider.stats}]\n\n${candidate.glider.desc}"><img src='./img/${candidate.glider.code}.webp'></img><span>${candidate.id}</span></td>`;
+    html += `<tr class='${selectedRig === candidate.id ? "selected" : "deselected"} ${query.targetedRig === candidate.id ? "targeted" : "compared"} ${pinnedRigs.indexOf(candidate.id) !== -1 ? "pinned" : "unpinned"}' onmouseover='rowHover(event, this)' onclick='rowClick(event, this)' title='${candidate.id}'><td onclick='idClick(event, this)' class='results-cell-bottom results-cell-right cell-ship' title="${candidate.glider.name} (${candidate.glider.code}) {${candidate.glider.power}} [${candidate.glider.stats}]\n\n${candidate.glider.desc}"><img src='./img/${candidate.glider.code}.webp'></img><span>${candidate.id}</span></td>`;
     candidate.rig.forEach((part) => {
       html += `<td class='results-cell-bottom cell-class-${part.class}' title="${part.name} (${part.class}) {${part.power}} [${part.stats}]\n\n${part.desc}">${part.code}</td>`;
     });
-    html += `<td class='results-cell-bottom results-cell-left results-cell-right cell-power' onmouseover='powerHover(event, this)'><span>${candidate.power}</span></td>`;
+    html += `<td class='results-cell-bottom results-cell-left results-cell-right cell-power' title='Actual power rating: ${candidate.weightedPower}'><span>${candidate.power}</span></td>`;
     candidate.stats.forEach((stat, i) => {
       // Stat quality
-      let statType = "";
+      let statType = "cell-neutral";
       if (stat > query.stats[i] * 1.1) {
         statType = "cell-good";
       } else if (stat < query.stats[i] * 0.9) {
@@ -380,7 +382,7 @@ function parseResults(candidates, query) {
       let delta = stat - query.stats[i];
       let deltaPercentage = (delta / 40).toLocaleString(...deltaFormat);
       let statPercentage = ((100 * stat) / 40).toLocaleString(...statFormat);
-      html += `<td class='results-cell-bottom ${statType}' title='${chartLabels[i]}: ${stat} (${statPercentage}%)\nStat change: ${delta} (${deltaPercentage})${statEstimation}\nTotal change: ${candidate.delta}'>${input.option.percentageScale.checked ? statPercentage : stat}</td>`;
+      html += `<td class='results-cell-bottom ${statType}' title='${chartLabels[i]}: ${stat} (${statPercentage}%)\nStat delta: ${delta} (${deltaPercentage})${statEstimation}\nTotal delta: ${candidate.delta}'>${input.option.percentageScale.checked ? statPercentage : stat}</td>`;
     });
     html += `</tr>`;
   });

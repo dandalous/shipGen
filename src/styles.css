@@ -375,6 +375,11 @@ h1 {
   border-right: var(--border-width) solid var(--good-color);
 }
 
+#table-stats .cell-part, .cell-target, .cell-comparison{
+  padding-left: 0.125em !important;
+  position: relative;
+}
+
 #table-stats .column-delta {
   background-color: var(--panel-color);
   border-left: var(--border-width) solid var(--border-color-dim);
@@ -385,6 +390,126 @@ h1 {
 
 #table-stats .cell-part {
   font-weight: bolder;
+}
+
+#table-stats #cell-target-durability:before, #cell-comparison-durability:before {
+  position: absolute;
+  font-family: 'FontAwesome';
+  font-style: normal;
+  top: 0.1em;
+  left: 0.1em;
+  opacity: 0.25;
+  content: "\2b";
+}
+
+#table-stats #cell-target-thrust:before, #cell-comparison-thrust:before {
+  position: absolute;
+  font-family: 'FontAwesome';
+  font-style: normal;
+  top: 0.1em;
+  left: 0.1em;
+  opacity: 0.25;
+  content: "\f06d";
+}
+
+#table-stats #cell-target-speed:before, #cell-comparison-speed:before {
+  position: absolute;
+  font-family: 'FontAwesome';
+  font-style: normal;
+  top: 0.1em;
+  left: 0.1em;
+  opacity: 0.25;
+  content: "\f625";
+}
+
+#table-stats #cell-target-stability:before, #cell-comparison-stability:before {
+  position: absolute;
+  font-family: 'FontAwesome';
+  font-style: normal;
+  top: 0.1em;
+  left: 0.1em;
+  opacity: 0.25;
+  content: "\f076";
+}
+
+#table-stats #cell-target-steer:before, #cell-comparison-steer:before {
+  position: absolute;
+  font-family: 'FontAwesome';
+  font-style: normal;
+  top: 0.1em;
+  left: 0.1em;
+  opacity: 0.25;
+  content: "\f2f1";
+}
+
+#table-stats #cell-target-strafe:before, #cell-comparison-strafe:before {
+  position: absolute;
+  font-family: 'FontAwesome';
+  font-style: normal;
+  top: 0.1em;
+  left: 0.1em;
+  opacity: 0.25;
+  content: "\f337";
+}
+
+#table-stats #cell-target-propulsor:before, #cell-comparison-propulsor:before {
+  position: absolute;
+  font-family: 'FontAwesome';
+  font-style: normal;
+  top: 0.1em;
+  left: 0.1em;
+  opacity: 0.25;
+  content: "\f101";
+}
+
+#table-stats #cell-target-stabilizer:before, #cell-comparison-stabilizer:before {
+  position: absolute;
+  font-family: 'FontAwesome';
+  font-style: normal;
+  top: 0.1em;
+  left: 0.1em;
+  opacity: 0.25;
+  content: "\f5af";
+}
+
+#table-stats #cell-target-rudder:before, #cell-comparison-rudder:before {
+  position: absolute;
+  font-family: 'FontAwesome';
+  font-style: normal;
+  top: 0.1em;
+  left: 0.1em;
+  opacity: 0.25;
+  content: "\f655";
+}
+
+#table-stats #cell-target-hull:before, #cell-comparison-hull:before {
+  position: absolute;
+  font-family: 'FontAwesome';
+  font-style: normal;
+  top: 0.1em;
+  left: 0.1em;
+  opacity: 0.25;
+  content: "\f3ed";
+}
+
+#table-stats #cell-target-intercooler:before, #cell-comparison-intercooler:before {
+  position: absolute;
+  font-family: 'FontAwesome';
+  font-style: normal;
+  top: 0.1em;
+  left: 0.1em;
+  opacity: 0.25;
+  content: "\f2dc";
+}
+
+#table-stats #cell-target-esc:before, #cell-comparison-esc:before {
+  position: absolute;
+  font-family: 'FontAwesome';
+  font-style: normal;
+  top: 0.1em;
+  left: 0.1em;
+  opacity: 0.25;
+  content: "\f0e7";
 }
 
 #table-stats .cell-target {
@@ -411,6 +536,10 @@ h1 {
 
 #table-stats .cell-comparison:last-child {
   border-right: var(--border-width) solid var(--good-color);
+}
+
+#table-stats .cell-good, .cell-bad, .cell-neutral {
+  padding-left: 0.1em !important;
 }
 
 #table-stats .cell-good {
@@ -1105,6 +1234,10 @@ h1 {
   text-shadow: 0 0 0.5em var(--bad-color-shadow);
   font-weight: bolder;
   text-decoration: overline;
+}
+
+.cell-class-X, .cell-class-S, .cell-class-A, .cell-class-B, .cell-class-C {
+  padding-left: 0.1em !important;
 }
 
 .cell-class-X {

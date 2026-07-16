@@ -52,10 +52,10 @@
       </div>
       <div class="border-left border-bottom social">
         <a class="header" href="https://discord.gg/redout" title="Redout Discord">
-          <i class="fa-solid fa-brands fa-discord fa-fw"></i>
+          <i class="fa-brands fa-discord fa-fw"></i>
         </a>
-        <a class="header" href="https://redout.fandom.com/wiki/Redout_2" title="Redout Wiki">
-          <i class="fa-solid fa-brands fa-wikipedia-w fa-fw"></i>
+        <a class="header" href="https://docs.google.com/spreadsheets/u/0/d/1x6pHEsUuc9_yYYj83TZTKfnz8IAo3YShXY_Q5s_mGy4/htmlview#gid=2003473563" title="Redout Resources">
+          <i class="fa-solid fa-book-bookmark fa-fw"></i>
         </a>
         <a class="header" href="https://redout.games/" title="Redout Website">
           <i class="fa-solid fa-earth-europe fa-fw"></i>
@@ -64,7 +64,7 @@
           <i class="fa-solid fa-trophy fa-fw"></i>
         </a>
         <a class="header" href="https://github.com/dandy-is-lion/ShipGenerator" title="Fork me on GitHub!">
-          <i class="fa-solid fa-brands fa-git-alt fa-fw"></i>
+          <i class="fa-brands fa-git-alt fa-fw"></i>
         </a>
       </div>
       <div class="border-left stats">
@@ -104,63 +104,58 @@
                     Comparison</th>
                 </tr>
                 <tr>
-                  <th title="Target Ship" id="header-target-ship" class="header-target"></th>
+                  <th title="Target Ship" id="header-target-ship" class="header-target">Ship</th>
                   <th title="Target Power" class="header-target cell-power"><span id="header-target-power"
                       style="filter: invert(100%)">N/A</span>
                   </th>
-                  <th title="Power Difference" id="header-delta-power" class="header-delta"></th>
+                  <th title="Power Delta" id="header-delta-power" class="header-delta"></th>
                   <th title="Comparison Power" class="header-comparison cell-power"><span id="header-comparison-power"
                       style="filter: invert(100%)">N/A</span></th>
-                  <th title="Comparison Ship" id="header-comparison-ship" class="header-comparison"></th>
+                  <th title="Comparison Ship" id="header-comparison-ship" class="header-comparison">Ship</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td title="Target Propulsor" id="cell-target-propulsor" class="cell-target cell-part"></td>
-                  <td title="Target Durability" id="cell-target-durability" class="cell-target"></td>
-                  <td title="Durability Difference" id="cell-delta-durability" class="column-delta"></td>
-                  <td title="Comparison Durability" id="cell-comparison-durability" class="cell-comparison"></td>
-                  <td title="Comparison Propulsor" id="cell-comparison-propulsor" class="cell-comparison cell-part">
-                  </td>
+                  <td title="Target Propulsor" id="cell-target-propulsor" class="cell-target cell-part">-</td>
+                  <td title="Target Durability" id="cell-target-durability" class="cell-target">-</td>
+                  <td title="Durability Delta" id="cell-delta-durability" class="column-delta">-</td>
+                  <td title="Comparison Durability" id="cell-comparison-durability" class="cell-comparison">-</td>
+                  <td title="Comparison Propulsor" id="cell-comparison-propulsor" class="cell-comparison cell-part">-</td>
                 </tr>
                 <tr>
-                  <td title="Target Stabilizer" id="cell-target-stabilizer" class="cell-target cell-part"></td>
-                  <td title="Target Thrust" id="cell-target-thrust" class="cell-target"></td>
-                  <td title="Thrust Difference" id="cell-delta-thrust" class="column-delta"></td>
-                  <td title="Comparison Thrust" id="cell-comparison-thrust" class="cell-comparison"></td>
-                  <td title="Comparison Stabilizer" id="cell-comparison-stabilizer" class="cell-comparison cell-part">
-                  </td>
+                  <td title="Target Stabilizer" id="cell-target-stabilizer" class="cell-target cell-part">-</td>
+                  <td title="Target Thrust" id="cell-target-thrust" class="cell-target">-</td>
+                  <td title="Thrust Delta" id="cell-delta-thrust" class="column-delta">-</td>
+                  <td title="Comparison Thrust" id="cell-comparison-thrust" class="cell-comparison">-</td>
+                  <td title="Comparison Stabilizer" id="cell-comparison-stabilizer" class="cell-comparison cell-part">-</td>
                 </tr>
                 <tr>
-                  <td title="Target Rudder" id="cell-target-rudder" class="cell-target cell-part"></td>
-                  <td title="Target Top Speed" id="cell-target-speed" class="cell-target"></td>
-                  <td title="Top Speed Difference" id="cell-delta-speed" class="column-delta"></td>
-                  <td title="Comparison Top Speed" id="cell-comparison-speed" class="cell-comparison"></td>
-                  <td title="Comparison Rudder" id="cell-comparison-rudder" class="cell-comparison cell-part"></td>
+                  <td title="Target Rudder" id="cell-target-rudder" class="cell-target cell-part">-</td>
+                  <td title="Target Top Speed" id="cell-target-speed" class="cell-target">-</td>
+                  <td title="Top Speed Delta" id="cell-delta-speed" class="column-delta">-</td>
+                  <td title="Comparison Top Speed" id="cell-comparison-speed" class="cell-comparison">-</td>
+                  <td title="Comparison Rudder" id="cell-comparison-rudder" class="cell-comparison cell-part">-</td>
                 </tr>
                 <tr>
-                  <td title="Target Hull" id="cell-target-hull" class="cell-target cell-part"></td>
-                  <td title="Target Stability" id="cell-target-stability" class="cell-target"></td>
-                  <td title="Stability Difference" id="cell-delta-stability" class="column-delta"></td>
-                  <td title="Comparison Stability" id="cell-comparison-stability" class="cell-comparison"></td>
-                  <td title="Comparison Hull" id="cell-comparison-hull" class="cell-comparison cell-part"></td>
+                  <td title="Target Hull" id="cell-target-hull" class="cell-target cell-part">-</td>
+                  <td title="Target Stability" id="cell-target-stability" class="cell-target">-</td>
+                  <td title="Stability Delta" id="cell-delta-stability" class="column-delta">-</td>
+                  <td title="Comparison Stability" id="cell-comparison-stability" class="cell-comparison">-</td>
+                  <td title="Comparison Hull" id="cell-comparison-hull" class="cell-comparison cell-part">-</td>
                 </tr>
                 <tr>
-                  <td title="Target Intercooler" id="cell-target-intercooler" class="cell-target cell-part"></td>
-                  <td title="Target Steering" id="cell-target-steer" class="cell-target"></td>
-                  <td title="Steering Difference" id="cell-delta-steer" class="column-delta"></td>
-                  <td title="Comparison Steering" id="cell-comparison-steer" class="cell-comparison"></td>
-                  <td title="Comparison Intercooler" id="cell-comparison-intercooler" class="cell-comparison cell-part">
-                  </td>
+                  <td title="Target Intercooler" id="cell-target-intercooler" class="cell-target cell-part">-</td>
+                  <td title="Target Steering" id="cell-target-steer" class="cell-target">-</td>
+                  <td title="Steering Delta" id="cell-delta-steer" class="column-delta">-</td>
+                  <td title="Comparison Steering" id="cell-comparison-steer" class="cell-comparison">-</td>
+                  <td title="Comparison Intercooler" id="cell-comparison-intercooler" class="cell-comparison cell-part">-</td>
                 </tr>
                 <tr>
-                  <td title="Target Electronic Stability Controller" id="cell-target-esc" class="cell-target cell-part">
-                  </td>
-                  <td title="Target Strafe" id="cell-target-strafe" class="cell-target"></td>
-                  <td title="Strafe Difference" id="cell-delta-strafe" class="column-delta"></td>
-                  <td title="Comparison Strafe" id="cell-comparison-strafe" class="cell-comparison"></td>
-                  <td title="Comparison Electronic Stability Controller" id="cell-comparison-esc"
-                    class="cell-comparison cell-part"></td>
+                  <td title="Target E.S.C." id="cell-target-esc" class="cell-target cell-part">-</td>
+                  <td title="Target Strafe" id="cell-target-strafe" class="cell-target">-</td>
+                  <td title="Strafe Delta" id="cell-delta-strafe" class="column-delta">-</td>
+                  <td title="Comparison Strafe" id="cell-comparison-strafe" class="cell-comparison">-</td>
+                  <td title="Comparison E.S.C." id="cell-comparison-esc" class="cell-comparison cell-part">-</td>
                 </tr>
               </tbody>
             </table>
@@ -249,37 +244,37 @@
               <th class="border-bottom">
                 <input id="select-durability" size="2" maxlength="2" class="column-input"
                   onchange="targetInputChange(event, 0)"
-                  title="Select Durability (0-40)&#013;&#013;Durability determines how long you can boost and your resistance to overheat damage. The higher your Durability the faster you cool down, the slower you heat up, and the slower you take overheat damage."
+                  title="Select Durability&#013;&#013;Durability determines how long you can boost and your resistance to overheat damage. The higher your Durability the faster you cool down, the slower you heat up, and the slower you take overheat damage."
                   type="number" value="20" min="0" max="40" />
               </th>
               <th class="border-bottom">
                 <input id="select-thrust" size="2" maxlength="2" class="column-input"
                   onchange="targetInputChange(event, 1)"
-                  title="Select Thrust (0-40)&#013;&#013;Thrust determines how quickly you get up to Top Speed and beyond by raising your acceleration. The higher your Thrust the faster you accelerate, you heat up, and take overheat damage. Does not change how fast you cool down however; that's determined by your Durability. High Thrust is good for when you need short bursts of speed."
+                  title="Select Thrust&#013;&#013;Thrust determines how quickly you get up to Top Speed and beyond by raising your acceleration. The higher your Thrust the faster you accelerate, you heat up, and take overheat damage. Does not change how fast you cool down however; that's determined by your Durability. High Thrust is good for when you need short bursts of speed."
                   type="number" value="20" min="0" max="40" />
               </th>
               <th class="border-bottom">
                 <input id="select-speed" size="2" maxlength="2" class="column-input"
                   onchange="targetInputChange(event, 2)"
-                  title="Select Top Speed (0-40)&#013;&#013;Top Speed determines your acceleration and deceleration by being the asymptote to those curves. The higher your Top Speed the faster you'll get up to speed, the higher that speed will be, and the slower your speed will drop when decelerating. It'll positively influence your average speed throughout a lap. Coupled with high Thrust and you can get up to some mind-boggling speeds."
+                  title="Select Top Speed&#013;&#013;Top Speed determines your acceleration and deceleration by being the asymptote to those curves. The higher your Top Speed the faster you'll get up to speed, the higher that speed will be, and the slower your speed will drop when decelerating. It'll positively influence your average speed throughout a lap. Coupled with high Thrust and you can get up to some mind-boggling speeds."
                   type="number" value="20" min="0" max="40" />
               </th>
               <th class="border-bottom">
                 <input id="select-stability" size="2" maxlength="2" class="column-input"
                   onchange="targetInputChange(event, 3)"
-                  title="Select Stability (0-40)&#013;&#013;Stability determines your speed loss around corners; also known as grip. The higher your Stability, the faster you will be when turning, and the easier you can turn on a dime at higher speeds. It keeps you magnetically coupled with the center of the track, giving you better handling. Has a peculiar affinity for environments of extreme gravity."
+                  title="Select Stability&#013;&#013;Stability determines your speed loss around corners; also known as grip. The higher your Stability, the faster you will be when turning, and the easier you can turn on a dime at higher speeds. It keeps you magnetically coupled with the center of the track, giving you better handling. Has a peculiar affinity for environments of extreme gravity."
                   type="number" value="20" min="0" max="40" />
               </th>
               <th class="border-bottom">
                 <input id="select-steer" size="2" maxlength="2" class="column-input"
                   onchange="targetInputChange(event, 4)"
-                  title="Select Steering (0-40)&#013;&#013;Steering determines your speed around corners. The higher your Steering, the faster you can make turns. Steering always slows you down, so it's best to pair this stat with Strafe and Stability to improve your speed when steering and overall handling."
+                  title="Select Steering&#013;&#013;Steering determines your speed around corners. The higher your Steering, the faster you can make turns. Steering always slows you down, so it's best to pair this stat with Strafe and Stability to improve your speed when steering and overall handling."
                   type="number" value="20" min="0" max="40" />
               </th>
               <th class="border-bottom">
                 <input id="select-strafe" size="2" maxlength="2" class="column-input"
                   onchange="targetInputChange(event, 5)"
-                  title="Select Strafe (0-40)&#013;&#013;Strafe determines how fast you move horizontally. The higher your Strafe, the quicker and easier you can dodge and maneuver along straights, and the better you can drift around turns (by counter-strafing), improving your speed. Strafing doesn't slow you down, so it's generally recommended to strafe more than you steer."
+                  title="Select Strafe&#013;&#013;Strafe determines how fast you move horizontally. The higher your Strafe, the quicker and easier you can dodge and maneuver along straights, and the better you can drift around turns (by counter-strafing), improving your speed. Strafing doesn't slow you down, so it's generally recommended to strafe more than you steer."
                   type="number" value="20" min="0" max="40" />
               </th>
             </tr>
@@ -296,17 +291,23 @@
                   <div class="part-selector hide" data-value="4" id="select-intercooler"></div>
                   <div class="part-selector hide" data-value="5" id="select-esc"></div>
                   <div class="quick-selector" id="select-quick">
-                    <button type="button" id="button-base" title="Clear parts"
+                    <button type="button" id="button-base"
+                      title="White parts (Class C)&#013;Hold <Ctrl> to set all modules to this class."
                       onclick="quickSelect(event,'base')">Base</button>
-                    <button type="button" id="button-b" title="White and Green parts (Class B)"
+                    <button type="button" id="button-b"
+                      title="White and Green parts (Class B)&#013;Hold <Ctrl> to set all modules to this class."
                       onclick="quickSelect(event,'B')">B</button>
-                    <button type="button" id="button-a" title="Green and Yellow parts (Class A)"
+                    <button type="button" id="button-a"
+                      title="Green and Yellow parts (Class A)&#013;Hold <Ctrl> to set all modules to this class."
                       onclick="quickSelect(event,'A')">A</button>
-                    <button type="button" id="button-s" title="Yellow and Red parts (Class S)"
+                    <button type="button" id="button-s"
+                      title="Yellow and Red parts (Class S)&#013;Hold <Ctrl> to set all modules to this class."
                       onclick="quickSelect(event,'S')">S</button>
-                    <button type="button" id="button-x" title="Red and Purple parts (Class X)"
+                    <button type="button" id="button-x"
+                      title="Red and Purple parts (Class X)&#013;Hold <Ctrl> to set all modules to this class."
                       onclick="quickSelect(event,'X')">X</button>
-                    <button type="button" id="button-all" title="All parts (slow!)"
+                    <button type="button" id="button-all"
+                      title="All parts (slow!)&#013;Hold <Ctrl> to set all modules to this class."
                       onclick="quickSelect(event,'all')">All</button>
                   </div>
                 </div>

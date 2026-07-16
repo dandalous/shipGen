@@ -48,6 +48,9 @@ const output = {
   info: document.getElementById("info-banner"),
 };
 
+input.targets.forEach((target) => (target.value = target.defaultValue));
+input.option.percentageScale.checked = false;
+
 const deltaFormat = ["en-US", { style: "percent", maximumSignificantDigits: 2, signDisplay: "exceptZero" }];
 const chartFormat = ["en-US", { style: "percent", maximumSignificantDigits: 2 }];
 const statFormat = ["en-US", { maximumSignificantDigits: 2 }];
@@ -57,7 +60,7 @@ let lastQuery = JSON.parse(localStorage.getItem("lastQuery"));
 let lastPinned = JSON.parse(localStorage.getItem("lastPinned"));
 
 // Read data.json to store it in redoutDB and populate some web elements
-const partCode = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "J", "K"];
+const partCode = [..."123456789ABCDEFGHJK"];
 const partType = ["propulsor", "stabilizer", "rudder", "hull", "intercooler", "esc"];
 let redoutDB;
 fetch("./src/data.json")
@@ -73,7 +76,7 @@ fetch("./src/data.json")
         Object.assign(detail, { id: partCode[j] });
         input.types[i].innerHTML += `<input class="checkbox-part part-class-${detail.class}" value="${j}" type="checkbox" onchange="partsCheck(event,${i},'${part.type}')" id="checkbox-${detail.code}" ${lastQuery ? lastQuery.parts[i].includes(j) && "checked" : (detail.class == "S" || detail.class == "X") && "checked"} hidden /><label for="checkbox-${detail.code}" class="label-checkbox part-class-${detail.class}" title="${detail.name} (${detail.class}) {${detail.power}} [${detail.stats}]\n\n${detail.desc}">${detail.code}</label>`;
       });
-      partsCheck(new Event("Initialize"), i, part.type);
+      partsCheck(new Event("init"), i, part.type, false);
     });
     if (mobileCheck()) {
       input.power.minAlt.classList.add("hide");
@@ -84,7 +87,7 @@ fetch("./src/data.json")
     if (lastQuery) {
       input.power.min.value = lastQuery.power[0];
       input.power.max.value = lastQuery.power[1];
-      input.targets.forEach((target, i) => targetInputChange(target, i, lastQuery.stats[i]));
+      input.targets.forEach((target, i) => targetInputChange(new Event("init"), i, lastQuery.stats[i]));
     }
     if (lastPinned) {
       pinnedRigs = lastPinned;
@@ -98,6 +101,11 @@ fetch("./src/data.json")
 
 function scaleChange(e) {
   e.preventDefault();
+  let max = e.srcElement.checked ? 100 : 40;
+  let ratio = e.srcElement.checked ? 100 / 40 : 40 / 100;
+  input.targets.forEach((target) => (target.max = max));
+  input.targets.forEach((target) => (target.defaultValue = max / 2));
+  input.targets.forEach((target) => (target.value = Math.round(target.value * ratio)));
   output.headings.forEach((head) => head.classList.remove("active") && head.classList.add("asc"));
   if (output.table.innerHTML != "") {
     let pinnedCandidates = Array.from(pinnedRigs, (rig) => parseResult(rig));
@@ -107,12 +115,12 @@ function scaleChange(e) {
     );
     output.table.innerHTML = parseResults(pinnedCandidates.concat(candidates), queries.inputs.at(queries.current));
   }
-  updateStatCharts(0, searchData.target.stats, selectedRig != "" ? parseResult(selectedRig) : null);
+  updateStatCharts(0, searchData.target.stats, targetedRig != "" ? parseResult(targetedRig) : null);
 }
 
-function quickSelect(e, parts) {
+function quickSelect(e, parts, override = false) {
   e.preventDefault();
-  let isCtrl = e.ctrlKey;
+  let isCtrl = e.ctrlKey || override;
   let active = isCtrl ? document.querySelectorAll(`.part-selector`) : [document.querySelector(`.part-selector:not(.hide)`)];
   active.forEach((selector) => {
     let type = selector.id.split("-")[1];
@@ -139,7 +147,7 @@ function quickSelect(e, parts) {
       default:
         break;
     }
-    partsCheck(e, partType.indexOf(type), type);
+    partsCheck(e, partType.indexOf(type), type, false);
   });
 }
 
@@ -170,25 +178,34 @@ let partPowers = {
   max: [],
 };
 
-function partsCheck(e, i, type) {
+function partsCheck(e, i, type, canReset = true) {
   e.preventDefault();
-  let checked = document.querySelectorAll(`#select-${type} input[type = "checkbox"]:checked`);
-  let checkedPowers = Array.from(checked, (part) => redoutDB.parts[i].details[Number(part.value)].power);
+  if (e.type != "init") {
+    let checked = document.querySelectorAll(`#select-${type} input[type = "checkbox"]:checked`);
+    let checkboxes = document.querySelectorAll(`#select-${type} input[type = "checkbox"]`);
+    if (checked.length == 0) checkboxes.forEach((checkbox) => (checkbox.checked = true));
+    if (checked.length == checkboxes.length && canReset) {
+      checkboxes.forEach((checkbox) => (checkbox.checked = false));
+      e.srcElement.checked = true;
+    }
+  }
+  let newChecked = document.querySelectorAll(`#select-${type} input[type = "checkbox"]:checked`);
+  let checkedPowers = Array.from(newChecked, (part) => redoutDB.parts[i].details[Number(part.value)].power);
   partPowers.min[i] = Math.min(...checkedPowers);
   partPowers.max[i] = Math.max(...checkedPowers);
   input.power.min.value = 182 + partPowers.min.reduceRight((x, y) => x + y, 0) - 25;
   input.power.max.value = 186 + partPowers.max.reduceRight((x, y) => x + y, 0) + 25;
-  if (checked.length == 0) quickSelect(e, "base");
-  document.querySelector(`#label-${type}`).innerHTML = `${checked.length || 1}`;
+  document.querySelector(`#label-${type}`).innerHTML = `${newChecked.length}`;
   powerChange();
 }
 
 function glidersCheck(e) {
   e.preventDefault();
   let checked = document.querySelectorAll(`#select-ship input[type = "checkbox"]:checked`);
-  if (checked.length == 0) document.querySelectorAll(`#select-ship input[type = "checkbox"]`).forEach((checkbox) => (checkbox.checked = true));
-  if (checked.length == 12) {
-    document.querySelectorAll(`#select-ship input[type = "checkbox"]`).forEach((checkbox) => (checkbox.checked = false));
+  let checkboxes = document.querySelectorAll(`#select-ship input[type = "checkbox"]`);
+  if (checked.length == 0) checkboxes.forEach((checkbox) => (checkbox.checked = true));
+  if (checked.length == checkboxes.length) {
+    checkboxes.forEach((checkbox) => (checkbox.checked = false));
     e.srcElement.checked = true;
   }
 }
@@ -299,15 +316,21 @@ function downloadTable(e) {
 }
 
 function targetInputChange(e, i, value = -1) {
-  if (value != -1) input.targets[i].value = value;
+  if (!input.targets[i].checkValidity()) input.targets[i].value = Math.round(input.targets[i].value);
   if (!input.targets[i].checkValidity()) input.targets[i].value = input.targets[i].defaultValue;
-  input.targets[i].value == 0 ? input.targets[i].classList.add("input-ignored") : input.targets[i].classList.remove("input-ignored");
-  searchData.target.stats[i] = input.targets[i].value;
-  if (e) {
-    selectedRig = "";
-    searchData.target.power = 0;
-    updateStatCharts(0, searchData.target.stats);
+  // If Value is set then it's something external wanting to change the targetInputs
+  if (value == -1) {
+    value = input.option.percentageScale.checked ? Math.round((input.targets[i].value * 40) / 100) : Number(input.targets[i].value);
+  } else {
+    input.targets[i].value = input.option.percentageScale.checked ? Math.round((value * 100) / 40) : value;
   }
+  searchData.target.stats[i] = value;
+  input.targets[i].value == 0 ? input.targets[i].classList.add("input-ignored") : input.targets[i].classList.remove("input-ignored");
+  if (e.type != "quick") {
+    searchData.target.power = 0;
+    targetedRig = "";
+  }
+  updateStatCharts(0, searchData.target.stats);
 }
 
 function selectIDChange(e) {
@@ -318,22 +341,19 @@ function selectIDChange(e) {
 function resetClick(e) {
   e.preventDefault();
   document.getElementById("form-query").reset();
-  input.targets.forEach((target, i) => targetInputChange(null, i, target.value));
-  searchData.target.power = 0;
-  selectedRig = "";
-  updateStatCharts(0, searchData.target.stats);
-  redoutDB.parts.forEach((part, i) => partsCheck(e, i, part.type));
+  input.targets.forEach((target, i) => targetInputChange(new Event("reset"), i, target.value));
+  redoutDB.parts.forEach((part, i) => partsCheck(e, i, part.type, false));
   powerChange();
 }
 
 function balanceTargets(e) {
   e.preventDefault();
-  let nonZero = input.targets.filter((target) => target.value != 0);
+  let nonZero = searchData.target.stats.filter((target) => target != 0);
   if (nonZero.length == 0) return;
-  let average = Math.round(Array.from(nonZero, (target) => Number(target.value)).reduce((x, y) => x + y) / nonZero.length);
+  let average = Math.round(nonZero.reduce((x, y) => x + y) / nonZero.length);
   input.targets.forEach((target, i) => {
     if (target.value != 0) {
-      targetInputChange(e, i, average);
+      targetInputChange(new Event("reset"), i, average);
     }
   });
 }
@@ -342,7 +362,7 @@ function randomTargets(e) {
   e.preventDefault();
   input.targets.forEach((target, i) => {
     if (target.value != 0) {
-      targetInputChange(e, i, getRandomInt(1, 40));
+      targetInputChange(new Event("reset"), i, Math.random() < 0.5 ? Math.floor(Math.max(1, Number(searchData.target.stats[i]) * 0.9)) : Math.ceil(Math.min(40, Number(searchData.target.stats[i]) * 1.1)));
     }
   });
 }
@@ -363,7 +383,7 @@ function decreaseTargets(e) {
   e.preventDefault();
   input.targets.forEach((target, i) => {
     if (target.value != 0) {
-      targetInputChange(e, i, Math.floor(Math.max(1, Number(searchData.target.stats[i]) * 0.9)));
+      targetInputChange(new Event("reset"), i, Math.floor(Math.max(1, Number(searchData.target.stats[i]) * 0.9)));
     }
   });
 }
@@ -372,7 +392,7 @@ function increaseTargets(e) {
   e.preventDefault();
   input.targets.forEach((target, i) => {
     if (target.value != 0) {
-      targetInputChange(e, i, Math.ceil(Math.min(40, Number(searchData.target.stats[i]) * 1.1)));
+      targetInputChange(new Event("reset"), i, Math.ceil(Math.min(40, Number(searchData.target.stats[i]) * 1.1)));
     }
   });
 }
@@ -384,11 +404,8 @@ function shiftTargetsRight(e) {
     newTargets[i] = searchData.target.stats[i ? i - 1 : newTargets.length - 1];
   });
   input.targets.forEach((target, i) => {
-    targetInputChange(null, i, newTargets[i]);
+    targetInputChange(new Event("reset"), i, newTargets[i]);
   });
-  searchData.target.power = 0;
-  selectedRig = "";
-  updateStatCharts(0, searchData.target.stats);
 }
 
 function shiftTargetsLeft(e) {
@@ -402,14 +419,12 @@ function shiftTargetsLeft(e) {
     }
   });
   input.targets.forEach((target, i) => {
-    targetInputChange(null, i, newTargets[i]);
+    targetInputChange(new Event("reset"), i, newTargets[i]);
   });
-  searchData.target.power = 0;
-  selectedRig = "";
-  updateStatCharts(0, searchData.target.stats);
 }
 
 let selectedRig = "";
+let targetedRig = "";
 let pinnedRigs = [];
 let pinningID = false;
 
@@ -435,18 +450,6 @@ function idClick(e, cell) {
   pinningID = true;
 }
 
-// Get true Power rating
-function powerHover(e, cell) {
-  e.preventDefault();
-  let rig = parseResult(cell.parentElement.title);
-  let truePower = 0;
-  rig.stats.forEach((stat, i) => (truePower += stat * redoutDB.weights[i]));
-  if (truePower != rig.power && cell.title == "") {
-    cell.classList.add("cell-power-fault");
-    cell.title = `Power rating discrepancy!\nTrue power: ${truePower}`;
-  }
-}
-
 // Set Comparison to row hovered
 function rowHover(e, row) {
   e.preventDefault();
@@ -464,7 +467,7 @@ function rowClick(e, row) {
     pinningID = false;
     return;
   }
-  let oldRig = selectedRig;
+  let prevSelectedRig = selectedRig;
   selectedRig = row.title;
   let result = parseResult(selectedRig);
   let pinnedCandidates = Array.from(pinnedRigs, (rig) => parseResult(rig));
@@ -473,19 +476,23 @@ function rowClick(e, row) {
   updateStatCharts(1, result.stats, result);
   output.info.innerHTML = "Click again to search similar";
   output.info.style.setProperty("filter", "invert(0%)");
-  let candidates = Array.from(
-    queries.results.at(queries.current).filter((result) => pinnedRigs.indexOf(result.id) === -1),
-    (result) => parseResult(result.id, result.delta),
-  );
-  let active = Array.from(output.headings).filter((head) => head.classList.contains("active"))[0];
-  if (active) {
-    let isAscending = active.classList.contains("asc") ? -1 : 1;
-    candidateSort(candidates, active.cellIndex, isAscending);
-  }
-  output.table.innerHTML = parseResults(pinnedCandidates.concat(candidates), queries.inputs.at(queries.current));
-  if (result.id === oldRig) {
+  let selectedRows = document.querySelectorAll("#tbody-results .selected");
+  selectedRows.forEach((_row) => _row.classList.remove("selected"));
+  row.classList.toggle("selected");
+  // let candidates = Array.from(
+  //   queries.results.at(queries.current).filter((result) => pinnedRigs.indexOf(result.id) === -1),
+  //   (result) => parseResult(result.id, result.delta),
+  // );
+  // let active = Array.from(output.headings).filter((head) => head.classList.contains("active"))[0];
+  // if (active) {
+  //   let isAscending = active.classList.contains("asc") ? -1 : 1;
+  //   candidateSort(candidates, active.cellIndex, isAscending);
+  // }
+  // output.table.innerHTML = parseResults(pinnedCandidates.concat(candidates), queries.inputs.at(queries.current));
+  if (selectedRig === prevSelectedRig) {
+    targetedRig = selectedRig;
     input.targets.forEach((target, i) => {
-      targetInputChange(null, i, result.stats[i] || 1);
+      targetInputChange(new Event("quick"), i, result.stats[i] || 1);
     });
     searchData.target.power = result.power;
     updateStatCharts(0, result.stats, result);
@@ -537,20 +544,20 @@ function updateStatCharts(dataset, data, result = null) {
   let chartTable = dataset ? output.chart.comparison : output.chart.target;
 
   chartTable.id.innerHTML = result ? result.id : "Target";
-  chartTable.ship.innerHTML = result && result.glider.nick;
+  chartTable.ship.innerHTML = result ? result.glider.nick : "Ship";
   chartTable.ship.title = result ? `${result.glider.name} (${result.glider.code}) {${result.glider.power}} [${result.glider.stats}]\n\n${result.glider.desc}` : "N/A";
   chartTable.power.innerHTML = result ? result.power : "N/A";
   chartTable.power.style.setProperty("filter", result ? "invert(0%)" : "invert(100%)");
   output.chart.delta.power.innerHTML = powerDelta(searchData.comparison.power, searchData.target.power);
 
-  data.forEach((data, i) => {
+  data.forEach((_data, i) => {
     chartRadarLabels[i] = changes.delta[i];
     chartBarsLabels[i][1] = changes.delta[i];
     chartRadar.options.scales.r.pointLabels.color[i] = changes.color[i];
     chartBars.options.scales.y.ticks.color[i] = changes.color[i];
-    chartTable.parts[i].innerHTML = result && result.rig[i].code;
+    chartTable.parts[i].innerHTML = result ? result.rig[i].code : "-";
     chartTable.parts[i].title = result ? `${result.rig[i].name} (${result.rig[i].class}) {${result.rig[i].power}} [${result.rig[i].stats}]\n\n${result.rig[i].desc}` : "N/A";
-    chartTable.stats[i].innerHTML = input.option.percentageScale.checked ? Math.round((100 * data) / 40) : data;
+    chartTable.stats[i].innerHTML = input.option.percentageScale.checked ? Math.round((100 * _data) / 40) : _data;
     output.chart.delta.stats[i].classList.remove("cell-neutral", "cell-good", "cell-bad");
     output.chart.delta.stats[i].classList.add(changes.style[i]);
     output.chart.delta.stats[i].innerHTML = changes.delta[i];

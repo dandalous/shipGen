@@ -27,7 +27,6 @@ let searchData = {
 
 const chartAspectRatio = 1;
 const chartIcons = ["\u002b", "\uf5b0", "\uf625", "\uf076", "\uf021", "\uf337"];
-const chartLabels = ["Durability", "Thrust", "Top Speed", "Stability", "Steer", "Strafe"];
 const chartLabelColors = new Array(6).fill(foregroundColor);
 const chartRadarLabels = new Array(6).fill("");
 const chartBarsLabels = [
@@ -100,7 +99,7 @@ let chartRadar = new Chart(ctxRadar, {
       tooltip: {
         callbacks: {
           title: function (tooltipItem) {
-            return chartLabels[tooltipItem[0].dataIndex];
+            return statType[tooltipItem[0].dataIndex];
           },
           label: function (context) {
             let label = context.dataset.label || "";
@@ -109,7 +108,10 @@ let chartRadar = new Chart(ctxRadar, {
               let stat = Math.round(context.parsed.r);
               label += `${stat} (${(stat / 40).toLocaleString(...chartFormat)})`;
               // label += `${stat}`;
-              if (context.dataIndex == 2) return [label, `${redoutDB.graphs.speed[stat]} km/h (${Math.round(redoutDB.graphs.speed[stat] / 1.609344)} mph)`];
+              if (context.dataIndex == 2) {
+                const speed = getSpeeds(stat);
+                return [label, `${speed.kmh} km/h (${speed.mph} mph)`];
+              }
             }
             return label;
           },
@@ -219,7 +221,7 @@ let chartBars = new Chart(ctxBars, {
       tooltip: {
         callbacks: {
           title: function (tooltipItem) {
-            return chartLabels[tooltipItem[0].dataIndex];
+            return statType[tooltipItem[0].dataIndex];
           },
           label: function (context) {
             let label = context.dataset.label || "";
@@ -228,7 +230,10 @@ let chartBars = new Chart(ctxBars, {
               let stat = Math.round(context.parsed.x);
               label += `${stat} (${(stat / 40).toLocaleString(...chartFormat)})`;
               // label += `${stat}`;
-              if (context.dataIndex == 2) return [label, `${redoutDB.graphs.speed[stat]} km/h (${Math.round(redoutDB.graphs.speed[stat] / 1.609344)} mph)`];
+              if (context.dataIndex == 2) {
+                const speed = getSpeeds(stat);
+                return [label, `${speed.kmh} km/h (${speed.mph} mph)`];
+              }
             }
             return label;
           },

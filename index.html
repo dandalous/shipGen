@@ -72,7 +72,7 @@
           <table class="table-query">
             <thead>
               <tr class="row-headings">
-                <th id="button-query" class="border-bottom" onclick="querySubmit(event)" title="Search builds">
+                <th id="button-query" class="border-bottom" onclick="querySubmit(event)" title="Search builds&#013;&#013;Hold <Ctrl> to enter Shuffle mode.">
                   <button type="submit" style="display:none;" onclick="querySubmit(event)"></button>
                   <i id="query-icon" class="fa-solid fa-magnifying-glass fa-fw"></i>
                 </th>
@@ -80,7 +80,7 @@
                   title="Save results to text document" onclick="downloadTable(event)" disabled>
                   <i class="fa-solid fa-save fa-fw"></i>
                 </th>
-                <th id="button-reset" class="border-bottom" onclick="resetClick(event)" title="Clear search">
+                <th id="button-reset" class="border-bottom" onclick="resetClick(event)" title="Reset to defaults">
                   <i class="fa-solid fa-delete-left fa-fw"></i>
                 </th>
               </tr>
@@ -100,17 +100,14 @@
                 <tr>
                   <th title="Target ShipGen ID" colspan="2" id="header-target-id" class="header-target">Target</th>
                   <th id="header-delta-label" class="header-delta"><span>vs.</span></th>
-                  <th title="Comparison ShipGen ID" colspan="2" id="header-comparison-id" class="header-comparison">
-                    Comparison</th>
+                  <th title="Comparison ShipGen ID" colspan="2" id="header-comparison-id" class="header-comparison">Comparison</th>
                 </tr>
                 <tr>
                   <th title="Target Ship" id="header-target-ship" class="header-target">Ship</th>
-                  <th title="Target Power" class="header-target cell-power"><span id="header-target-power"
-                      style="filter: invert(100%)">N/A</span>
+                  <th title="Target Power" class="header-target cell-power"><span id="header-target-power">N/A</span>
                   </th>
                   <th title="Power Delta" id="header-delta-power" class="header-delta"></th>
-                  <th title="Comparison Power" class="header-comparison cell-power"><span id="header-comparison-power"
-                      style="filter: invert(100%)">N/A</span></th>
+                  <th title="Comparison Power" class="header-comparison cell-power"><span id="header-comparison-power">N/A</span></th>
                   <th title="Comparison Ship" id="header-comparison-ship" class="header-comparison">Ship</th>
                 </tr>
               </thead>

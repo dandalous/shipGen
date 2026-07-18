@@ -358,31 +358,32 @@ async function runQueryThreaded(query, count) {
 
 function parseResults(candidates, query) {
   let html = "";
-  let prehtml = "";
   candidates.forEach((candidate) => {
-    html += `<tr class='${selectedRig === candidate.id ? "selected" : "deselected"} ${query.targetedRig === candidate.id ? "targeted" : "compared"} ${pinnedRigs.indexOf(candidate.id) !== -1 ? "pinned" : "unpinned"}' onmouseover='rowHover(event, this)' onclick='rowClick(event, this)' title='${candidate.id}'><td onclick='idClick(event, this)' class='results-cell-bottom results-cell-right cell-ship' title="${candidate.glider.name} (${candidate.glider.code}) {${candidate.glider.power}} [${candidate.glider.stats}]\n\n${candidate.glider.desc}"><img src='./img/${candidate.glider.code}.webp'></img><span>${candidate.id}</span></td>`;
-    candidate.rig.forEach((part) => {
-      html += `<td class='results-cell-bottom cell-class-${part.class}' title="${part.name} (${part.class}) {${part.power}} [${part.stats}]\n\n${part.desc}">${part.code}</td>`;
+    let code = [...candidate.id.split("-")[1]];
+    html += `<tr class='${selectedRig === candidate.id ? "selected" : "deselected"} ${query.targetedRig === candidate.id ? "targeted" : "compared"} ${pinnedRigs.indexOf(candidate.id) !== -1 ? "pinned" : "unpinned"}' onmouseover='rowHover(event, this)' onclick='rowClick(event, this)' title='${candidate.id}'><td onclick='idClick(event, this)' class='results-cell-bottom results-cell-right cell-ship' title="${candidate.glider.name} &quot;${candidate.glider.code}&quot; \{${candidate.glider.power}\} \[${candidate.glider.stats}\]\n\n${candidate.glider.desc}\n\nClick \<ID\> to pin or unpin."><img src='./img/${candidate.glider.code}.webp'></img><span>${candidate.id}</span></td>`;
+    candidate.rig.forEach((part, i) => {
+      html += `<td class='results-cell-bottom cell-class-${part.class}' title="${part.name} &quot;${code[i]}&quot; \(${part.class}\) \{${part.power}\} \[${part.stats}\]\n\n${part.desc}">${part.code}</td>`;
     });
-    html += `<td class='results-cell-bottom results-cell-left results-cell-right cell-power' title='Actual power rating: ${candidate.weightedPower}'><span>${candidate.power}</span></td>`;
+    html += `<td class='results-cell-bottom results-cell-left results-cell-right cell-power ${candidate.power != candidate.weightedPower ? "cell-power-fault" : "cell-power-normal"}' title='Actual power rating: ${candidate.weightedPower}'><span>${candidate.power}</span></td>`;
     candidate.stats.forEach((stat, i) => {
       // Stat quality
-      let statType = "cell-neutral";
+      let cellType = "cell-neutral";
       if (stat > query.stats[i] * 1.1) {
-        statType = "cell-good";
+        cellType = "cell-good";
       } else if (stat < query.stats[i] * 0.9) {
-        statType = "cell-bad";
+        cellType = "cell-bad";
       }
       // Top Speed tooltip
       let statEstimation = "";
       if (i === 2) {
-        statEstimation = `\n\n${redoutDB.graphs.speed[stat]} km/h (${Math.round(redoutDB.graphs.speed[stat] / 1.609344)} mph)`;
+        const speed = getSpeeds(stat);
+        statEstimation = `\n\n${speed.kmh} km/h (${speed.mph} mph)`;
       }
       // Delta tooltips
       let delta = stat - query.stats[i];
       let deltaPercentage = (delta / 40).toLocaleString(...deltaFormat);
-      let statPercentage = ((100 * stat) / 40).toLocaleString(...statFormat);
-      html += `<td class='results-cell-bottom ${statType}' title='${chartLabels[i]}: ${stat} (${statPercentage}%)\nStat delta: ${delta} (${deltaPercentage})${statEstimation}\nTotal delta: ${candidate.delta}'>${input.option.percentageScale.checked ? statPercentage : stat}</td>`;
+      let statPercentage = (stat * scale.toPercentage).toLocaleString(...statFormat);
+      html += `<td class='results-cell-bottom ${cellType}' title='${statType[i]}: ${stat} (${statPercentage}%)\nStat delta: ${delta} (${deltaPercentage})${statEstimation}\nTotal delta: ${candidate.delta}'>${input.option.percentageScale.checked ? statPercentage : stat}</td>`;
     });
     html += `</tr>`;
   });

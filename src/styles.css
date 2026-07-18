@@ -375,7 +375,9 @@ h1 {
   border-right: var(--border-width) solid var(--good-color);
 }
 
-#table-stats .cell-part, .cell-target, .cell-comparison{
+#table-stats .cell-part,
+#table-stats .cell-target,
+#table-stats .cell-comparison{
   padding-left: 0.125em !important;
   position: relative;
 }
@@ -536,10 +538,6 @@ h1 {
 
 #table-stats .cell-comparison:last-child {
   border-right: var(--border-width) solid var(--good-color);
-}
-
-#table-stats .cell-good, .cell-bad, .cell-neutral {
-  padding-left: 0.1em !important;
 }
 
 #table-stats .cell-good {
@@ -1220,6 +1218,12 @@ h1 {
   background: radial-gradient(var(--power-fault-glow-color) 0%, var(--power-fault-color) 100%) !important;
   color: var(--power-fault-foreground-color) !important;
   text-shadow: none !important;
+}
+
+#table-results .cell-good, 
+#table-results .cell-bad, 
+#table-results .cell-neutral {
+  padding-left: 0.1em !important;
 }
 
 #table-results .cell-good {

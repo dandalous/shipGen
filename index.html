@@ -37,6 +37,7 @@
   <script defer src="./src/app.js"></script>
   <script defer src="./src/query.js"></script>
   <script defer src="./src/charts.js"></script>
+  <script defer src="./src/curves.js"></script>
   <title>Ship Generator</title>
 </head>
 
@@ -44,7 +45,8 @@
   <form id="form-query" onsubmit="querySubmit(event)">
     <div class="container darkened border-left border-right">
       <div class="border-bottom title">
-        <span class="header">Redout II Ship Generator</span><span class="header" title="Strafe more, steer less."><i
+        <span class="header">Redout II Ship Generator</span><span class="header ship" title="Strafe more, steer less."
+          onclick="shipClick(event, this)"><i
             class="fa-solid fa-fire-flame-simple fa-rotate-270"></i><i class="fa-solid fa-shuttle-space"></i></span>
         <h1 class="info-banner cell-power">
           <span id="info-banner">Click <i class="fa-solid fa-magnifying-glass fa-fw"></i> to get started</span>
@@ -72,7 +74,8 @@
           <table class="table-query">
             <thead>
               <tr class="row-headings">
-                <th id="button-query" class="border-bottom" onclick="querySubmit(event)" title="Search builds&#013;&#013;Hold <Ctrl> to enter Shuffle mode.">
+                <th id="button-query" class="border-bottom" onclick="querySubmit(event)"
+                  title="Search build(s)&#013;&#013;Hold <Ctrl> to enter Shuffle mode.">
                   <button type="submit" style="display:none;" onclick="querySubmit(event)"></button>
                   <i id="query-icon" class="fa-solid fa-magnifying-glass fa-fw"></i>
                 </th>
@@ -81,27 +84,124 @@
                   <i class="fa-solid fa-save fa-fw"></i>
                 </th>
                 <th id="button-reset" class="border-bottom" onclick="resetClick(event)" title="Reset to defaults">
-                  <i class="fa-solid fa-delete-left fa-fw"></i>
+                  <i class="fa-solid fa-clock-rotate-left fa-fw"></i>
                 </th>
               </tr>
             </thead>
           </table>
         </div>
         <div class="info">
-          <div class="chart-tabs">
-            <button class="chart-tab active" onclick="changeChart(event, 'radar')">Radar</button>
-            <button class="chart-tab" onclick="changeChart(event, 'bars')">Bars</button>
+          <div class="chart-controls">
+            <div class="chart-tabs">
+              <button class="chart-tab active" onclick="changeChart(event, 'radar')">Radar</button>
+              <button class="chart-tab" onclick="changeChart(event, 'bars')">Bars</button>
+              <button class="chart-tab" onclick="changeChart(event, 'extra')">Extra</button>
+            </div>
+            <div class="chart-header"><button id="header-target-id" title="Toggle Target visibility on charts" onclick="toggleDataset(event, 0)">Target</button><button id="header-comparison-id" title="Toggle Comparison visibility on charts" onclick="toggleDataset(event, 1)">Comparison</button></div>
           </div>
           <div class="chart-wrapper">
             <canvas class="charts" id="chart-radar"></canvas>
             <canvas class="charts" id="chart-bars" style="display:none"></canvas>
+            <div class="charts" id="chart-extra" style="display:none">
+              <canvas class="extra-charts" id="chart-force-curves"></canvas>
+              <!-- <canvas class="extra-charts" id="chart-angle-curves"></canvas> -->
+              <table id="table-extra">
+                <tbody>
+                  <tr>
+                    <td title="Modified by Durability.&#013;The amount of life points you have before you explode from too much damage." class="cell-info-header cell-durability">Max HP</td>
+                    <td id="cell-target-maxlife" class="cell-target-header">-</td>
+                    <td id="cell-comparison-maxlife" class="cell-comparison-header">-</td>
+                  </tr>
+                  <tr>
+                    <td title="Modified by Durability.&#013;The rate at which you auto heal after 5 seconds of no damage." class="cell-info cell-durability">Regen Speed</td>
+                    <td id="cell-target-autohealspeed" class="cell-target">-</td>
+                    <td id="cell-comparison-autohealspeed" class="cell-comparison">-</td>
+                  </tr>
+                  <tr>
+                    <td title="Modified by Durability.&#013;The rate at which your heat meter cools down; counteracts environmental heating." class="cell-info cell-durability">Cooling</td>
+                    <td id="cell-target-heatdecrease" class="cell-target">-</td>
+                    <td id="cell-comparison-heatdecrease" class="cell-comparison">-</td>
+                  </tr>
+                  <tr>
+                    <td title="Modified by Thrust.&#013;The rate at which you gain heat when boosting." class="cell-info cell-thrust">Heating [Boost]</td>
+                    <td id="cell-target-heatincrease" class="cell-target">-</td>
+                    <td id="cell-comparison-heatincrease" class="cell-comparison">-</td>
+                  </tr>
+                  <tr>
+                    <td title="Modified by Thrust.&#013;The rate at which you gain heat when hyperboosting." class="cell-info cell-thrust">Heating [Hyper]</td>
+                    <td id="cell-target-heathyperincrease" class="cell-target">-</td>
+                    <td id="cell-comparison-heathyperincrease" class="cell-comparison">-</td>
+                  </tr>
+                  <tr>
+                    <td title="Modified by Thrust.&#013;The rate at which you gain heat when boosting and hyperboosting (stackboosting)." class="cell-info cell-thrust">Heating [Stack]</td>
+                    <td id="cell-target-heatstackincrease" class="cell-target">-</td>
+                    <td id="cell-comparison-heatstackincrease" class="cell-comparison">-</td>
+                  </tr>
+                  <tr>
+                    <td title="Modified by Top Speed.&#013;Your ship's cruising speed when on track." class="cell-info cell-speed">Top Speed</td>
+                    <td id="cell-target-topspeed" class="cell-target">-</td>
+                    <td id="cell-comparison-topspeed" class="cell-comparison">-</td>
+                  </tr>
+                  <tr>
+                    <td title="Modified by Top Speed.&#013;Your ship's cruising speed when flying." class="cell-info cell-speed">Top Speed [Flight]</td>
+                    <td id="cell-target-flighttopspeed" class="cell-target">-</td>
+                    <td id="cell-comparison-flighttopspeed" class="cell-comparison">-</td>
+                  </tr>
+                  <tr>
+                    <td title="Modified by Thrust and Top Speed.&#013;The speed your ship ends up at after boosting for 5 seconds at your cruising speed in ideal conditions (no gravity or drag). Integral of the g-force Boosting curve (Δv)." class="cell-info cell-thrust cell-speed">Top Speed [Boost]</td>
+                    <td id="cell-target-baseboostvelocity" class="cell-target">-</td>
+                    <td id="cell-comparison-baseboostvelocity" class="cell-comparison">-</td>
+                  </tr>
+                  <tr>
+                    <td title="Modified by Thrust and Top Speed.&#013;The speed your ship ends up at after hyperboosting for 5 seconds (no boosting) at your cruising speed in ideal conditions (no gravity or drag). Integral of the g-force Hyperboosting curve (Δv)." class="cell-info cell-thrust cell-speed">Top Speed [Hyper]</td>
+                    <td id="cell-target-hyperboostvelocity" class="cell-target">-</td>
+                    <td id="cell-comparison-hyperboostvelocity" class="cell-comparison">-</td>
+                  </tr>
+                  <tr>
+                    <td title="Modified by Thrust and Top Speed.&#013;The speed your ship ends up at after boosting and hyperboosting (stackboosting) for 5 seconds at your cruising speed in ideal conditions (no gravity or drag). Integral of the g-force Stackboosting curve (Δv); AKA your HYPERSPEED." class="cell-info cell-thrust cell-speed">Top Speed [Stack]</td>
+                    <td id="cell-target-stackboostvelocity" class="cell-target">-</td>
+                    <td id="cell-comparison-stackboostvelocity" class="cell-comparison">-</td>
+                  </tr>
+                  <tr>
+                    <td title="Modified by Stability.&#013;How quickly you slow down when holding brake." class="cell-info cell-stability">Brake Power</td>
+                    <td id="cell-target-brakepower" class="cell-target">-</td>
+                    <td id="cell-comparison-brakepower" class="cell-comparison">-</td>
+                  </tr>
+                  <tr>
+                    <td title="Modified by Stability.&#013;The amount of speed boost applied when your ship is using its grip. Track conditions influence this, and has a peculiar affinity with counter-strafing." class="cell-info cell-stability">Grip Boost Multi</td>
+                    <td id="cell-target-gripboostmulti" class="cell-target">-</td>
+                    <td id="cell-comparison-gripboostmulti" class="cell-comparison">-</td>
+                  </tr>
+                  <tr>
+                    <td title="Modified by Steering.&#013;A multiplier of the amount your ship increases in steering (angular speed) when braking; applied immediately." class="cell-info cell-steer">Ang Speed Multi [Brake]</td>
+                    <td id="cell-target-angspeedbraking" class="cell-target">-</td>
+                    <td id="cell-comparison-angspeedbraking" class="cell-comparison">-</td>
+                  </tr>
+                  <tr>
+                    <td title="Modified by Steering.&#013;The amount of time it takes to get to your max angular speed when changing direction." class="cell-info cell-steer">Time to Max Ang Speed</td>
+                    <td id="cell-target-timetomaxangspeed" class="cell-target">-</td>
+                    <td id="cell-comparison-timetomaxangspeed" class="cell-comparison">-</td>
+                  </tr>
+                  <tr>
+                    <td title="Modified by Strafe.&#013;The amount you're able to resist grip's influence on lateral movement. Track conditions influence this." class="cell-info cell-strafe">Grip Strafe Multi</td>
+                    <td id="cell-target-gripstrafemulti" class="cell-target">-</td>
+                    <td id="cell-comparison-gripstrafemulti" class="cell-comparison">-</td>
+                  </tr>
+                  <tr>
+                    <td title="Modified by Strafe.&#013;The amount of g-force your ship experiences when strafing. This varies depending on the speed you're at; becoming stronger the faster you're going." class="cell-info cell-strafe">Strafe Accel</td>
+                    <td id="cell-target-strafeaccel" class="cell-target">-</td>
+                    <td id="cell-comparison-strafeaccel" class="cell-comparison">-</td>
+                  </tr>
+                  <tr>
+                    <td title="Modified by Strafe.&#013;The amount of g-force your ship experiences when strafing and flying. This varies depending on the speed you're at; becoming stronger the faster you're going." class="cell-info-footer cell-strafe">Strafe Accel [Flight]</td>
+                    <td id="cell-target-flightstrafeaccel" class="cell-target">-</td>
+                    <td id="cell-comparison-flightstrafeaccel" class="cell-comparison">-</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
             <table id="table-stats">
               <thead>
-                <tr>
-                  <th title="Target ShipGen ID" colspan="2" id="header-target-id" class="header-target">Target</th>
-                  <th id="header-delta-label" class="header-delta"><span>vs.</span></th>
-                  <th title="Comparison ShipGen ID" colspan="2" id="header-comparison-id" class="header-comparison">Comparison</th>
-                </tr>
                 <tr>
                   <th title="Target Ship" id="header-target-ship" class="header-target">Ship</th>
                   <th title="Target Power" class="header-target cell-power"><span id="header-target-power">N/A</span>
@@ -160,7 +260,7 @@
         </div>
       </div>
       <div class="results">
-        <table class="table-results" id="table-results">
+        <table id="table-results">
           <thead>
             <tr class="row-headings" id="row-headings">
               <th class="column-ship border-bottom border-right asc" onclick="columnSort(event)">ShipGen ID</th>

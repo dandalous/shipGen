@@ -3,8 +3,8 @@ const foregroundColor = getComputedStyle(document.documentElement).getPropertyVa
 const targetColor = getComputedStyle(document.documentElement).getPropertyValue("--bad-color");
 const comparisonColor = getComputedStyle(document.documentElement).getPropertyValue("--good-color");
 
-const targetColorA = targetColor.replace(/rgb/i, "rgba").replace(/\)/i, ",0.15)");
-const comparisonColorA = comparisonColor.replace(/rgb/i, "rgba").replace(/\)/i, ",0.15)");
+const targetColorA = targetColor.replace(/rgb/i, "rgba").replace(/\)/i, ", 0.15)");
+const comparisonColorA = comparisonColor.replace(/rgb/i, "rgba").replace(/\)/i, ", 0.15)");
 
 Chart.defaults.borderColor = borderColor;
 Chart.defaults.color = foregroundColor;
@@ -13,19 +13,8 @@ Chart.defaults.maintainAspectRatio = true;
 Chart.defaults.plugins.decimation = false;
 Chart.defaults.plugins.legend.display = !window.mobileCheck();
 Chart.defaults.plugins.tooltip.multiKeyBackground = "black";
+Chart.defaults.animation.duration = 100;
 
-let searchData = {
-  comparison: {
-    power: 0,
-    stats: [0, 0, 0, 0, 0, 0],
-  },
-  target: {
-    power: 0,
-    stats: Array.from(input.targets, (target) => Number(target.value)),
-  },
-};
-
-const chartAspectRatio = 1;
 const chartIcons = ["\u002b", "\uf5b0", "\uf625", "\uf076", "\uf021", "\uf337"];
 const chartLabelColors = new Array(6).fill(foregroundColor);
 const chartRadarLabels = new Array(6).fill("");
@@ -41,7 +30,7 @@ const chartBarsLabels = [
 const chartData = [
   {
     label: "Target",
-    data: searchData.target.stats,
+    data: rigs.target.stats,
     fill: true,
     borderWidth: 2,
     backgroundColor: targetColorA,
@@ -56,9 +45,8 @@ const chartData = [
   },
   {
     label: "Comparison",
-    data: searchData.comparison.stats,
+    data: rigs.comparison.stats,
     fill: true,
-    hidden: true,
     borderWidth: 2,
     borderColor: comparisonColor,
     backgroundColor: comparisonColorA,
@@ -71,17 +59,14 @@ const chartData = [
   },
 ];
 
-const ctxRadar = document.getElementById("chart-radar").getContext("2d");
-const ctxBars = document.getElementById("chart-bars").getContext("2d");
-
-let chartRadar = new Chart(ctxRadar, {
+const chartRadar = new Chart(document.getElementById("chart-radar").getContext("2d"), {
   type: "radar",
   data: {
     labels: chartRadarLabels,
     datasets: chartData,
   },
   options: {
-    aspectRatio: chartAspectRatio,
+    aspectRatio: 1.0125,
     onHover: function (e) {
       const point = e.chart.getElementsAtEventForMode(e, "nearest", { intersect: true }, false);
       if (point.length) e.native.target.style.cursor = "grab";
@@ -89,6 +74,7 @@ let chartRadar = new Chart(ctxRadar, {
     },
     plugins: {
       legend: {
+        display: false,
         labels: {
           font: {
             weight: "bold",
@@ -98,20 +84,15 @@ let chartRadar = new Chart(ctxRadar, {
       },
       tooltip: {
         callbacks: {
-          title: function (tooltipItem) {
-            return statType[tooltipItem[0].dataIndex];
+          title: function (ctx) {
+            return statType[ctx[0].dataIndex];
           },
-          label: function (context) {
-            let label = context.dataset.label || "";
-            if (label) label += ": ";
-            if (context.parsed.r !== null) {
-              let stat = Math.round(context.parsed.r);
+          label: function (ctx) {
+            const chartTable = (ctx.datasetIndex & 1 == 1) ? output.chart.comparison : output.chart.target;
+            let label = `${chartTable.id.innerHTML}: `;
+            if (ctx.parsed.r !== null) {
+              const stat = Math.round(ctx.parsed.r);
               label += `${stat} (${(stat / 40).toLocaleString(...chartFormat)})`;
-              // label += `${stat}`;
-              if (context.dataIndex == 2) {
-                const speed = getSpeeds(stat);
-                return [label, `${speed.kmh} km/h (${speed.mph} mph)`];
-              }
             }
             return label;
           },
@@ -122,17 +103,17 @@ let chartRadar = new Chart(ctxRadar, {
         onDragStart: function (e, element) {
           if (!(element === 0)) return false;
         },
-        onDrag: function (e, datasetIndex, index, value) {
-          if (!(datasetIndex === 0)) return false;
+        onDrag: function (e, dataset, i, value) {
+          if (!(dataset === 0)) return false;
           if (value < 0) value = 0;
           if (value > 40) value = 40;
-          // e.target.style.cursor = "grabbing";
+          e.target.style.cursor = "grabbing";
         },
-        onDragEnd: function (e, datasetIndex, index, value) {
-          if (!(datasetIndex === 0)) return false;
+        onDragEnd: function (e, dataset, i, value) {
+          if (!(dataset === 0)) return false;
           if (value < 0) value = 0;
           if (value > 40) value = 40;
-          targetInputChange(e, index, value);
+          targetInputChange(e, i, value);
         },
         magnet: {
           to: Math.round,
@@ -145,7 +126,7 @@ let chartRadar = new Chart(ctxRadar, {
         suggestedMax: 40 * (4 / 7),
         beginAtZero: true,
         ticks: {
-          callback: function (value, index, ticks) {
+          callback: function (value, i, ticks) {
             return input.option.percentageScale.checked ? ((value * 100) / 40).toLocaleString(...statFormat) : value.toLocaleString(...statFormat);
           },
           // display: false,
@@ -171,14 +152,14 @@ let chartRadar = new Chart(ctxRadar, {
   },
 });
 
-let chartBars = new Chart(ctxBars, {
+const chartBars = new Chart(document.getElementById("chart-bars").getContext("2d"), {
   type: "bar",
   data: {
     labels: chartBarsLabels,
     datasets: chartData,
   },
   options: {
-    aspectRatio: chartAspectRatio,
+    aspectRatio: 1,
     indexAxis: "y",
     scales: {
       x: {
@@ -186,7 +167,7 @@ let chartBars = new Chart(ctxBars, {
         suggestedMax: 40,
         beginAtZero: true,
         ticks: {
-          callback: function (value, index, ticks) {
+          callback: function (value, i, ticks) {
             return input.option.percentageScale.checked ? ((value * 100) / 40).toLocaleString(...statFormat) : value.toLocaleString(...statFormat);
           },
           display: !window.mobileCheck(),
@@ -211,6 +192,7 @@ let chartBars = new Chart(ctxBars, {
     },
     plugins: {
       legend: {
+        display: false,
         labels: {
           font: {
             weight: "bold",
@@ -220,20 +202,15 @@ let chartBars = new Chart(ctxBars, {
       },
       tooltip: {
         callbacks: {
-          title: function (tooltipItem) {
-            return statType[tooltipItem[0].dataIndex];
+          title: function (ctx) {
+            return statType[ctx[0].dataIndex];
           },
-          label: function (context) {
-            let label = context.dataset.label || "";
-            if (label) label += ": ";
-            if (context.parsed.x !== null) {
-              let stat = Math.round(context.parsed.x);
+          label: function (ctx) {
+            const chartTable = (ctx.datasetIndex & 1 == 1) ? output.chart.comparison : output.chart.target;
+            let label = `${chartTable.id.innerHTML}: `;
+            if (ctx.parsed.x !== null) {
+              const stat = Math.round(ctx.parsed.x);
               label += `${stat} (${(stat / 40).toLocaleString(...chartFormat)})`;
-              // label += `${stat}`;
-              if (context.dataIndex == 2) {
-                const speed = getSpeeds(stat);
-                return [label, `${speed.kmh} km/h (${speed.mph} mph)`];
-              }
             }
             return label;
           },
@@ -245,17 +222,17 @@ let chartBars = new Chart(ctxBars, {
         onDragStart: function (e, element) {
           if (!(element === 0)) return false;
         },
-        onDrag: function (e, datasetIndex, index, value) {
-          if (!(datasetIndex === 0)) return false;
+        onDrag: function (e, dataset, i, value) {
+          if (!(dataset === 0)) return false;
           if (value < 0) value = 0;
           if (value > 40) value = 40;
-          // e.target.style.cursor = "grabbing";
+          e.target.style.cursor = "grabbing";
         },
-        onDragEnd: function (e, datasetIndex, index, value) {
-          if (!(datasetIndex === 0)) return false;
+        onDragEnd: function (e, dataset, i, value) {
+          if (!(dataset === 0)) return false;
           if (value < 0) value = 0;
           if (value > 40) value = 40;
-          targetInputChange(e, index, value);
+          targetInputChange(e, i, value);
         },
         magnet: {
           to: Math.round,

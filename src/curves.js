@@ -476,66 +476,35 @@ const curves = {
     ])
   },
   heatLifeLossPerSec: parseUECurveToChartJS([
-    [false, 0.0, 0.0, 0.0, 0.0, 0.0],
-    [false, 0.8, 0.0, 0.0, 0.0, 0.0],
-    [true, 0.81, 33.0, 0.0, 0.0, 0.0],
-    [true, 1.0, 66.0, 273.8864, 0.0, 273.8864],
-  ])
+    [false, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+    [false, 0.8, 0.0, 0.0, 0.0, 0.0, 0.0],
+    [true, 0.81, 33.0, 0.0, 0.0, 0.0, 0.0],
+    [true, 1.0, 66.0, 273.8864, 0.0, 273.8864, 0.0],
+  ]),
+  turbo: parseUECurveToChartJS([
+    [true, 0.0, 0.0, 177.22853, 0.0, 177.22835, 0.0],
+    [true, 0.15, 9.0, -0.270027, 0.0, -0.270027, 0.0],
+    [true, 0.8, 0.0, -26.519184, 0.0, -26.519321, 0.0],
+  ]),
+  perfectLanding: parseUECurveToChartJS([
+    [false, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0]
+    [false, 2.0, 5.0, 0.0, 0.0, 0.0, 0.0]
+  ]),
+  goodLanding: parseUECurveToChartJS([
+    [false, 0.0, 3.0, 0.0, 0.0, 0.0, 0.0]
+    [false, 1.0, 3.0, 0.0, 0.0, 0.0, 0.0]
+  ]),
 };
-
-// UE Ranges
-const statRanges = {
-  maxLife: [150, 350],                  // slowestIncrease      - Durability
-  autoHealSpeed: [0.4, 1.0],            // slowestIncrease      - Durability
-  heatDecrease: [0, 19],                // slowestIncrease      - Durability
-  heatIncrease: [38, 55],               // fastIncrease         - Thrust
-  heatHyperIncrease: [0, 32],           // linear(?)            - Thrust
-  topSpeed: [900, 1250],                // eightyTwentyIncrease - Top Speed
-  flightTopSpeed: [750, 1100],          // eightyTwentyIncrease - Top Speed
-  brakePower: [0.12, 0.35],             // slowIncrease         - Stability
-  gripBoostMulti: [0, 0.55],            // linear(?)            - Stability
-  angSpeedBraking: [1.05, 1.3],         // slowestIncrease      - Steer
-  timeToMaxAngSpeedChg: [0.32, 0.12],   // slowIncrease         - Steer
-  gripStrafeMulti: [0, 0.55],           // linear(?)            - Strafe
-  strafeAccel: [9, 19],                 // relevantExtremes     - Strafe
-  flightStrafeAccel: [9, 14],           // relevantExtremes     - Strafe
-}
 
 // Evaluations
 const evalCurves = {
-  baseBoost: Array.from({ length: 41 }, (_, i) => blendUECurves(curves.baseBoost.min, curves.baseBoost.max, evaluateUECurve(interps.fastIncrease, i / 40))),
-  hyperBoost: Array.from({ length: 41 }, (_, i) => blendUECurves(curves.hyperBoost.min, curves.hyperBoost.max, evaluateUECurve(interps.slowStartFastIncrease, i / 40))),
-  // heatDecreasePerSecBraking: Array.from({ length: 41 }, (_, i) => blendUECurves(curves.heatDecreasePerSecBraking.min, curves.heatDecreasePerSecBraking.max, evaluateUECurve(interps.linear, i / 40))),
-  // gripBoost: Array.from({ length: 41 }, (_, i) => blendUECurves(curves.gripBoost.min, curves.gripBoost.max, i / 40)),
-  // angularSpeed: Array.from({ length: 41 }, (_, i) => blendUECurves(curves.angularSpeed.min, curves.angularSpeed.max, evaluateUECurve(interps.slowIncrease, i / 40))),
+  baseBoost: Array.from({ length: 41 }, (_, i) => blendUECurves(curves.baseBoost.min, curves.baseBoost.max, evaluateUECurve(interps.fastIncrease, i * scale.toPermille))),
+  hyperBoost: Array.from({ length: 41 }, (_, i) => blendUECurves(curves.hyperBoost.min, curves.hyperBoost.max, evaluateUECurve(interps.slowStartFastIncrease, i * scale.toPermille))),
+  // heatDecreasePerSecBraking: Array.from({ length: 41 }, (_, i) => blendUECurves(curves.heatDecreasePerSecBraking.min, curves.heatDecreasePerSecBraking.max, evaluateUECurve(interps.linear, i * scale.toPermille))),
+  // gripBoost: Array.from({ length: 41 }, (_, i) => blendUECurves(curves.gripBoost.min, curves.gripBoost.max, i * scale.toPermille)),
+  // angularSpeed: Array.from({ length: 41 }, (_, i) => blendUECurves(curves.angularSpeed.min, curves.angularSpeed.max, evaluateUECurve(interps.slowIncrease, i * scale.toPermille))),
 };
-const evalCurveCombos = {
-  stackBoost: Array.from({ length: 41 }, (_, i) => combineUECurvesToOne([evalCurves.baseBoost[i], evalCurves.hyperBoost[i]])),
-}
-
-const gravAccel = 9.80665;
-const evalRanges = {
-  maxLife: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.maxLife, interps.slowestIncrease, i / 40)),
-  autoHealSpeed: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.autoHealSpeed, interps.slowestIncrease, i / 40)),
-  heatDecrease: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.heatDecrease, interps.slowestIncrease, i / 40)),
-  heatIncrease: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.heatIncrease, interps.fastIncrease, i / 40)),
-  heatHyperIncrease: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.heatHyperIncrease, interps.linear, i / 40)),
-  baseBoostVelocity: Array.from({ length: 41 }, (_, i) => calculateCurveArea(evalCurves.baseBoost[i]) * gravAccel),
-  hyperBoostVelocity: Array.from({ length: 41 }, (_, i) => calculateCurveArea(evalCurves.hyperBoost[i]) * gravAccel),
-  stackBoostVelocity: Array.from({ length: 41 }, (_, i) => calculateCurveArea(evalCurveCombos.stackBoost[i]) * gravAccel),
-  topSpeed: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.topSpeed, interps.eightyTwentyIncrease, i / 40)),
-  flightTopSpeed: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.flightTopSpeed, interps.eightyTwentyIncrease, i / 40)),
-  brakePower: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.brakePower, interps.slowIncrease, i / 40)),
-  gripBoostMulti: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.gripBoostMulti, interps.linear, i / 40)),
-  angSpeedBraking: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.angSpeedBraking, interps.slowestIncrease, i / 40)),
-  timeToMaxAngSpeed: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.timeToMaxAngSpeedChg, interps.slowIncrease, i / 40)),
-  gripStrafeMulti: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.gripStrafeMulti, interps.linear, i / 40)),
-  strafeAccel: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.strafeAccel, interps.relevantExtremes, i / 40)),
-  flightStrafeAccel: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.flightStrafeAccel, interps.relevantExtremes, i / 40)),
-}
-const evalRangeCombos = {
-  heatStackIncrease: Array.from({ length: 41 }, (_, i) => evalRanges.heatIncrease[i] + evalRanges.heatHyperIncrease[i]),
-}
+evalCurves["stackBoost"] = Array.from({ length: 41 }, (_, i) => combineUECurvesToOne([evalCurves.baseBoost[i], evalCurves.hyperBoost[i]]));
 
 const chartForceCurves = new Chart(document.getElementById("chart-force-curves").getContext("2d"), {
   type: "line",
@@ -601,7 +570,7 @@ const chartForceCurves = new Chart(document.getElementById("chart-force-curves")
     ],
   },
   options: {
-    aspectRatio: 1,
+    aspectRatio: 1.33,
     scales: {
       x: { type: "linear", position: "bottom" },
     },
@@ -622,7 +591,7 @@ const chartForceCurves = new Chart(document.getElementById("chart-force-curves")
           },
           label: function (ctx) {
             const chartTable = (ctx.datasetIndex & 1 == 1) ? output.chart.comparison : output.chart.target;
-            return [ctx.dataset.label, `${chartTable.id.innerHTML}: ${ctx.parsed.y.toLocaleString(...extraFormat)}G`];
+            return [ctx.dataset.label, `${chartTable.id.innerHTML}: ${ctx.parsed.y.toLocaleString(...extraFormat)} G`];
           },
         },
       },
@@ -646,137 +615,247 @@ const chartForceCurves = new Chart(document.getElementById("chart-force-curves")
   },
 });
 
-// const chartAngleCurves = new Chart(document.getElementById("chart-angle-curves").getContext("2d"), {
-//   type: "line",
-//   data: {
-//     datasets: [
-//       {
-//         label: "Ang Speed T.",
-//         data: evalCurves.angularSpeed[0],
-//         fill: true,
-//         borderWidth: 2,
-//         borderDash: [6, 6],
-//         pointRadius: 0,
-//         pointHitRadius: 25,
-//         pointBorderWidth: 0,
-//       },
-//       {
-//         label: "Ang Speed C.",
-//         data: evalCurves.angularSpeed[40],
-//         fill: true,
-//         borderWidth: 2,
-//         pointRadius: 0,
-//         pointHitRadius: 25,
-//         pointBorderWidth: 0,
-//       },
-//     ],
-//   },
-//   options:
-//   {
-//     aspectRatio: 1.33,
-//     scales: {
-//       x: { type: "linear", position: "bottom" },
-//     },
-//     plugins: {
-//       legend: {
-//         labels: {
-//           font: {
-//             weight: "bold",
-//             size: 14,
-//           },
-//         },
-//       },
-//       tooltip: {
-//         callbacks: {
-//           title: function (ctx) {
-//             const speed = getSpeeds(ctx[0].parsed.x);
-//             return `Velocity: ${speed.kmh} km/h (${speed.mph} mph)`;
-//           },
-//           label: function (ctx) {
-//             return `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString(...extraFormat)}°/s`;
-//           },
-//         },
-//       },
-//       dragData: {
-//         round: 1,
-//         showTooltip: true,
-//         onDragStart: function (e, element) {
-//           return false;
-//         },
-//         onDrag: function (e, dataset, i, value) {
-//           return false;
-//         },
-//         onDragEnd: function (e, dataset, i, value) {
-//           return false;
-//         },
-//         magnet: {
-//           to: Math.round,
-//         },
-//       },
-//     },
-//   },
-// });
 
-const chartCurvesData = [
+const chartForceCurvesData = [
   {
     baseBoost: chartForceCurves.data.datasets[0],
     hyperBoost: chartForceCurves.data.datasets[2],
     stackBoost: chartForceCurves.data.datasets[4],
-    // angularSpeed: chartAngleCurves.data.datasets[0],
   },
   {
     baseBoost: chartForceCurves.data.datasets[1],
     hyperBoost: chartForceCurves.data.datasets[3],
     stackBoost: chartForceCurves.data.datasets[5],
-    // angularSpeed: chartAngleCurves.data.datasets[1],
   }
 ];
 
-const chartRangesData = [
-  {
-    maxLife: document.getElementById("cell-target-maxlife"),
-    autoHealSpeed: document.getElementById("cell-target-autohealspeed"),
-    heatDecrease: document.getElementById("cell-target-heatdecrease"),
-    heatIncrease: document.getElementById("cell-target-heatincrease"),
-    heatHyperIncrease: document.getElementById("cell-target-heathyperincrease"),
-    heatStackIncrease: document.getElementById("cell-target-heatstackincrease"),
-    baseBoostVelocity: document.getElementById("cell-target-baseboostvelocity"),
-    hyperBoostVelocity: document.getElementById("cell-target-hyperboostvelocity"),
-    stackBoostVelocity: document.getElementById("cell-target-stackboostvelocity"),
-    topSpeed: document.getElementById("cell-target-topspeed"),
-    flightTopSpeed: document.getElementById("cell-target-flighttopspeed"),
-    brakePower: document.getElementById("cell-target-brakepower"),
-    gripBoostMulti: document.getElementById("cell-target-gripboostmulti"),
-    angSpeedBraking: document.getElementById("cell-target-angspeedbraking"),
-    timeToMaxAngSpeedChg: document.getElementById("cell-target-timetomaxangspeed"),
-    gripStrafeMulti: document.getElementById("cell-target-gripstrafemulti"),
-    strafeAccel: document.getElementById("cell-target-strafeaccel"),
-    flightStrafeAccel: document.getElementById("cell-target-flightstrafeaccel"),
+// UE Ranges
+const statRanges = {
+  maxLife: [150, 350],                  // slowestIncrease      - Durability
+  autoHealSpeed: [0.4, 1.0],            // slowestIncrease      - Durability
+  heatDecrease: [0, 19],                // slowestIncrease      - Durability
+  heatIncrease: [38, 55],               // fastIncrease         - Thrust
+  heatHyperIncrease: [0, 32],           // linear(?)            - Thrust
+  topSpeed: [900, 1250],                // eightyTwentyIncrease - Top Speed
+  flightTopSpeed: [750, 1100],          // eightyTwentyIncrease - Top Speed
+  brakePower: [0.12, 0.35],             // slowIncrease         - Stability
+  gripBoostMulti: [0, 0.55],            // linear(?)            - Stability
+  angSpeedBraking: [1.05, 1.3],         // slowestIncrease      - Steer
+  timeToMaxAngSpeedChg: [0.32, 0.12],   // slowIncrease         - Steer
+  gripStrafeMulti: [0.11, 0.32],        // linear(?)            - Strafe
+  strafeAccel: [9, 19],                 // relevantExtremes     - Strafe
+  flightStrafeAccel: [9, 14],           // relevantExtremes     - Strafe
+}
+
+const gravAccel = 9.80665;
+const evalRanges = {
+  maxLife: {
+    name: "Max Life",
+    info: "Modified by Durability.&#013;The amount of life points you have before you explode from too much damage.",
+    type: "durability",
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.maxLife, interps.slowestIncrease, i * scale.toPermille))
   },
+  autoHealSpeed: {
+    name: "Auto Heal Speed",
+    info: "Modified by Durability.&#013;The rate at which you auto heal after 5 seconds of no damage.",
+    type: "durability",
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.autoHealSpeed, interps.slowestIncrease, i * scale.toPermille))
+  },
+  heatDecrease: {
+    name: "Heat Decrease",
+    info: "Modified by Durability.&#013;The rate at which your heat meter cools down; counteracts environmental heating.",
+    type: "durability",
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.heatDecrease, interps.slowestIncrease, i * scale.toPermille))
+  },
+  heatIncrease: {
+    name: "Heat Increase [Boosting]",
+    info: "Modified by Thrust.&#013;The rate at which you gain heat when boosting.",
+    type: "thrust",
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.heatIncrease, interps.linear, i * scale.toPermille))
+  },
+  heatHyperIncrease: {
+    name: "Heat Increase [Hypering]",
+    info: "Modified by Thrust.&#013;The rate at which you gain heat when hyperboosting.",
+    type: "thrust",
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.heatHyperIncrease, interps.linear, i * scale.toPermille))
+  },
+  heatStackIncrease: {},
+  baseBoostVelocity: {
+    name: "Boosting Δv",
+    info: "Modified by Thrust and Top Speed.&#013;The speed your ship ends up at after boosting for 5 seconds at your cruising speed in ideal conditions (no gravity or drag). Integral of the g-force Boosting curve (Δv).",
+    type: "thrust speed",
+    data: Array.from({ length: 41 }, (_, i) => calculateCurveArea(evalCurves.baseBoost[i]) * gravAccel)
+  },
+  hyperBoostVelocity: {
+    name: "Hyperboosting Δv",
+    info: "Modified by Thrust and Top Speed.&#013;The speed your ship ends up at after hyperboosting for 5 seconds (no boosting) at your cruising speed in ideal conditions (no gravity or drag). Integral of the g-force Hyperboosting curve (Δv).",
+    type: "thrust speed",
+    data: Array.from({ length: 41 }, (_, i) => calculateCurveArea(evalCurves.hyperBoost[i]) * gravAccel)
+  },
+  stackBoostVelocity: {
+    name: "Stackboosting Δv",
+    info: "Modified by Thrust and Top Speed.&#013;The speed your ship ends up at after boosting and hyperboosting (stackboosting) for 5 seconds at your cruising speed in ideal conditions (no gravity or drag). Integral of the g-force Stackboosting curve (Δv); AKA your Hyperspeed.",
+    type: "thrust speed",
+    data: Array.from({ length: 41 }, (_, i) => calculateCurveArea(evalCurves.stackBoost[i]) * gravAccel)
+  },
+  topSpeed: {
+    name: "Top Speed",
+    info: "Modified by Top Speed.&#013;Your ship's cruising speed when on track.",
+    type: "speed",
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.topSpeed, interps.eightyTwentyIncrease, i * scale.toPermille))
+  },
+  flightTopSpeed: {
+    name: "Top Speed [Flying]",
+    info: "Modified by Top Speed.&#013;Your ship's cruising speed when flying.",
+    type: "speed",
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.flightTopSpeed, interps.eightyTwentyIncrease, i * scale.toPermille))
+  },
+  brakePower: {
+    name: "Brake Power",
+    info: "Modified by Stability.&#013;How quickly you slow down when holding brake.",
+    type: "stability",
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.brakePower, interps.slowIncrease, i * scale.toPermille))
+  },
+  gripBoostMulti: {
+    name: "Grip Boost Multi",
+    info: "Modified by Stability.&#013;The amount of speed boost applied when your ship is using its grip. Track conditions influence this, and has a peculiar affinity with counter-strafing.",
+    type: "stability",
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.gripBoostMulti, interps.linear, i * scale.toPermille))
+  },
+  angSpeedBraking: {
+    name: "Ang Speed Multi [Braking]",
+    info: "Modified by Steering.&#013;A multiplier of the amount your ship increases in steering (angular speed) when braking; applied immediately.",
+    type: "steer",
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.angSpeedBraking, interps.slowestIncrease, i * scale.toPermille))
+  },
+  timeToMaxAngSpeedChg: {
+    name: "Time to Max Ang Speed",
+    info: "Modified by Steering.&#013;The amount of time it takes to get to your max angular speed when changing direction.",
+    type: "steer",
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.timeToMaxAngSpeedChg, interps.slowIncrease, i * scale.toPermille))
+  },
+  gripStrafeMulti: {
+    name: "Grip Strafe Multi",
+    info: "Modified by Strafe.&#013;The amount you're able to resist grip's influence on lateral movement. Track conditions influence this.",
+    type: "strafe",
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.gripStrafeMulti, interps.linear, i * scale.toPermille))
+  },
+  strafeAccel: {
+    name: "Strafe Accel",
+    info: "Modified by Strafe.&#013;The amount of g-force your ship experiences when strafing. This varies depending on the speed you're at; becoming stronger the faster you're going.",
+    type: "strafe",
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.strafeAccel, interps.relevantExtremes, i * scale.toPermille))
+  },
+  flightStrafeAccel: {
+    name: "Strafe Accel [Flying]",
+    info: "Modified by Strafe.&#013;The amount of g-force your ship experiences when strafing and flying. This varies depending on the speed you're at; becoming stronger the faster you're going.",
+    type: "strafe",
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.flightStrafeAccel, interps.relevantExtremes, i * scale.toPermille))
+  },
+}
+evalRanges.heatStackIncrease = {
+  name: "Heat Increase [Stacking]",
+  info: "Modified by Thrust.&#013;The rate at which you gain heat when boosting and hyperboosting (stackboosting).",
+  type: "thrust",
+  data: Array.from({ length: 41 }, (_, i) => evalRanges.heatIncrease.data[i] + evalRanges.heatHyperIncrease.data[i])
+};
+
+const chartInterpCurves = new Chart(document.getElementById("chart-interp-curves").getContext("2d"), {
+  type: "line",
+  data: {
+    datasets: []
+  },
+  options:
   {
-    maxLife: document.getElementById("cell-comparison-maxlife"),
-    autoHealSpeed: document.getElementById("cell-comparison-autohealspeed"),
-    heatDecrease: document.getElementById("cell-comparison-heatdecrease"),
-    heatIncrease: document.getElementById("cell-comparison-heatincrease"),
-    heatHyperIncrease: document.getElementById("cell-comparison-heathyperincrease"),
-    heatStackIncrease: document.getElementById("cell-comparison-heatstackincrease"),
-    baseBoostVelocity: document.getElementById("cell-comparison-baseboostvelocity"),
-    hyperBoostVelocity: document.getElementById("cell-comparison-hyperboostvelocity"),
-    stackBoostVelocity: document.getElementById("cell-comparison-stackboostvelocity"),
-    topSpeed: document.getElementById("cell-comparison-topspeed"),
-    flightTopSpeed: document.getElementById("cell-comparison-flighttopspeed"),
-    brakePower: document.getElementById("cell-comparison-brakepower"),
-    gripBoostMulti: document.getElementById("cell-comparison-gripboostmulti"),
-    angSpeedBraking: document.getElementById("cell-comparison-angspeedbraking"),
-    timeToMaxAngSpeedChg: document.getElementById("cell-comparison-timetomaxangspeed"),
-    gripStrafeMulti: document.getElementById("cell-comparison-gripstrafemulti"),
-    strafeAccel: document.getElementById("cell-comparison-strafeaccel"),
-    flightStrafeAccel: document.getElementById("cell-comparison-flightstrafeaccel"),
-  }
-]
+    aspectRatio: 1.33,
+    scales: {
+      x: { type: "linear", position: "bottom" },
+    },
+    plugins: {
+      legend: {
+        display: false,
+        labels: {
+          font: {
+            weight: "bold",
+            size: 14,
+          },
+        },
+      },
+      tooltip: {
+        callbacks: {
+          title: function (ctx) {
+            const speed = getSpeeds(ctx[0].parsed.x);
+            return `Points: ${ctx[0].parsed.x} (${(ctx[0].parsed.x * scale.toPermille).toLocaleString(...chartFormat)})`;
+          },
+          label: function (ctx) {
+            return `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString(...extraFormat)}`;
+          },
+        },
+      },
+      dragData: {
+        round: 1,
+        showTooltip: true,
+        onDragStart: function (e, element) {
+          return false;
+        },
+        onDrag: function (e, dataset, i, value) {
+          return false;
+        },
+        onDragEnd: function (e, dataset, i, value) {
+          return false;
+        },
+        magnet: {
+          to: Math.round,
+        },
+      },
+    },
+  },
+});
+
+let extraHTML = "<tbody>";
+let evalRangesObj = Object.entries(evalRanges);
+let chartRangesData = [{}, {}];
+let i = 0;
+for (const [key, range] of evalRangesObj) {
+  let rowType = "";
+  if (i == 0) rowType = "-header";
+  if (i == evalRangesObj.length - 1) rowType = "-footer";
+  extraHTML += `<tr><td onclick="propertyClick(event, '${range.name}')" title="${range.info + "&#013;&#013;Click this property to see its curve."}" class="cell-info${rowType} ${range.type}">${range.name}</td><td id="cell-target-${key}" class="cell-target${rowType}">-</td><td id="cell-comparison-${key}" class="cell-comparison${rowType}">-</td></tr>`;
+  const curve = {
+    label: range.name,
+    data: Array.from({ length: range.data.length }, (_, i) => {
+      return { x: i, y: range.data[i] };
+    }),
+    fill: true,
+    hidden: true,
+    borderWidth: 2,
+    pointRadius: 0,
+    pointHitRadius: 25,
+    pointBorderWidth: 0,
+  };
+  chartInterpCurves.data.datasets.push(curve);
+  i++;
+}
+output.extra.innerHTML = extraHTML + "</tbody>";
+for (const [key, range] of evalRangesObj) {
+  chartRangesData[0][key] = document.getElementById(`cell-target-${key}`);
+  chartRangesData[1][key] = document.getElementById(`cell-comparison-${key}`);
+}
+
+function propertyClick(e, dataset) {
+  e.preventDefault();
+  e.target.classList.toggle("active");
+  const isVisible = e.target.classList.contains("active");
+  const curve = chartInterpCurves.data.datasets.filter((_dataset) => _dataset.label == dataset);
+  curve[0].hidden = !isVisible;
+  // let showCurves = false;
+  // chartInterpCurves.data.datasets.forEach((_dataset) => { if (!_dataset.hidden) showCurves = true });
+  // document.getElementById("chart-interp-curves").style.display = showCurves ? "block" : "none";
+  chartInterpCurves.update();
+}
 
 function randomizeChartCurvesColors() {
-  const min = 0;
+  const min = 32;
   const max = 192;
   chartForceCurves.data.datasets.forEach((data, i) => {
     const isOdd = (i & 1 == 1);
@@ -785,13 +864,13 @@ function randomizeChartCurvesColors() {
     data.borderColor = color;
     data.backgroundColor = colorA;
   });
-  // chartAngleCurves.data.datasets.forEach((data) => {
-  //   const color = `rgb(${getRandomInt(min, max)}, ${getRandomInt(min, max)}, ${getRandomInt(min, max)})`;
-  //   const colorA = color.replace(/rgb/i, "rgba").replace(/\)/i, ", 0.15)");
-  //   data.borderColor = color;
-  //   data.backgroundColor = colorA;
-  // });
+  chartInterpCurves.data.datasets.forEach((data) => {
+    const color = `rgb(${getRandomInt(min, 255)}, ${getRandomInt(min, 255)}, ${getRandomInt(min, 255)})`;
+    const colorA = color.replace(/rgb/i, "rgba").replace(/\)/i, ", 0.15)");
+    data.borderColor = color;
+    data.backgroundColor = colorA;
+  });
   chartForceCurves.update();
-  // chartAngleCurves.update();
+  chartInterpCurves.update();
 }
 randomizeChartCurvesColors();

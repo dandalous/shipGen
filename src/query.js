@@ -80,7 +80,7 @@ async function querySubmit(e, quickSearch = false) {
     query.parts[4] = getRange(getRandomInt(0, redoutDB.parts[4].details.length - 1), getRandomInt(0, redoutDB.parts[4].details.length - 1));
     query.parts[5] = getRange(getRandomInt(0, redoutDB.parts[5].details.length - 1), getRandomInt(0, redoutDB.parts[5].details.length - 1));
     query.stats = [getRandomInt(1, 40), getRandomInt(1, 40), getRandomInt(1, 40), getRandomInt(1, 40), getRandomInt(1, 40), getRandomInt(1, 40)];
-    query.power = [175, 1150];
+    query.power = [175, 1225];
     quickSearch = true;
   }
   // Possible Ratio code
@@ -129,7 +129,7 @@ async function querySubmit(e, quickSearch = false) {
               query.parts[i] = [partCode.indexOf(idChar)];
             }
           });
-          query.power = [175, 1150];
+          query.power = [175, 1225];
           break;
         default:
           // Possible cheat code
@@ -138,7 +138,7 @@ async function querySubmit(e, quickSearch = false) {
             let cheat = cheats[0];
             if (cheat.gliders.length != 0) query.gliders = cheat.gliders;
             query.parts = cheat.parts;
-            query.power = [175, 1150];
+            query.power = [175, 1225];
           }
           break;
       }
@@ -415,8 +415,8 @@ function parseResults(candidates, query) {
       }
       // Delta tooltips
       let delta = stat - query.stats[i];
-      let deltaPercentage = (delta / 40).toLocaleString(...deltaFormat);
-      let statPercentage = (stat * scale.toPercentage).toLocaleString(...statFormat);
+      let deltaPercentage = (delta * scale.toPermille).toLocaleString(...deltaFormat);
+      let statPercentage = (stat * scale.toPercent).toLocaleString(...statFormat);
       html += `<td class='results-cell-bottom ${cellType}' title='${statType[i]}: ${stat} (${statPercentage}%)\nStat delta: ${delta} (${deltaPercentage})\nTotal delta: ${candidate.delta}'>${input.option.percentageScale.checked ? statPercentage : stat}</td>`;
     });
     html += `</tr>`;

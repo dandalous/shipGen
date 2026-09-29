@@ -92,7 +92,7 @@ const chartRadar = new Chart(document.getElementById("chart-radar").getContext("
             let label = `${chartTable.id.innerHTML}: `;
             if (ctx.parsed.r !== null) {
               const stat = Math.round(ctx.parsed.r);
-              label += `${stat} (${(stat / 40).toLocaleString(...chartFormat)})`;
+              label += `${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
             }
             return label;
           },
@@ -127,7 +127,7 @@ const chartRadar = new Chart(document.getElementById("chart-radar").getContext("
         beginAtZero: true,
         ticks: {
           callback: function (value, i, ticks) {
-            return input.option.percentageScale.checked ? ((value * 100) / 40).toLocaleString(...statFormat) : value.toLocaleString(...statFormat);
+            return input.option.percentageScale.checked ? ((value * 100) * scale.toPermille).toLocaleString(...statFormat) : value.toLocaleString(...statFormat);
           },
           // display: false,
           display: !window.mobileCheck(),
@@ -168,7 +168,7 @@ const chartBars = new Chart(document.getElementById("chart-bars").getContext("2d
         beginAtZero: true,
         ticks: {
           callback: function (value, i, ticks) {
-            return input.option.percentageScale.checked ? ((value * 100) / 40).toLocaleString(...statFormat) : value.toLocaleString(...statFormat);
+            return input.option.percentageScale.checked ? ((value * 100) * scale.toPermille).toLocaleString(...statFormat) : value.toLocaleString(...statFormat);
           },
           display: !window.mobileCheck(),
           stepSize: 40 / 7,
@@ -210,7 +210,7 @@ const chartBars = new Chart(document.getElementById("chart-bars").getContext("2d
             let label = `${chartTable.id.innerHTML}: `;
             if (ctx.parsed.x !== null) {
               const stat = Math.round(ctx.parsed.x);
-              label += `${stat} (${(stat / 40).toLocaleString(...chartFormat)})`;
+              label += `${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
             }
             return label;
           },

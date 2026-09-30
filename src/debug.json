@@ -326,16 +326,16 @@
           "name": "Signature Sulha*",
           "code": "PSSU*",
           "desc": "The embodiment of Sulha's philosophy of going fast, avoiding walls, and overheating easily.",
-          "power": 272,
-          "stats": [ -7, 6, 24, 0, 0, -4 ],
+          "power": 275,
+          "stats": [ -6, 5, 24, 0, 0, -3 ],
           "class": "X"
         },
         {
           "name": "Signature Mantis*",
           "code": "PSMA*",
           "desc": "The custom Mantis Propulsor provides the most balanced Propulsor of its class.",
-          "power": 273,
-          "stats": [ -2, 12, 17, 0, 0, -7 ],
+          "power": 276,
+          "stats": [ -1, 10, 17, 0, 0, -4 ],
           "class": "X"
         },
         {
@@ -350,8 +350,8 @@
           "name": "Signature Conqueror*",
           "code": "PSCO*",
           "desc": "An all or nothing Propulsor by Conqueror. Lots of Thrust is for chumps!",
-          "power": 273,
-          "stats": [ -4, 2, 25, 0, 0, -3 ],
+          "power": 276,
+          "stats": [ -3, 2, 25, 0, 0, -4 ],
           "class": "X"
         }
       ]
@@ -608,32 +608,32 @@
           "name": "Signature Wallace*",
           "code": "RSWR*",
           "desc": "By sacrificing Durability, WRC pulls the ultimate Steering & Strafing power out of their Rudder.",
-          "power": 143,
-          "stats": [ -5, 0, 0, -2, 23, 11 ],
+          "power": 148,
+          "stats": [ -5, 0, 0, -1, 23, 11 ],
           "class": "X"
         },
         {
           "name": "Signature Lunare*",
           "code": "RSLU*",
           "desc": "The Lunare Rudder strives for the best Steer/Strafe stats while sacrificing as little as possible.",
-          "power": 141,
-          "stats": [ -3, 0, 0, 0, 20, 9 ],
+          "power": 149,
+          "stats": [ -2, 0, 0, 0, 20, 9 ],
           "class": "X"
         },
         {
           "name": "Signature Behemoth*",
           "code": "RSBE*",
           "desc": "Behemoth's answer to ESA's Rudder. No strafing power, but less stat sacrifice overall.",
-          "power": 140,
-          "stats": [ -1, 0, 0, -2, 23, 4 ],
+          "power": 145,
+          "stats": [ -1, 0, 0, -1, 23, 4 ],
           "class": "X"
         },
         {
           "name": "Signature ESA-AGR*",
           "code": "RSES*",
           "desc": "ESA-AGR again strives for best stat balance distribution, but had to sacrifice Stability.",
-          "power": 142,
-          "stats": [ 0, 0, 0, -3, 17, 11 ],
+          "power": 147,
+          "stats": [ 0, 0, 0, -2, 17, 11 ],
           "class": "X"
         }
       ]
@@ -733,8 +733,8 @@
           "name": "Signature Koeniggswerth*",
           "code": "HSKO*",
           "desc": "Complete protection as expected from the armor pioneers at Koeniggswerth!",
-          "power": 182,
-          "stats": [ 22, 0, 2, 0, -3, 0 ],
+          "power": 170,
+          "stats": [ 22, 0, 1, 0, -3, 0 ],
           "class": "X"
         },
         {
@@ -999,32 +999,32 @@
           "name": "Signature Lunare*",
           "code": "ESLU*",
           "desc": "Lunare made minimal stat sacrifices to get this mix of Stability/Strafing power.",
-          "power": 97,
-          "stats": [ -2, 0, -1, 7, 0, 18 ],
+          "power": 102,
+          "stats": [ -2, 0, -1, 7, 0, 19 ],
           "class": "X"
         },
         {
           "name": "Signature Koeniggswerth*",
           "code": "ESKO*",
           "desc": "No Durability compromise. Top Speed takes a hit, other stats remain strong. A competitive package.",
-          "power": 94,
-          "stats": [ 0, 0, -3, 6, 0, 20 ],
+          "power": 104,
+          "stats": [ 0, 0, -3, 6, 0, 22 ],
           "class": "X"
         },
         {
           "name": "Signature Mantis*",
           "code": "ESMA*",
           "desc": "A minimal sacrifice of Top Speed to maximize everything else. That was Mantis's vision.",
-          "power": 98,
-          "stats": [ -5, 0, -1, 10, 0, 20 ],
+          "power": 103,
+          "stats": [ -5, 0, -1, 10, 0, 21 ],
           "class": "X"
         },
         {
           "name": "Signature Asera*",
           "code": "ESAS*",
           "desc": "Maximized Strafing & Stability while balancing out the disadvantages.",
-          "power": 95,
-          "stats": [ -3, 0, -3, 10, 0, 21 ],
+          "power": 100,
+          "stats": [ -3, 0, -3, 10, 0, 22 ],
           "class": "X"
         }
       ]

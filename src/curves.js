@@ -874,3 +874,8 @@ function randomizeChartCurvesColors() {
   chartInterpCurves.update();
 }
 randomizeChartCurvesColors();
+
+console.log(calculateCurveArea(curves.turbo) * gravAccel * scale.toKmh);
+console.log(calculateCurveArea(curves.turbo) * gravAccel * scale.toKmh * 2);
+console.log(10 * gravAccel * scale.toKmh);
+console.log(3 * gravAccel * scale.toKmh);

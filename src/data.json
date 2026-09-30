@@ -1,135 +1,135 @@
 {
-  "weights": [8, 10, 12, 5, 6, 5],
+  "weights": [ 8, 10, 12, 5, 6, 5 ],
   "cheatcodes": [
     {
-      "code": ["BASE"],
-      "gliders": [],
-      "parts": [[0], [0], [0], [0], [0], [0]]
+      "code": [ "BASE" ],
+      "gliders": [ ],
+      "parts": [ [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 0 ] ]
     },
     {
-      "code": ["META"],
-      "gliders": [],
-      "parts": [[13], [12, 13, 14, 16], [10, 11, 12], [11, 12], [8, 12, 13], [9, 10, 11, 12, 15, 16]]
+      "code": [ "META" ],
+      "gliders": [ ],
+      "parts": [ [ 13 ], [ 12, 13, 14, 16 ], [ 10, 11, 12 ], [ 11, 12 ], [ 8, 12, 13 ], [ 9, 10, 11, 12, 15, 16 ] ]
     },
     {
-      "code": ["KOKO"],
-      "gliders": [],
-      "parts": [[13], [12, 13, 14, 16], [10, 11, 12], [11, 12], [13], [9, 10, 11, 12, 15, 16]]
+      "code": [ "KOKO" ],
+      "gliders": [ ],
+      "parts": [ [ 13 ], [ 12, 13, 14, 16 ], [ 10, 11, 12 ], [ 11, 12 ], [ 13 ], [ 9, 10, 11, 12, 15, 16 ] ]
     },
     {
-      "code": ["ROKI", "STANDARD"],
-      "gliders": [3],
-      "parts": [[13], [16], [12], [11], [12], [10, 11]]
+      "code": [ "ROKI", "STANDARD" ],
+      "gliders": [ 3 ],
+      "parts": [ [ 13 ], [ 16 ], [ 12 ], [ 11 ], [ 12 ], [ 10, 11 ] ]
     },
     {
-      "code": ["SWEATIKETI"],
-      "gliders": [0],
-      "parts": [[13], [16], [11], [11], [13], [10]]
+      "code": [ "SWEATIKETI" ],
+      "gliders": [ 0 ],
+      "parts": [ [ 13 ], [ 16 ], [ 11 ], [ 11 ], [ 13 ], [ 10 ] ]
     },
     {
-      "code": ["FUNINUMBR"],
-      "gliders": [6],
-      "parts": [[13], [16], [11], [11], [12], [12]]
+      "code": [ "FUNINUMBR" ],
+      "gliders": [ 6 ],
+      "parts": [ [ 13 ], [ 16 ], [ 11 ], [ 11 ], [ 12 ], [ 12 ] ]
     },
     {
-      "code": ["PRETHRUST"],
-      "gliders": [9],
-      "parts": [[9], [16], [12], [13], [6, 8], [10, 16]]
+      "code": [ "PRETHRUST" ],
+      "gliders": [ 9 ],
+      "parts": [ [ 9 ], [ 16 ], [ 12 ], [ 13 ], [ 6, 8 ], [ 10, 16 ] ]
     },
     {
-      "code": ["GOTTAGOPOO"],
-      "gliders": [3],
-      "parts": [[12], [10], [10], [8], [14], [10]]
+      "code": [ "GOTTAGOPOO" ],
+      "gliders": [ 3 ],
+      "parts": [ [ 12 ], [ 10 ], [ 10 ], [ 8 ], [ 14 ], [ 10 ] ]
     },
     {
-      "code": ["BRICKEDOUT"],
-      "gliders": [1],
-      "parts": [[13], [0], [0], [5], [9], [0]]
+      "code": [ "BRICKEDOUT" ],
+      "gliders": [ 1 ],
+      "parts": [ [ 13 ], [ 0 ], [ 0 ], [ 5 ], [ 9 ], [ 0 ] ]
     },
     {
-      "code": ["GLORYDAYS"],
-      "gliders": [0, 6, 9, 11],
-      "parts": [[11], [0], [12], [14], [12], [12]]
+      "code": [ "GLORYDAYS" ],
+      "gliders": [ 0, 6, 9, 11 ],
+      "parts": [ [ 11 ], [ 0 ], [ 12 ], [ 14 ], [ 12 ], [ 12 ] ]
     },
     {
-      "code": ["MITSUBISHI"],
-      "gliders": [5],
-      "parts": [[6], [4], [15], [13], [8], [1]]
+      "code": [ "MITSUBISHI" ],
+      "gliders": [ 5 ],
+      "parts": [ [ 6 ], [ 4 ], [ 15 ], [ 13 ], [ 8 ], [ 1 ] ]
     },
     {
-      "code": ["CHEVRON"],
-      "gliders": [2], 
-      "parts": [[13], [11], [11], [0], [7], [14]]
+      "code": [ "CHEVRON" ],
+      "gliders": [ 2 ],
+      "parts": [ [ 13 ], [ 11 ], [ 11 ], [ 0 ], [ 7 ], [ 14 ] ]
     },
     {
-      "code": ["NOMANSKY"],
-      "gliders": [11], 
-      "parts": [[0], [6], [0], [3], [0], [2]]
+      "code": [ "NOMANSKY" ],
+      "gliders": [ 11 ],
+      "parts": [ [ 0 ], [ 6 ], [ 0 ], [ 3 ], [ 0 ], [ 2 ] ]
     },
     {
-      "code": ["1000POINTS"],
-      "gliders": [4],
-      "parts": [[14], [12], [11], [14], [6], [10]]
+      "code": [ "1000POINTS" ],
+      "gliders": [ 4 ],
+      "parts": [ [ 14 ], [ 12 ], [ 11 ], [ 14 ], [ 6 ], [ 10 ] ]
     },
     {
-      "code": ["SIGLUNARE"],
-      "gliders": [0],
-      "parts": [[13], [11], [15], [12], [8], [14]]
+      "code": [ "SIGLUNARE" ],
+      "gliders": [ 0 ],
+      "parts": [ [ 13 ], [ 11 ], [ 15 ], [ 12 ], [ 8 ], [ 14 ] ]
     },
     {
-      "code": ["SIGCONQ"],
-      "gliders": [1],
-      "parts": [[14], [16], [10], [13], [11], [12]]
+      "code": [ "SIGCONQ" ],
+      "gliders": [ 1 ],
+      "parts": [ [ 14 ], [ 16 ], [ 10 ], [ 13 ], [ 11 ], [ 12 ] ]
     },
     {
-      "code": ["SIGHELIX"],
-      "gliders": [2],
-      "parts": [[13], [14], [12], [13], [13], [14]]
+      "code": [ "SIGHELIX" ],
+      "gliders": [ 2 ],
+      "parts": [ [ 13 ], [ 14 ], [ 12 ], [ 13 ], [ 13 ], [ 14 ] ]
     },
     {
-      "code": ["SIGASERA"],
-      "gliders": [3],
-      "parts": [[13], [12], [10], [12], [11], [13]]
+      "code": [ "SIGASERA" ],
+      "gliders": [ 3 ],
+      "parts": [ [ 13 ], [ 12 ], [ 10 ], [ 12 ], [ 11 ], [ 13 ] ]
     },
     {
-      "code": ["SIGESAAGR"],
-      "gliders": [4],
-      "parts": [[13], [13], [10], [10], [12], [12]]
+      "code": [ "SIGESAAGR" ],
+      "gliders": [ 4 ],
+      "parts": [ [ 13 ], [ 13 ], [ 10 ], [ 10 ], [ 12 ], [ 12 ] ]
     },
     {
-      "code": ["SIGWALLACE"],
-      "gliders": [5],
-      "parts": [[11], [14], [12], [10], [12], [12]]
+      "code": [ "SIGWALLACE" ],
+      "gliders": [ 5 ],
+      "parts": [ [ 11 ], [ 14 ], [ 12 ], [ 10 ], [ 12 ], [ 12 ] ]
     },
     {
-      "code": ["SIGSULHA"],
-      "gliders": [6],
-      "parts": [[13], [11], [10], [13], [13], [10]]
+      "code": [ "SIGSULHA" ],
+      "gliders": [ 6 ],
+      "parts": [ [ 13 ], [ 11 ], [ 10 ], [ 13 ], [ 13 ], [ 10 ] ]
     },
     {
-      "code": ["SIGMANTIS"],
-      "gliders": [7],
-      "parts": [[13], [14], [15], [12], [13], [14]]
+      "code": [ "SIGMANTIS" ],
+      "gliders": [ 7 ],
+      "parts": [ [ 13 ], [ 14 ], [ 15 ], [ 12 ], [ 13 ], [ 14 ] ]
     },
     {
-      "code": ["SIGAKHAL"],
-      "gliders": [8],
-      "parts": [[13], [12], [12], [12], [8], [14]]
+      "code": [ "SIGAKHAL" ],
+      "gliders": [ 8 ],
+      "parts": [ [ 13 ], [ 12 ], [ 12 ], [ 12 ], [ 8 ], [ 14 ] ]
     },
     {
-      "code": ["SIGKOEN"],
-      "gliders": [9],
-      "parts": [[13], [14], [16], [11], [8], [16]]
+      "code": [ "SIGKOEN" ],
+      "gliders": [ 9 ],
+      "parts": [ [ 13 ], [ 14 ], [ 16 ], [ 11 ], [ 8 ], [ 16 ] ]
     },
     {
-      "code": ["SIGBMOTH"],
-      "gliders": [10],
-      "parts": [[9], [14], [10], [12], [11], [10]]
+      "code": [ "SIGBMOTH" ],
+      "gliders": [ 10 ],
+      "parts": [ [ 9 ], [ 14 ], [ 10 ], [ 12 ], [ 11 ], [ 10 ] ]
     },
     {
-      "code": ["SIGBURAN"],
-      "gliders": [11],
-      "parts": [[13], [16], [10], [11], [13], [11]]
+      "code": [ "SIGBURAN" ],
+      "gliders": [ 11 ],
+      "parts": [ [ 13 ], [ 16 ], [ 10 ], [ 11 ], [ 13 ], [ 11 ] ]
     }
   ],
   "gliders": [
@@ -139,7 +139,7 @@
       "code": "LUN",
       "desc": "A sporty platform with excellent performance for building a strong Engine.",
       "power": 184,
-      "stats": [2, 3, 5, 3, 8, 3]
+      "stats": [ 2, 3, 5, 3, 8, 3 ]
     },
     {
       "name": "Conqueror",
@@ -147,7 +147,7 @@
       "code": "CNQ",
       "desc": "Raw power and strong strafing. A stubborn-handling ship that can take a hit.",
       "power": 186,
-      "stats": [4, 3, 7, 1, 0, 7]
+      "stats": [ 4, 3, 7, 1, 0, 7 ]
     },
     {
       "name": "Helix",
@@ -155,7 +155,7 @@
       "code": "HEL",
       "desc": "A competitive engine package with solid driveability.",
       "power": 182,
-      "stats": [3, 5, 5, 4, 3, 2]
+      "stats": [ 3, 5, 5, 4, 3, 2 ]
     },
     {
       "name": "Asera",
@@ -163,7 +163,7 @@
       "code": "ASE",
       "desc": "'I AM AN ALIEN'. Asera ships boost like no other.",
       "power": 185,
-      "stats": [5, 8, 2, 3, 1, 4]
+      "stats": [ 5, 8, 2, 3, 1, 4 ]
     },
     {
       "name": "ESA-AGR",
@@ -171,7 +171,7 @@
       "code": "ESA",
       "desc": "It's all about balance. A true jack of all trades.",
       "power": 184,
-      "stats": [4, 4, 4, 4, 4, 4]
+      "stats": [ 4, 4, 4, 4, 4, 4 ]
     },
     {
       "name": "Wallace-RG",
@@ -179,7 +179,7 @@
       "code": "WRG",
       "desc": "A thoroughbred racing machine at its core, WALLACE-RG ships handle like no other.",
       "power": 183,
-      "stats": [4, 2, 4, 4, 8, 3]
+      "stats": [ 4, 2, 4, 4, 8, 3 ]
     },
     {
       "name": "Sulha",
@@ -187,7 +187,7 @@
       "code": "SUL",
       "desc": "Fearsome engine capabilities and a bare-bones chassis. A true glass cannon.",
       "power": 185,
-      "stats": [1, 6, 8, 1, 1, 2]
+      "stats": [ 1, 6, 8, 1, 1, 2 ]
     },
     {
       "name": "Mantis",
@@ -195,7 +195,7 @@
       "code": "MAN",
       "desc": "A mean engine that stays agile but has subpar durability.",
       "power": 183,
-      "stats": [2, 7, 4, 3, 4, 2]
+      "stats": [ 2, 7, 4, 3, 4, 2 ]
     },
     {
       "name": "Akhal-Tech",
@@ -203,7 +203,7 @@
       "code": "AKT",
       "desc": "A fragile but stable ship that sure goes fast!",
       "power": 184,
-      "stats": [0, 2, 8, 8, 3, 2]
+      "stats": [ 0, 2, 8, 8, 3, 2 ]
     },
     {
       "name": "Koeniggswerth",
@@ -211,7 +211,7 @@
       "code": "KGW",
       "desc": "The OG masters of the tank, a really stable platform.",
       "power": 186,
-      "stats": [6, 2, 2, 8, 4, 6]
+      "stats": [ 6, 2, 2, 8, 4, 6 ]
     },
     {
       "name": "Behemoth",
@@ -219,7 +219,7 @@
       "code": "BEH",
       "desc": "The tank among tanks, made on Io to weather any condition.",
       "power": 186,
-      "stats": [8, 4, 3, 1, 1, 7]
+      "stats": [ 8, 4, 3, 1, 1, 7 ]
     },
     {
       "name": "Buran",
@@ -227,7 +227,7 @@
       "code": "BRN",
       "desc": "Sturdy, with strong Thrust, and rapid up-to-speed times, but low in driveability.",
       "power": 185,
-      "stats": [8, 6, 2, 2, 2, 3]
+      "stats": [ 8, 6, 2, 2, 2, 3 ]
     }
   ],
   "parts": [
@@ -239,7 +239,7 @@
           "code": "OCT",
           "desc": "Upgrading your Propulsor will increase your maximum speed while also boosting power and acceleration.",
           "power": 0,
-          "stats": [0, 0, 0, 0, 0, 0],
+          "stats": [ 0, 0, 0, 0, 0, 0 ],
           "class": "C"
         },
         {
@@ -247,7 +247,7 @@
           "code": "8-TA",
           "desc": "The OCTONIC 8-TA, the step-in Propulsor model.",
           "power": 24,
-          "stats": [0, 0, 2, 0, 0, 0],
+          "stats": [ 0, 0, 2, 0, 0, 0 ],
           "class": "B"
         },
         {
@@ -255,7 +255,7 @@
           "code": "IDV1",
           "desc": "Icaro prefers to go all-in on Top Speed where they can.",
           "power": 48,
-          "stats": [0, 0, 4, 0, 0, 0],
+          "stats": [ 0, 0, 4, 0, 0, 0 ],
           "class": "B"
         },
         {
@@ -263,7 +263,7 @@
           "code": "F460",
           "desc": "Ferox Propulsors grant not only Top Speed, but also acceleration and Boost power.",
           "power": 66,
-          "stats": [0, 3, 3, 0, 0, 0],
+          "stats": [ 0, 3, 3, 0, 0, 0 ],
           "class": "B"
         },
         {
@@ -271,7 +271,7 @@
           "code": "8-TE",
           "desc": "OCTONIC provides the classic Propulsor experience. Good Top Speed and decent Thrust.",
           "power": 102,
-          "stats": [0, 3, 6, 0, 0, 0],
+          "stats": [ 0, 3, 6, 0, 0, 0 ],
           "class": "A"
         },
         {
@@ -279,7 +279,7 @@
           "code": "IBV1",
           "desc": "The new Breda model from Icaro now provides a minimal Thrust enhancement.",
           "power": 106,
-          "stats": [0, 1, 8, 0, 0, 0],
+          "stats": [ 0, 1, 8, 0, 0, 0 ],
           "class": "A"
         },
         {
@@ -287,7 +287,7 @@
           "code": "IDV2",
           "desc": "The Draper v2 leaves nothing on the table when it comes to Top Speed in A-Class!",
           "power": 144,
-          "stats": [0, 0, 12, 0, 0, 0],
+          "stats": [ 0, 0, 12, 0, 0, 0 ],
           "class": "A"
         },
         {
@@ -295,7 +295,7 @@
           "code": "F570",
           "desc": "The F570 provides the most balanced Propulsor platform in Class A.",
           "power": 148,
-          "stats": [0, 4, 9, 0, 0, 0],
+          "stats": [ 0, 4, 9, 0, 0, 0 ],
           "class": "A"
         },
         {
@@ -303,7 +303,7 @@
           "code": "8-TI",
           "desc": "The 8-TI is the benchmark Class S Propulsor, balanced all-around.",
           "power": 228,
-          "stats": [0, 6, 14, 0, 0, 0],
+          "stats": [ 0, 6, 14, 0, 0, 0 ],
           "class": "S"
         },
         {
@@ -311,7 +311,7 @@
           "code": "IBV2",
           "desc": "Icaro's Breda v2 model is the ultimate Top Speed Propulsor of its class. To the stars and beyond!",
           "power": 226,
-          "stats": [0, 1, 18, 0, 0, 0],
+          "stats": [ 0, 1, 18, 0, 0, 0 ],
           "class": "S"
         },
         {
@@ -319,7 +319,7 @@
           "code": "F690",
           "desc": "Ferox's F690 is their best-balanced Propulsor, maximizing both ship stats!",
           "power": 224,
-          "stats": [0, 8, 12, 0, 0, 0],
+          "stats": [ 0, 8, 12, 0, 0, 0 ],
           "class": "S"
         },
         {
@@ -327,7 +327,7 @@
           "code": "PSSU",
           "desc": "The embodiment of Sulha's philosophy of going fast, avoiding walls, and overheating easily.",
           "power": 237,
-          "stats": [-6, 5, 20, 0, 0, -1],
+          "stats": [ -6, 5, 20, 0, 0, -1 ],
           "class": "X"
         },
         {
@@ -335,7 +335,7 @@
           "code": "PSBU",
           "desc": "The custom Mantis Propulsor provides the most balanced Propulsor of its class.",
           "power": 237,
-          "stats": [-1, 10, 14, 0, 0, -7],
+          "stats": [ -1, 10, 14, 0, 0, -7 ],
           "class": "X"
         },
         {
@@ -343,7 +343,7 @@
           "code": "PSLN",
           "desc": "Fragile and light, but with mighty Top Speed & Thrust bite. A-la Lunare glass cannon.",
           "power": 238,
-          "stats": [-5, 8, 22, 0, 0, -6],
+          "stats": [ -5, 8, 22, 0, 0, -6 ],
           "class": "X"
         },
         {
@@ -351,7 +351,7 @@
           "code": "PSCO",
           "desc": "An all or nothing Propulsor by Conqueror. Lots of Thrust is for chumps!",
           "power": 237,
-          "stats": [-4, 2, 22, 0, 0, -3],
+          "stats": [ -4, 2, 22, 0, 0, -3 ],
           "class": "X"
         }
       ]
@@ -364,7 +364,7 @@
           "code": "MGA",
           "desc": "Stabilizers increase steering and magnetic grip.",
           "power": 0,
-          "stats": [0, 0, 0, 0, 0, 0],
+          "stats": [ 0, 0, 0, 0, 0, 0 ],
           "class": "C"
         },
         {
@@ -372,7 +372,7 @@
           "code": "AL55",
           "desc": "Stability means grip, and you'll find the pinnacle of Stability in Magna products.",
           "power": 10,
-          "stats": [0, 0, 0, 2, 0, 0],
+          "stats": [ 0, 0, 0, 2, 0, 0 ],
           "class": "B"
         },
         {
@@ -380,7 +380,7 @@
           "code": "BE55",
           "desc": "The Beta55, a tuned version of Alfa55. Provides twice the grip.",
           "power": 20,
-          "stats": [0, 0, 0, 4, 0, 0],
+          "stats": [ 0, 0, 0, 4, 0, 0 ],
           "class": "B"
         },
         {
@@ -388,7 +388,7 @@
           "code": "ALTO",
           "desc": "The best balance of Stability & Steering can be found in Airbender products.",
           "power": 22,
-          "stats": [0, 0, 0, 2, 2, 0],
+          "stats": [ 0, 0, 0, 2, 2, 0 ],
           "class": "B"
         },
         {
@@ -396,7 +396,7 @@
           "code": "RIGL",
           "desc": "Orion Stabilizers are the benchmark Stabilizers. Good grip without sacrificing much Steering.",
           "power": 32,
-          "stats": [0, 0, 0, 4, 2, 0],
+          "stats": [ 0, 0, 0, 4, 2, 0 ],
           "class": "B"
         },
         {
@@ -404,7 +404,7 @@
           "code": "CIRR",
           "desc": "The Cirrus is the step-in Class A Stabilizer model. A definite upgrade from everything Class B.",
           "power": 54,
-          "stats": [0, 0, 0, 6, 4, 0],
+          "stats": [ 0, 0, 0, 6, 4, 0 ],
           "class": "A"
         },
         {
@@ -412,7 +412,7 @@
           "code": "BLLX",
           "desc": "The Orion Bellatrix is Orion's benchmark Class A Stabilizer. Solid performance in both stats.",
           "power": 52,
-          "stats": [0, 0, 0, 8, 2, 0],
+          "stats": [ 0, 0, 0, 8, 2, 0 ],
           "class": "A"
         },
         {
@@ -420,7 +420,7 @@
           "code": "GA60",
           "desc": "With the Gamma60, Magna provides the ultimate grip in its class.",
           "power": 60,
-          "stats": [0, 0, 0, 12, 0, 0],
+          "stats": [ 0, 0, 0, 12, 0, 0 ],
           "class": "A"
         },
         {
@@ -428,7 +428,7 @@
           "code": "MTKA",
           "desc": "The Mintaka is an upgraded version of the Bellatrix. Now with grip that rivals Magna!",
           "power": 62,
-          "stats": [0, 0, 0, 10, 2, 0],
+          "stats": [ 0, 0, 0, 10, 2, 0 ],
           "class": "A"
         },
         {
@@ -436,7 +436,7 @@
           "code": "CUMU",
           "desc": "The Cumulus is an upgraded Cirrus. The fluxcoil design got adjusted to provide a boost in steering.",
           "power": 66,
-          "stats": [0, 0, 0, 6, 6, 0],
+          "stats": [ 0, 0, 0, 6, 6, 0 ],
           "class": "A"
         },
         {
@@ -444,7 +444,7 @@
           "code": "STRM",
           "desc": "The Airbender Storm provides the ultimate balanced between Stability and Steering!",
           "power": 110,
-          "stats": [0, 0, 0, 10, 10, 0],
+          "stats": [ 0, 0, 0, 10, 10, 0 ],
           "class": "S"
         },
         {
@@ -452,7 +452,7 @@
           "code": "BTLG",
           "desc": "The Betelgeuse is Orion's answer to 'perfection.' Great Stability and Steering all in one package!",
           "power": 106,
-          "stats": [0, 0, 0, 14, 6, 0],
+          "stats": [ 0, 0, 0, 14, 6, 0 ],
           "class": "S"
         },
         {
@@ -460,7 +460,7 @@
           "code": "ZE70",
           "desc": "Unparalleled Stability with the pinnacle product from Magna: the Magna Zeta70.",
           "power": 102,
-          "stats": [0, 0, 0, 18, 2, 0],
+          "stats": [ 0, 0, 0, 18, 2, 0 ],
           "class": "S"
         },
         {
@@ -468,7 +468,7 @@
           "code": "SSWR",
           "desc": "All of WRC's ship control knowledge poured into one package. Unparalleled performance.",
           "power": 121,
-          "stats": [0, -2, -2, 21, 10, 0],
+          "stats": [ 0, -2, -2, 21, 10, 0 ],
           "class": "X"
         },
         {
@@ -476,7 +476,7 @@
           "code": "SSHE",
           "desc": "Helix has kept deficits as low as possible. Providing massive performance without much sacrifice.",
           "power": 120,
-          "stats": [0, -1, -1, 20, 7, 0],
+          "stats": [ 0, -1, -1, 20, 7, 0 ],
           "class": "X"
         },
         {
@@ -484,7 +484,7 @@
           "code": "SSES",
           "desc": "'Perfectly balanced, as all things should be.' The mantra ESA-AGR goes by. No exceptions.",
           "power": 122,
-          "stats": [0, 0, -4, 16, 9, 0],
+          "stats": [ 0, 0, -4, 16, 9, 0 ],
           "class": "X"
         },
         {
@@ -492,7 +492,7 @@
           "code": "SSBR",
           "desc": "With this Stabilizer, Buran seeks to offer the best grip without sacrificing Top Speed.",
           "power": 118,
-          "stats": [0, -4, 0, 22, 8, 0],
+          "stats": [ 0, -4, 0, 22, 8, 0 ],
           "class": "X"
         }
       ]
@@ -505,7 +505,7 @@
           "code": "OKS",
           "desc": "Rudders control steering and strafing.",
           "power": 0,
-          "stats": [0, 0, 0, 0, 0, 0],
+          "stats": [ 0, 0, 0, 0, 0, 0 ],
           "class": "C"
         },
         {
@@ -513,7 +513,7 @@
           "code": "CAST",
           "desc": "Airbender's oldest Rudder model. Before Strafe upgrades on Rudders.",
           "power": 18,
-          "stats": [0, 0, 0, 0, 3, 0],
+          "stats": [ 0, 0, 0, 0, 3, 0 ],
           "class": "B"
         },
         {
@@ -521,7 +521,7 @@
           "code": "SVTX",
           "desc": "Nimblelab's Rudders strives to provide the best balance between Steering and Strafing.",
           "power": 23,
-          "stats": [0, 0, 0, 0, 3, 1],
+          "stats": [ 0, 0, 0, 0, 3, 1 ],
           "class": "B"
         },
         {
@@ -529,7 +529,7 @@
           "code": "LVLK",
           "desc": "Plagiarized from Nimblelab's Svelto X? Maybe, but Oikos squeezed out a bit more Steering performance.",
           "power": 29,
-          "stats": [0, 0, 0, 0, 4, 1],
+          "stats": [ 0, 0, 0, 0, 4, 1 ],
           "class": "B"
         },
         {
@@ -537,7 +537,7 @@
           "code": "STRA",
           "desc": "Airbender lives by POWER Steering in their Rudder products. It's Steer or bust.",
           "power": 30,
-          "stats": [0, 0, 0, 0, 5, 0],
+          "stats": [ 0, 0, 0, 0, 5, 0 ],
           "class": "B"
         },
         {
@@ -545,7 +545,7 @@
           "code": "SVTK",
           "desc": "The Svelto K has the perfect stat balance for entering a new classification.",
           "power": 44,
-          "stats": [0, 0, 0, 0, 4, 4],
+          "stats": [ 0, 0, 0, 0, 4, 4 ],
           "class": "A"
         },
         {
@@ -553,7 +553,7 @@
           "code": "DRWN",
           "desc": "A supercharged Class-B Lovelock. Steering power is almost doubled, good enough for Class-A.",
           "power": 47,
-          "stats": [0, 0, 0, 0, 7, 1],
+          "stats": [ 0, 0, 0, 0, 7, 1 ],
           "class": "A"
         },
         {
@@ -561,7 +561,7 @@
           "code": "NIMB",
           "desc": "Another prime example of Airbenders' commitment to Steering prowess.",
           "power": 54,
-          "stats": [0, 0, 0, 0, 9, 0],
+          "stats": [ 0, 0, 0, 0, 9, 0 ],
           "class": "A"
         },
         {
@@ -569,7 +569,7 @@
           "code": "HRPR",
           "desc": "Unlike the Nimbus, the Harper has a little bit of Strafe power.",
           "power": 64,
-          "stats": [0, 0, 0, 0, 9, 2],
+          "stats": [ 0, 0, 0, 0, 9, 2 ],
           "class": "A"
         },
         {
@@ -577,7 +577,7 @@
           "code": "TORN",
           "desc": "The Tornado, Airbender's answer to Oikos, has best-in-class Steering.",
           "power": 65,
-          "stats": [0, 0, 0, 0, 10, 1],
+          "stats": [ 0, 0, 0, 0, 10, 1 ],
           "class": "A"
         },
         {
@@ -585,7 +585,7 @@
           "code": "SVLY",
           "desc": "The Svelto Y, Nimblelab's best attempt at merging Steering & Strafing into one.",
           "power": 111,
-          "stats": [0, 0, 0, 0, 11, 9],
+          "stats": [ 0, 0, 0, 0, 11, 9 ],
           "class": "S"
         },
         {
@@ -593,7 +593,7 @@
           "code": "TSLY",
           "desc": "The benchmark Rudder for Class S. Great stat distribution with focus on Steering.",
           "power": 109,
-          "stats": [0, 0, 0, 0, 14, 5],
+          "stats": [ 0, 0, 0, 0, 14, 5 ],
           "class": "S"
         },
         {
@@ -601,7 +601,7 @@
           "code": "HURR",
           "desc": "Nothing is left to chance. Full 'PLUS ULTRA' in the Steering department!",
           "power": 108,
-          "stats": [0, 0, 0, 0, 18, 0],
+          "stats": [ 0, 0, 0, 0, 18, 0 ],
           "class": "S"
         },
         {
@@ -609,7 +609,7 @@
           "code": "RSWR",
           "desc": "By sacrificing Durability, WRC pulls the ultimate Steering & Strafing power out of their Rudder.",
           "power": 119,
-          "stats": [-6, 0, 0, -3, 22, 10],
+          "stats": [ -6, 0, 0, -3, 22, 10 ],
           "class": "X"
         },
         {
@@ -617,7 +617,7 @@
           "code": "RSLU",
           "desc": "The Lunare Rudder strives for the best Steer/Strafe stats while sacrificing as little as possible.",
           "power": 119,
-          "stats": [-3, 0, 0, -1, 18, 8],
+          "stats": [ -3, 0, 0, -1, 18, 8 ],
           "class": "X"
         },
         {
@@ -625,7 +625,7 @@
           "code": "RSBE",
           "desc": "Behemoth's answer to ESA's Rudder. No strafing power, but less stat sacrifice overall.",
           "power": 122,
-          "stats": [-1, 0, 0, -1, 20, 3],
+          "stats": [ -1, 0, 0, -1, 20, 3 ],
           "class": "X"
         },
         {
@@ -633,7 +633,7 @@
           "code": "RSES",
           "desc": "ESA-AGR again strives for best stat balance distribution, but had to sacrifice Stability.",
           "power": 121,
-          "stats": [0, 0, 0, -5, 16, 10],
+          "stats": [ 0, 0, 0, -5, 16, 10 ],
           "class": "X"
         }
       ]
@@ -646,7 +646,7 @@
           "code": "QIQ",
           "desc": "Stronger and lighter Hulls increase max speed, damage resistance, and Heat dissipation.",
           "power": 0,
-          "stats": [0, 0, 0, 0, 0, 0],
+          "stats": [ 0, 0, 0, 0, 0, 0 ],
           "class": "C"
         },
         {
@@ -654,7 +654,7 @@
           "code": "LÌNG",
           "desc": "Durability means impact resistance, but also Heat dissipation, and QiQi know that very well.",
           "power": 16,
-          "stats": [2, 0, 0, 0, 0, 0],
+          "stats": [ 2, 0, 0, 0, 0, 0 ],
           "class": "B"
         },
         {
@@ -662,7 +662,7 @@
           "code": "45P1",
           "desc": "Armoden Hulls provide unparalleled Durability compared to competitors.",
           "power": 32,
-          "stats": [4, 0, 0, 0, 0, 0],
+          "stats": [ 4, 0, 0, 0, 0, 0 ],
           "class": "B"
         },
         {
@@ -670,7 +670,7 @@
           "code": "8-TM",
           "desc": "OCTONIC Hulls focus on attaining the best balance between Top Speed and Durability.",
           "power": 48,
-          "stats": [3, 0, 2, 0, 0, 0],
+          "stats": [ 3, 0, 2, 0, 0, 0 ],
           "class": "B"
         },
         {
@@ -678,7 +678,7 @@
           "code": "YI",
           "desc": "The benchmark Class A Hull provided by QiQi. Good Durability coupled with decent Top Speed power.",
           "power": 72,
-          "stats": [6, 0, 2, 0, 0, 0],
+          "stats": [ 6, 0, 2, 0, 0, 0 ],
           "class": "A"
         },
         {
@@ -686,7 +686,7 @@
           "code": "8-TN",
           "desc": "A perfected 8-TM. The 8-TN has flawless stat balance vs. base model.",
           "power": 80,
-          "stats": [4, 0, 4, 0, 0, 0],
+          "stats": [ 4, 0, 4, 0, 0, 0 ],
           "class": "A"
         },
         {
@@ -694,7 +694,7 @@
           "code": "P4RM",
           "desc": "Looking for the best Durability in its class? Look no further than the P4RM4.",
           "power": 104,
-          "stats": [10, 0, 2, 0, 0, 0],
+          "stats": [ 10, 0, 2, 0, 0, 0 ],
           "class": "A"
         },
         {
@@ -702,7 +702,7 @@
           "code": "ÈR",
           "desc": "The top-shelf Class A Hull by QiQi. Solid Durability coupled with good Top Speed.",
           "power": 112,
-          "stats": [8, 0, 4, 0, 0, 0],
+          "stats": [ 8, 0, 4, 0, 0, 0 ],
           "class": "A"
         },
         {
@@ -710,7 +710,7 @@
           "code": "8-TW",
           "desc": "Lightweight materials and superb aerodynamics give the 8-TW outstanding Top Speed capabilities.",
           "power": 152,
-          "stats": [10, 0, 6, 0, 0, 0],
+          "stats": [ 10, 0, 6, 0, 0, 0 ],
           "class": "S"
         },
         {
@@ -718,7 +718,7 @@
           "code": "SÀN",
           "desc": "QiQi spared nothing to set the bar for Class S Hulls with the Sàn.",
           "power": 156,
-          "stats": [15, 0, 3, 0, 0, 0],
+          "stats": [ 15, 0, 3, 0, 0, 0 ],
           "class": "S"
         },
         {
@@ -726,7 +726,7 @@
           "code": "8UCK",
           "desc": "Putting the 'T' in Tank. When you are afraid of taking damage. Arm yourself with a 8UCKL3R!",
           "power": 156,
-          "stats": [18, 0, 1, 0, 0, 0],
+          "stats": [ 18, 0, 1, 0, 0, 0 ],
           "class": "S"
         },
         {
@@ -734,7 +734,7 @@
           "code": "HSKO",
           "desc": "Complete protection as expected from the armor pioneers at Koeniggswerth!",
           "power": 182,
-          "stats": [22, 0, 0, 0, -3, 0],
+          "stats": [ 22, 0, 0, 0, -3, 0 ],
           "class": "X"
         },
         {
@@ -742,7 +742,7 @@
           "code": "HSAK",
           "desc": "This beauty by AKHAL is the best mid-range Hull in its class.",
           "power": 176,
-          "stats": [17, -2, 8, 0, -6, 0],
+          "stats": [ 17, -2, 8, 0, -6, 0 ],
           "class": "X"
         },
         {
@@ -750,7 +750,7 @@
           "code": "HSBU",
           "desc": "The lightest materials guarantee the best Top Speed. Worst-in-class Durability though.",
           "power": 176,
-          "stats": [15, -4, 10, 0, -4, 0],
+          "stats": [ 15, -4, 10, 0, -4, 0 ],
           "class": "X"
         },
         {
@@ -758,7 +758,7 @@
           "code": "HSBE",
           "desc": "Behemoth is new in the Durability market. They built this Hull as an alternative to Koeniggswerth.",
           "power": 180,
-          "stats": [19, -2, 3, 0, 0, 0],
+          "stats": [ 19, -2, 3, 0, 0, 0 ],
           "class": "X"
         }
       ]
@@ -771,7 +771,7 @@
           "code": "TLC",
           "desc": "Intercoolers dissipate Heat and improve Boost power.",
           "power": 0,
-          "stats": [0, 0, 0, 0, 0, 0],
+          "stats": [ 0, 0, 0, 0, 0, 0 ],
           "class": "C"
         },
         {
@@ -779,7 +779,7 @@
           "code": "F850",
           "desc": "The F850 is the step-in Intercooler model for Class B ships.",
           "power": 20,
-          "stats": [0, 2, 0, 0, 0, 0],
+          "stats": [ 0, 2, 0, 0, 0, 0 ],
           "class": "B"
         },
         {
@@ -787,7 +787,7 @@
           "code": "70W3",
           "desc": "Armoden Intercoolers balance Thrust with good Durability.",
           "power": 36,
-          "stats": [2, 2, 0, 0, 0, 0],
+          "stats": [ 2, 2, 0, 0, 0, 0 ],
           "class": "B"
         },
         {
@@ -795,7 +795,7 @@
           "code": "TLUR",
           "desc": "ThrustLance Intercoolers invest heavily in Thrust. You want pure acceleration? Look no further.",
           "power": 40,
-          "stats": [0, 4, 0, 0, 0, 0],
+          "stats": [ 0, 4, 0, 0, 0, 0 ],
           "class": "B"
         },
         {
@@ -803,7 +803,7 @@
           "code": "TLGA",
           "desc": "The Gabriel sets the bar for the Intercoolers in Class A.",
           "power": 70,
-          "stats": [0, 7, 0, 0, 0, 0],
+          "stats": [ 0, 7, 0, 0, 0, 0 ],
           "class": "A"
         },
         {
@@ -811,7 +811,7 @@
           "code": "F880",
           "desc": "The F880 is the 'new normal' for Class A Intercoolers. Outpacing the older Gabriel model.",
           "power": 96,
-          "stats": [2, 8, 0, 0, 0, 0],
+          "stats": [ 2, 8, 0, 0, 0, 0 ],
           "class": "A"
         },
         {
@@ -819,7 +819,7 @@
           "code": "K33P",
           "desc": "Another case of perfect Intercooler stat balance, achieved by Armoden.",
           "power": 108,
-          "stats": [6, 6, 0, 0, 0, 0],
+          "stats": [ 6, 6, 0, 0, 0, 0 ],
           "class": "A"
         },
         {
@@ -827,7 +827,7 @@
           "code": "F980",
           "desc": "The F980 is the improved F880 model by Ferox. Increasing its Thrust performance.",
           "power": 116,
-          "stats": [2, 10, 0, 0, 0, 0],
+          "stats": [ 2, 10, 0, 0, 0, 0 ],
           "class": "A"
         },
         {
@@ -835,7 +835,7 @@
           "code": "C457",
           "desc": "The C457L3 is as close to perfect stat balance as Armoden could hustle for Class S.",
           "power": 164,
-          "stats": [8, 10, 0, 0, 0, 0],
+          "stats": [ 8, 10, 0, 0, 0, 0 ],
           "class": "S"
         },
         {
@@ -843,7 +843,7 @@
           "code": "TLMI",
           "desc": "Thrust or bust. The ThrustLance Michael.",
           "power": 170,
-          "stats": [0, 17, 0, 0, 0, 0],
+          "stats": [ 0, 17, 0, 0, 0, 0 ],
           "class": "S"
         },
         {
@@ -851,7 +851,7 @@
           "code": "F990",
           "desc": "With the F990, Ferox achieves a masterful balance between great Thrust and good Durability.",
           "power": 168,
-          "stats": [6, 12, 0, 0, 0, 0],
+          "stats": [ 6, 12, 0, 0, 0, 0 ],
           "class": "S"
         },
         {
@@ -859,7 +859,7 @@
           "code": "ISBE",
           "desc": "'A massive kick in the neck when you hit the gas' is Behemoth's tagline for this module.",
           "power": 190,
-          "stats": [10, 20, -8, -6, 0, 0],
+          "stats": [ 10, 20, -8, -6, 0, 0 ],
           "class": "X"
         },
         {
@@ -867,7 +867,7 @@
           "code": "ISES",
           "desc": "ESA has achieved the perfect stat balance with minimal sacrifice. Good for jack-of-all-trades builds.",
           "power": 189,
-          "stats": [7, 15, -1, -1, 0, 0],
+          "stats": [ 7, 15, -1, -1, 0, 0 ],
           "class": "X"
         },
         {
@@ -875,7 +875,7 @@
           "code": "ISKO",
           "desc": "Great Thrust and good Durability with minimal sacrifice. The benchmark intercooler.",
           "power": 189,
-          "stats": [9, 19, -5, -5, 0, 0],
+          "stats": [ 9, 19, -5, -5, 0, 0 ],
           "class": "X"
         },
         {
@@ -883,7 +883,7 @@
           "code": "ISBU",
           "desc": "Buran resorts again to lightweight materials. Achieves great Thrust, but has to let go of Durability.",
           "power": 184,
-          "stats": [2, 22, -1, -8, 0, 0],
+          "stats": [ 2, 22, -1, -8, 0, 0 ],
           "class": "X"
         }
       ]
@@ -896,7 +896,7 @@
           "code": "NBL",
           "desc": "The Electronic Stability Control influences grip and strafing.",
           "power": 0,
-          "stats": [0, 0, 0, 0, 0, 0],
+          "stats": [ 0, 0, 0, 0, 0, 0 ],
           "class": "C"
         },
         {
@@ -904,7 +904,7 @@
           "code": "TENGU",
           "desc": "The Tengu is the baseline E.S.C. module by Gozu.",
           "power": 15,
-          "stats": [0, 0, 0, 1, 0, 2],
+          "stats": [ 0, 0, 0, 1, 0, 2 ],
           "class": "B"
         },
         {
@@ -912,7 +912,7 @@
           "code": "NUE",
           "desc": "The Goza Nue is a slight upgrade over its Tengu predecessor.",
           "power": 20,
-          "stats": [0, 0, 0, 1, 0, 3],
+          "stats": [ 0, 0, 0, 1, 0, 3 ],
           "class": "B"
         },
         {
@@ -920,7 +920,7 @@
           "code": "TH60",
           "desc": "Magna E.S.Cs tend to be quite balanced in their stats. Good for balanced build seekers.",
           "power": 25,
-          "stats": [0, 0, 0, 2, 0, 3],
+          "stats": [ 0, 0, 0, 2, 0, 3 ],
           "class": "B"
         },
         {
@@ -928,7 +928,7 @@
           "code": "AGIZ",
           "desc": "The AgileZ is the first in Nimblelabs quest for total Strafe performance.",
           "power": 30,
-          "stats": [0, 0, 0, 1, 0, 5],
+          "stats": [ 0, 0, 0, 1, 0, 5 ],
           "class": "B"
         },
         {
@@ -936,7 +936,7 @@
           "code": "AGIX",
           "desc": "Nimblelab held nothing back with this class-A E.S.C. Strafing in its purest form.",
           "power": 40,
-          "stats": [0, 0, 0, 0, 0, 8],
+          "stats": [ 0, 0, 0, 0, 0, 8 ],
           "class": "A"
         },
         {
@@ -944,7 +944,7 @@
           "code": "ET61",
           "desc": "The benchmark class-A E.S.C. module by Magna. Provides solid stats on both ends.",
           "power": 40,
-          "stats": [0, 0, 0, 3, 0, 5],
+          "stats": [ 0, 0, 0, 3, 0, 5 ],
           "class": "A"
         },
         {
@@ -952,7 +952,7 @@
           "code": "AGIK",
           "desc": "The AgileK provides ultimate-in-class Strafing prowess, whilst still keeping a pip of Stability!",
           "power": 55,
-          "stats": [0, 0, 0, 1, 0, 10],
+          "stats": [ 0, 0, 0, 1, 0, 10 ],
           "class": "A"
         },
         {
@@ -960,7 +960,7 @@
           "code": "ONI",
           "desc": "A solid alternative to the AgileK. Slightly less Strafing power but more Stability.",
           "power": 55,
-          "stats": [0, 0, 0, 2, 0, 9],
+          "stats": [ 0, 0, 0, 2, 0, 9 ],
           "class": "A"
         },
         {
@@ -968,7 +968,7 @@
           "code": "SG69",
           "desc": "Magna's best class-A work. The Sigma69 combines great Strafing with solid Grip. Nice!",
           "power": 55,
-          "stats": [0, 0, 0, 4, 0, 7],
+          "stats": [ 0, 0, 0, 4, 0, 7 ],
           "class": "A"
         },
         {
@@ -976,7 +976,7 @@
           "code": "PI70",
           "desc": "The Phi70 is a modified Sigma69. Maximized Strafe potential and Stability that's... stable.",
           "power": 80,
-          "stats": [0, 0, 0, 4, 0, 12],
+          "stats": [ 0, 0, 0, 4, 0, 12 ],
           "class": "S"
         },
         {
@@ -984,7 +984,7 @@
           "code": "RYUU",
           "desc": "The ultimate E.S.C. module by Gozu. Maximizes Strafing while holding on to a bit of Stability.",
           "power": 85,
-          "stats": [0, 0, 0, 2, 0, 15],
+          "stats": [ 0, 0, 0, 2, 0, 15 ],
           "class": "S"
         },
         {
@@ -992,7 +992,7 @@
           "code": "AGIY",
           "desc": "Zigzag like a snake. With the AgileY, this won't be a problem!",
           "power": 90,
-          "stats": [0, 0, 0, 0, 0, 18],
+          "stats": [ 0, 0, 0, 0, 0, 18 ],
           "class": "S"
         },
         {
@@ -1000,7 +1000,7 @@
           "code": "ESLU",
           "desc": "Lunare made minimal stat sacrifices to get this mix of Stability/Strafing power.",
           "power": 96,
-          "stats": [-3, 0, -1, 6, 0, 18],
+          "stats": [ -3, 0, -1, 6, 0, 18 ],
           "class": "X"
         },
         {
@@ -1008,7 +1008,7 @@
           "code": "ESKO",
           "desc": "No Durability compromise. Top Speed takes a hit, other stats remain strong. A competitive package.",
           "power": 99,
-          "stats": [0, 0, -4, 5, 0, 22],
+          "stats": [ 0, 0, -4, 5, 0, 22 ],
           "class": "X"
         },
         {
@@ -1016,7 +1016,7 @@
           "code": "ESMA",
           "desc": "A minimal sacrifice of Top Speed to maximize everything else. That was Mantis's vision.",
           "power": 95,
-          "stats": [-6, 0, -1, 10, 0, 21],
+          "stats": [ -6, 0, -1, 10, 0, 21 ],
           "class": "X"
         },
         {
@@ -1024,7 +1024,7 @@
           "code": "ESAS",
           "desc": "Maximized Strafing & Stability while balancing out the disadvantages.",
           "power": 97,
-          "stats": [-3, 0, -3, 10, 0, 19],
+          "stats": [ -3, 0, -3, 10, 0, 19 ],
           "class": "X"
         }
       ]

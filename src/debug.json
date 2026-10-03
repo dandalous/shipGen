@@ -335,7 +335,7 @@
           "code": "PSMA*",
           "desc": "The custom Mantis Propulsor provides the most balanced Propulsor of its class.",
           "power": 276,
-          "stats": [ -1, 10, 17, 0, 0, -4 ],
+          "stats": [ -1, 11, 17, 0, 0, -6 ],
           "class": "X"
         },
         {

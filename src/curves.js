@@ -409,7 +409,7 @@ const interps = {
 };
 
 const curves = {
-  gripBoost: { // linear(?) - Stability(?)
+  gripBoostMultiAddByYawSpeedDeg: { // linear(?) - Stability(?)
     min: parseUECurveToChartJS([
       [false, 0.0, 0.45, 0.0, 0.0, 0.0, 0.0],
       [true, 30.0, 0.45, -0.00012432545, 0.0, -0.00012432545, 0.0],
@@ -421,6 +421,16 @@ const curves = {
       [true, 60.0, 0.45, -0.00012432545, 0.0, -0.00012432545, 0.0],
       [true, 120.0, 0.2, -0.009737371, 0.0, -0.009737371, 0.0],
       [true, 160.0, 0.0, -8.913733e-5, 0.0, -8.912058e-5, 0.0],
+    ]),
+  },
+  gripAccelBySpeed: {
+    min: parseUECurveToChartJS([
+      [true, 0.0, 0.0, 0.04127505, 0.0, 0.04127505, 0.0],
+      [true, 900.0, 40.0, 0.00012405748, 0.0, 0.00012405748, 0.0],
+    ]),
+    max: parseUECurveToChartJS([
+      [true, 0.0, 0.0, 0.0461453, 0.0, 0.0461453, 0.0,],
+      [true, 900.0, 145.0, 0.0, 0.0, 6.9461884, 0.0],
     ]),
   },
   angularSpeed: { // slowIncrease - Steer
@@ -501,7 +511,7 @@ const evalCurves = {
   baseBoost: Array.from({ length: 41 }, (_, i) => blendUECurves(curves.baseBoost.min, curves.baseBoost.max, evaluateUECurve(interps.fastIncrease, i * scale.toPermille))),
   hyperBoost: Array.from({ length: 41 }, (_, i) => blendUECurves(curves.hyperBoost.min, curves.hyperBoost.max, evaluateUECurve(interps.slowStartFastIncrease, i * scale.toPermille))),
   // heatDecreasePerSecBraking: Array.from({ length: 41 }, (_, i) => blendUECurves(curves.heatDecreasePerSecBraking.min, curves.heatDecreasePerSecBraking.max, evaluateUECurve(interps.linear, i * scale.toPermille))),
-  // gripBoost: Array.from({ length: 41 }, (_, i) => blendUECurves(curves.gripBoost.min, curves.gripBoost.max, i * scale.toPermille)),
+  // gripBoostMultiAddYawSpeedDeg: Array.from({ length: 41 }, (_, i) => blendUECurves(curves.gripBoostMultiAddYawSpeedDeg.min, curves.gripBoostMultiAddYawSpeedDeg.max, i * scale.toPermille)),
   // angularSpeed: Array.from({ length: 41 }, (_, i) => blendUECurves(curves.angularSpeed.min, curves.angularSpeed.max, evaluateUECurve(interps.slowIncrease, i * scale.toPermille))),
 };
 evalCurves["stackBoost"] = Array.from({ length: 41 }, (_, i) => combineUECurvesToOne([evalCurves.baseBoost[i], evalCurves.hyperBoost[i]]));
@@ -671,7 +681,7 @@ const evalRanges = {
     name: "Heat Increase [Boosting]",
     info: "Modified by Thrust.&#013;The rate at which you gain heat when boosting.",
     type: "thrust",
-    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.heatIncrease, interps.linear, i * scale.toPermille))
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.heatIncrease, interps.fastIncrease, i * scale.toPermille))
   },
   heatHyperIncrease: {
     name: "Heat Increase [Hypering]",
@@ -874,8 +884,3 @@ function randomizeChartCurvesColors() {
   chartInterpCurves.update();
 }
 randomizeChartCurvesColors();
-
-console.log(calculateCurveArea(curves.turbo) * gravAccel * scale.toKmh);
-console.log(calculateCurveArea(curves.turbo) * gravAccel * scale.toKmh * 2);
-console.log(10 * gravAccel * scale.toKmh);
-console.log(3 * gravAccel * scale.toKmh);

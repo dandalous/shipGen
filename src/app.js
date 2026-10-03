@@ -785,9 +785,9 @@ function updateStatCharts(dataset, data, result = false) {
         chartRangesData[dataset].stackBoostVelocity.innerHTML = `${stackSpeed.kmh.toLocaleString(...extraFormat)} km/h`;
         chartRangesData[dataset].topSpeed.title = `${topSpeed.mph.toLocaleString(...extraFormat)} mph\n\n${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
         chartRangesData[dataset].flightTopSpeed.title = `${flightSpeed.mph.toLocaleString(...extraFormat)} mph\n\n${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
-        chartRangesData[dataset].baseBoostVelocity.title = `${boostSpeed.mph.toLocaleString(...extraFormat)} mph\n\n${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
-        chartRangesData[dataset].hyperBoostVelocity.title = `${hyperSpeed.mph.toLocaleString(...extraFormat)} mph\n\n${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
-        chartRangesData[dataset].stackBoostVelocity.title = `${stackSpeed.mph.toLocaleString(...extraFormat)} mph\n\n${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
+        chartRangesData[dataset].baseBoostVelocity.title = `${boostSpeed.mph.toLocaleString(...extraFormat)} mph\n\n${datasetType[dataset]} ${statType[i - 1]}: ${data[i - 1]} (${(data[i - 1] * scale.toPermille).toLocaleString(...chartFormat)})\n${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
+        chartRangesData[dataset].hyperBoostVelocity.title = `${hyperSpeed.mph.toLocaleString(...extraFormat)} mph\n\n${datasetType[dataset]} ${statType[i - 1]}: ${data[i - 1]} (${(data[i - 1] * scale.toPermille).toLocaleString(...chartFormat)})\n${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
+        chartRangesData[dataset].stackBoostVelocity.title = `${stackSpeed.mph.toLocaleString(...extraFormat)} mph\n\n${datasetType[dataset]} ${statType[i - 1]}: ${data[i - 1]} (${(data[i - 1] * scale.toPermille).toLocaleString(...chartFormat)})\n${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
         break;
       case 3: // Stability
         chartRangesData[dataset].brakePower.innerHTML = evalRanges.brakePower.data[stat].toLocaleString(...extraFormat);

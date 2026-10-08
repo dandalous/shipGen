@@ -751,9 +751,9 @@ function updateStatCharts(dataset, data, result = false) {
     chartTable.stats[i].innerHTML = input.option.percentageScale.checked ? (stat * scale.toPercent).toLocaleString(...statFormat) : stat;
     switch (i) {
       case 0: // Durability
-        chartRangesData[dataset].maxLife.innerHTML = Math.round(evalRanges.maxLife.data[stat]).toLocaleString(...extraFormat);
-        chartRangesData[dataset].autoHealSpeed.innerHTML = evalRanges.autoHealSpeed.data[stat].toLocaleString(...extraFormat);
-        chartRangesData[dataset].heatDecrease.innerHTML = `${evalRanges.heatDecrease.data[stat].toLocaleString(...extraFormat)}/s`;
+        chartRangesData[dataset].maxLife.innerHTML = `${Math.round(evalRanges.maxLife.data[stat]).toLocaleString(...extraFormat)}${evalRanges.maxLife.unit}`;
+        chartRangesData[dataset].autoHealSpeed.innerHTML = `${evalRanges.autoHealSpeed.data[stat].toLocaleString(...extraFormat)}${evalRanges.autoHealSpeed.unit}`;
+        chartRangesData[dataset].heatDecrease.innerHTML = `${evalRanges.heatDecrease.data[stat].toLocaleString(...extraFormat)}${evalRanges.heatDecrease.unit}`;
         chartRangesData[dataset].maxLife.title = `${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
         chartRangesData[dataset].autoHealSpeed.title = `${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
         chartRangesData[dataset].heatDecrease.title = `${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
@@ -765,9 +765,9 @@ function updateStatCharts(dataset, data, result = false) {
         chartForceCurvesData[dataset].baseBoost.data = evalCurves.baseBoost[stat];
         chartForceCurvesData[dataset].hyperBoost.data = evalCurves.hyperBoost[stat];
         chartForceCurvesData[dataset].stackBoost.data = evalCurves.stackBoost[stat];
-        chartRangesData[dataset].heatIncrease.innerHTML = `${evalRanges.heatIncrease.data[stat].toLocaleString(...extraFormat)}/s`;
-        chartRangesData[dataset].heatHyperIncrease.innerHTML = `${evalRanges.heatHyperIncrease.data[stat].toLocaleString(...extraFormat)}/s`;
-        chartRangesData[dataset].heatStackIncrease.innerHTML = `${evalRanges.heatStackIncrease.data[stat].toLocaleString(...extraFormat)}/s`;
+        chartRangesData[dataset].heatIncrease.innerHTML = `${evalRanges.heatIncrease.data[stat].toLocaleString(...extraFormat)}${evalRanges.heatIncrease.unit}`;
+        chartRangesData[dataset].heatHyperIncrease.innerHTML = `${evalRanges.heatHyperIncrease.data[stat].toLocaleString(...extraFormat)}${evalRanges.heatHyperIncrease.unit}`;
+        chartRangesData[dataset].heatStackIncrease.innerHTML = `${evalRanges.heatStackIncrease.data[stat].toLocaleString(...extraFormat)}${evalRanges.heatStackIncrease.unit}`;
         chartRangesData[dataset].heatIncrease.title = `${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
         chartRangesData[dataset].heatHyperIncrease.title = `${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
         chartRangesData[dataset].heatStackIncrease.title = `${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
@@ -778,11 +778,11 @@ function updateStatCharts(dataset, data, result = false) {
         const boostSpeed = getSpeeds(Number(topSpeed.kmh) + (baseBoostVelocity * scale.toKmh))
         const hyperSpeed = getSpeeds(Number(topSpeed.kmh) + (hyperBoostVelocity * scale.toKmh))
         const stackSpeed = getSpeeds(Number(topSpeed.kmh) + (stackBoostVelocity * scale.toKmh))
-        chartRangesData[dataset].topSpeed.innerHTML = `${topSpeed.kmh.toLocaleString(...extraFormat)} km/h`;
-        chartRangesData[dataset].flightTopSpeed.innerHTML = `${flightSpeed.kmh.toLocaleString(...extraFormat)} km/h`;
-        chartRangesData[dataset].baseBoostVelocity.innerHTML = `${boostSpeed.kmh.toLocaleString(...extraFormat)} km/h`;
-        chartRangesData[dataset].hyperBoostVelocity.innerHTML = `${hyperSpeed.kmh.toLocaleString(...extraFormat)} km/h`;
-        chartRangesData[dataset].stackBoostVelocity.innerHTML = `${stackSpeed.kmh.toLocaleString(...extraFormat)} km/h`;
+        chartRangesData[dataset].topSpeed.innerHTML = `${topSpeed.kmh.toLocaleString(...extraFormat)}${evalRanges.topSpeed.unit}`;
+        chartRangesData[dataset].flightTopSpeed.innerHTML = `${flightSpeed.kmh.toLocaleString(...extraFormat)}${evalRanges.flightTopSpeed.unit}`;
+        chartRangesData[dataset].baseBoostVelocity.innerHTML = `${boostSpeed.kmh.toLocaleString(...extraFormat)}${evalRanges.topSpeed.unit}`;
+        chartRangesData[dataset].hyperBoostVelocity.innerHTML = `${hyperSpeed.kmh.toLocaleString(...extraFormat)}${evalRanges.topSpeed.unit}`;
+        chartRangesData[dataset].stackBoostVelocity.innerHTML = `${stackSpeed.kmh.toLocaleString(...extraFormat)}${evalRanges.topSpeed.unit}`;
         chartRangesData[dataset].topSpeed.title = `${topSpeed.mph.toLocaleString(...extraFormat)} mph\n\n${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
         chartRangesData[dataset].flightTopSpeed.title = `${flightSpeed.mph.toLocaleString(...extraFormat)} mph\n\n${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
         chartRangesData[dataset].baseBoostVelocity.title = `${boostSpeed.mph.toLocaleString(...extraFormat)} mph\n\n${datasetType[dataset]} ${statType[i - 1]}: ${data[i - 1]} (${(data[i - 1] * scale.toPermille).toLocaleString(...chartFormat)})\n${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
@@ -790,21 +790,21 @@ function updateStatCharts(dataset, data, result = false) {
         chartRangesData[dataset].stackBoostVelocity.title = `${stackSpeed.mph.toLocaleString(...extraFormat)} mph\n\n${datasetType[dataset]} ${statType[i - 1]}: ${data[i - 1]} (${(data[i - 1] * scale.toPermille).toLocaleString(...chartFormat)})\n${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
         break;
       case 3: // Stability
-        chartRangesData[dataset].brakePower.innerHTML = evalRanges.brakePower.data[stat].toLocaleString(...extraFormat);
-        chartRangesData[dataset].gripBoostMulti.innerHTML = `${evalRanges.gripBoostMulti.data[stat].toLocaleString(...extraFormat)}x`;
+        chartRangesData[dataset].brakePower.innerHTML = `${evalRanges.brakePower.data[stat].toLocaleString(...extraFormat)}${evalRanges.brakePower.unit}`;
+        chartRangesData[dataset].gripBoostMulti.innerHTML = `${evalRanges.gripBoostMulti.data[stat].toLocaleString(...extraFormat)}${evalRanges.gripBoostMulti.unit}`;
         chartRangesData[dataset].brakePower.title = `${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
         chartRangesData[dataset].gripBoostMulti.title = `${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
         break;
       case 4: // Steer
-        chartRangesData[dataset].angSpeedBraking.innerHTML = `${evalRanges.angSpeedBraking.data[stat].toLocaleString(...extraFormat)}x`;
-        chartRangesData[dataset].timeToMaxAngSpeedChg.innerHTML = `${evalRanges.timeToMaxAngSpeedChg.data[stat].toLocaleString(...extraFormat)}s`;
+        chartRangesData[dataset].angSpeedBraking.innerHTML = `${evalRanges.angSpeedBraking.data[stat].toLocaleString(...extraFormat)}${evalRanges.angSpeedBraking.unit}`;
+        chartRangesData[dataset].timeToMaxAngSpeedChg.innerHTML = `${evalRanges.timeToMaxAngSpeedChg.data[stat].toLocaleString(...extraFormat)}${evalRanges.timeToMaxAngSpeedChg.unit}`;
         chartRangesData[dataset].angSpeedBraking.title = `${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
         chartRangesData[dataset].timeToMaxAngSpeedChg.title = `${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
         break;
       case 5: // Strafe
-        chartRangesData[dataset].gripStrafeMulti.innerHTML = `${evalRanges.gripStrafeMulti.data[stat].toLocaleString(...extraFormat)}x`;
-        chartRangesData[dataset].strafeAccel.innerHTML = `${evalRanges.strafeAccel.data[stat].toLocaleString(...extraFormat)} G`;
-        chartRangesData[dataset].flightStrafeAccel.innerHTML = `${evalRanges.flightStrafeAccel.data[stat].toLocaleString(...extraFormat)} G`;
+        chartRangesData[dataset].gripStrafeMulti.innerHTML = `${evalRanges.gripStrafeMulti.data[stat].toLocaleString(...extraFormat)}${evalRanges.gripStrafeMulti.unit}`;
+        chartRangesData[dataset].strafeAccel.innerHTML = `${evalRanges.strafeAccel.data[stat].toLocaleString(...extraFormat)}${evalRanges.strafeAccel.unit}`;
+        chartRangesData[dataset].flightStrafeAccel.innerHTML = `${evalRanges.flightStrafeAccel.data[stat].toLocaleString(...extraFormat)}${evalRanges.flightStrafeAccel.unit}`;
         chartRangesData[dataset].gripStrafeMulti.title = `${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
         chartRangesData[dataset].strafeAccel.title = `${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;
         chartRangesData[dataset].flightStrafeAccel.title = `${datasetType[dataset]} ${statType[i]}: ${stat} (${(stat * scale.toPermille).toLocaleString(...chartFormat)})`;

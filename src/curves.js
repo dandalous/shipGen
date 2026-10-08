@@ -497,13 +497,33 @@ const curves = {
     [true, 0.8, 0.0, -26.519184, 0.0, -26.519321, 0.0],
   ]),
   perfectLanding: parseUECurveToChartJS([
-    [false, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0]
-    [false, 2.0, 5.0, 0.0, 0.0, 0.0, 0.0]
+    [false, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0],
+    [false, 2.0, 5.0, 0.0, 0.0, 0.0, 0.0],
   ]),
   goodLanding: parseUECurveToChartJS([
-    [false, 0.0, 3.0, 0.0, 0.0, 0.0, 0.0]
-    [false, 1.0, 3.0, 0.0, 0.0, 0.0, 0.0]
+    [false, 0.0, 3.0, 0.0, 0.0, 0.0, 0.0],
+    [false, 1.0, 3.0, 0.0, 0.0, 0.0, 0.0],
   ]),
+  zone: {
+    lapDurationDecreaseInSeconds: parseUECurveToChartJS([
+      [true, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0],
+      [true, 10.0, 0.7, 0.0, 0.0, 0.0, 0.0],
+      [true, 30.0, 0.55, 0.0, 0.0, 0.0, 0.0],
+      [true, 100.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+    ]),
+    maxSpeedIncrease: parseUECurveToChartJS([
+      [true, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+      [true, 10.0, 750.0, 0.0, 0.0, 0.0, 0.0],
+      [true, 30.0, 2500.0, 0.0, 0.0, 0.0, 0.0],
+      [true, 100.0, 8750.0, 0.0, 0.0, 0.0, 0.0],
+    ]),
+    linearDamping: parseUECurveToChartJS([
+      [true, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0],
+      [true, 10.0, 0.9, 0.0, 0.0, 0.0, 0.0],
+      [true, 30.0, 0.7, 0.0, 0.0, 0.0, 0.0],
+      [true, 100.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+    ]),
+  }
 };
 
 // Evaluations
@@ -663,111 +683,147 @@ const evalRanges = {
     name: "Max Life",
     info: "Modified by Durability.&#013;The amount of life points you have before you explode from too much damage.",
     type: "durability",
-    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.maxLife, interps.slowestIncrease, i * scale.toPermille))
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.maxLife, interps.slowestIncrease, i * scale.toPermille)),
+    axis: "high",
+    unit: "",
   },
   autoHealSpeed: {
     name: "Auto Heal Speed",
     info: "Modified by Durability.&#013;The rate at which you auto heal after 5 seconds of no damage.",
     type: "durability",
-    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.autoHealSpeed, interps.slowestIncrease, i * scale.toPermille))
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.autoHealSpeed, interps.slowestIncrease, i * scale.toPermille)),
+    axis: "low",
+    unit: "",
   },
   heatDecrease: {
     name: "Heat Decrease",
     info: "Modified by Durability.&#013;The rate at which your heat meter cools down; counteracts environmental heating.",
     type: "durability",
-    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.heatDecrease, interps.slowestIncrease, i * scale.toPermille))
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.heatDecrease, interps.slowestIncrease, i * scale.toPermille)),
+    axis: "med",
+    unit: "/s",
   },
   heatIncrease: {
     name: "Heat Increase [Boosting]",
     info: "Modified by Thrust.&#013;The rate at which you gain heat when boosting.",
     type: "thrust",
-    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.heatIncrease, interps.fastIncrease, i * scale.toPermille))
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.heatIncrease, interps.fastIncrease, i * scale.toPermille)),
+    axis: "med",
+    unit: "/s",
   },
   heatHyperIncrease: {
     name: "Heat Increase [Hypering]",
     info: "Modified by Thrust.&#013;The rate at which you gain heat when hyperboosting.",
     type: "thrust",
-    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.heatHyperIncrease, interps.linear, i * scale.toPermille))
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.heatHyperIncrease, interps.linear, i * scale.toPermille)),
+    axis: "med",
+    unit: "/s",
   },
   heatStackIncrease: {},
   baseBoostVelocity: {
     name: "Boosting Δv",
     info: "Modified by Thrust and Top Speed.&#013;The speed your ship ends up at after boosting for 5 seconds at your cruising speed in ideal conditions (no gravity or drag). Integral of the g-force Boosting curve (Δv).",
     type: "thrust speed",
-    data: Array.from({ length: 41 }, (_, i) => calculateCurveArea(evalCurves.baseBoost[i]) * gravAccel)
+    data: Array.from({ length: 41 }, (_, i) => calculateCurveArea(evalCurves.baseBoost[i]) * gravAccel),
+    axis: "high",
+    unit: " m/s",
   },
   hyperBoostVelocity: {
     name: "Hyperboosting Δv",
     info: "Modified by Thrust and Top Speed.&#013;The speed your ship ends up at after hyperboosting for 5 seconds (no boosting) at your cruising speed in ideal conditions (no gravity or drag). Integral of the g-force Hyperboosting curve (Δv).",
     type: "thrust speed",
-    data: Array.from({ length: 41 }, (_, i) => calculateCurveArea(evalCurves.hyperBoost[i]) * gravAccel)
+    data: Array.from({ length: 41 }, (_, i) => calculateCurveArea(evalCurves.hyperBoost[i]) * gravAccel),
+    axis: "high",
+    unit: " m/s",
   },
   stackBoostVelocity: {
     name: "Stackboosting Δv",
     info: "Modified by Thrust and Top Speed.&#013;The speed your ship ends up at after boosting and hyperboosting (stackboosting) for 5 seconds at your cruising speed in ideal conditions (no gravity or drag). Integral of the g-force Stackboosting curve (Δv); AKA your Hyperspeed.",
     type: "thrust speed",
-    data: Array.from({ length: 41 }, (_, i) => calculateCurveArea(evalCurves.stackBoost[i]) * gravAccel)
+    data: Array.from({ length: 41 }, (_, i) => calculateCurveArea(evalCurves.stackBoost[i]) * gravAccel),
+    axis: "high",
+    unit: " m/s",
   },
   topSpeed: {
     name: "Top Speed",
     info: "Modified by Top Speed.&#013;Your ship's cruising speed when on track.",
     type: "speed",
-    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.topSpeed, interps.eightyTwentyIncrease, i * scale.toPermille))
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.topSpeed, interps.eightyTwentyIncrease, i * scale.toPermille)),
+    axis: "high",
+    unit: " km/h",
   },
   flightTopSpeed: {
     name: "Top Speed [Flying]",
     info: "Modified by Top Speed.&#013;Your ship's cruising speed when flying.",
     type: "speed",
-    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.flightTopSpeed, interps.eightyTwentyIncrease, i * scale.toPermille))
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.flightTopSpeed, interps.eightyTwentyIncrease, i * scale.toPermille)),
+    axis: "high",
+    unit: " km/h",
   },
   brakePower: {
     name: "Brake Power",
     info: "Modified by Stability.&#013;How quickly you slow down when holding brake.",
     type: "stability",
-    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.brakePower, interps.slowIncrease, i * scale.toPermille))
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.brakePower, interps.slowIncrease, i * scale.toPermille)),
+    axis: "low",
+    unit: "",
   },
   gripBoostMulti: {
     name: "Grip Boost Multi",
     info: "Modified by Stability.&#013;The amount of speed boost applied when your ship is using its grip. Track conditions influence this, and has a peculiar affinity with counter-strafing.",
     type: "stability",
-    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.gripBoostMulti, interps.linear, i * scale.toPermille))
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.gripBoostMulti, interps.linear, i * scale.toPermille)),
+    axis: "low",
+    unit: "x",
   },
   angSpeedBraking: {
     name: "Ang Speed Multi [Braking]",
     info: "Modified by Steering.&#013;A multiplier of the amount your ship increases in steering (angular speed) when braking; applied immediately.",
     type: "steer",
-    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.angSpeedBraking, interps.slowestIncrease, i * scale.toPermille))
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.angSpeedBraking, interps.slowestIncrease, i * scale.toPermille)),
+    axis: "low",
+    unit: "x",
   },
   timeToMaxAngSpeedChg: {
     name: "Time to Max Ang Speed",
     info: "Modified by Steering.&#013;The amount of time it takes to get to your max angular speed when changing direction.",
     type: "steer",
-    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.timeToMaxAngSpeedChg, interps.slowIncrease, i * scale.toPermille))
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.timeToMaxAngSpeedChg, interps.slowIncrease, i * scale.toPermille)),
+    axis: "low",
+    unit: "s",
   },
   gripStrafeMulti: {
     name: "Grip Strafe Multi",
     info: "Modified by Strafe.&#013;The amount you're able to resist grip's influence on lateral movement. Track conditions influence this.",
     type: "strafe",
-    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.gripStrafeMulti, interps.linear, i * scale.toPermille))
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.gripStrafeMulti, interps.linear, i * scale.toPermille)),
+    axis: "low",
+    unit: "x",
   },
   strafeAccel: {
     name: "Strafe Accel",
     info: "Modified by Strafe.&#013;The amount of g-force your ship experiences when strafing. This varies depending on the speed you're at; becoming stronger the faster you're going.",
     type: "strafe",
-    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.strafeAccel, interps.relevantExtremes, i * scale.toPermille))
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.strafeAccel, interps.relevantExtremes, i * scale.toPermille)),
+    axis: "med",
+    unit: " G",
   },
   flightStrafeAccel: {
     name: "Strafe Accel [Flying]",
     info: "Modified by Strafe.&#013;The amount of g-force your ship experiences when strafing and flying. This varies depending on the speed you're at; becoming stronger the faster you're going.",
     type: "strafe",
-    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.flightStrafeAccel, interps.relevantExtremes, i * scale.toPermille))
+    data: Array.from({ length: 41 }, (_, i) => blendUERange(statRanges.flightStrafeAccel, interps.relevantExtremes, i * scale.toPermille)),
+    axis: "med",
+    unit: " G",
   },
 }
 evalRanges.heatStackIncrease = {
   name: "Heat Increase [Stacking]",
   info: "Modified by Thrust.&#013;The rate at which you gain heat when boosting and hyperboosting (stackboosting).",
   type: "thrust",
-  data: Array.from({ length: 41 }, (_, i) => evalRanges.heatIncrease.data[i] + evalRanges.heatHyperIncrease.data[i])
+  data: Array.from({ length: 41 }, (_, i) => evalRanges.heatIncrease.data[i] + evalRanges.heatHyperIncrease.data[i]),
+  axis: "med",
+  unit: "/s",
 };
 
 const chartInterpCurves = new Chart(document.getElementById("chart-interp-curves").getContext("2d"), {
@@ -780,6 +836,21 @@ const chartInterpCurves = new Chart(document.getElementById("chart-interp-curves
     aspectRatio: 1.33,
     scales: {
       x: { type: "linear", position: "bottom" },
+      low: {
+        type: 'linear',
+        display: false,
+        position: 'left',
+      },
+      med: {
+        type: 'linear',
+        display: false,
+        position: 'left',
+      },
+      high: {
+        type: 'linear',
+        display: false,
+        position: 'left',
+      },
     },
     plugins: {
       legend: {
@@ -798,7 +869,8 @@ const chartInterpCurves = new Chart(document.getElementById("chart-interp-curves
             return `Points: ${ctx[0].parsed.x} (${(ctx[0].parsed.x * scale.toPermille).toLocaleString(...chartFormat)})`;
           },
           label: function (ctx) {
-            return `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString(...extraFormat)}`;
+            console.log(ctx);
+            return `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString(...extraFormat)}${ctx.dataset.unit}`;
           },
         },
       },
@@ -842,6 +914,8 @@ for (const [key, range] of evalRangesObj) {
     pointRadius: 0,
     pointHitRadius: 25,
     pointBorderWidth: 0,
+    yAxisID: range.axis,
+    unit: range.unit,
   };
   chartInterpCurves.data.datasets.push(curve);
   i++;

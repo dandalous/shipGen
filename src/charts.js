@@ -1,4 +1,5 @@
 const borderColor = getComputedStyle(document.documentElement).getPropertyValue("--border-color");
+const borderColorDark = getComputedStyle(document.documentElement).getPropertyValue("--border-color-dim");
 const foregroundColor = getComputedStyle(document.documentElement).getPropertyValue("--foreground-color");
 const targetColor = getComputedStyle(document.documentElement).getPropertyValue("--bad-color");
 const comparisonColor = getComputedStyle(document.documentElement).getPropertyValue("--good-color");

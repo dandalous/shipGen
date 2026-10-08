@@ -869,7 +869,6 @@ const chartInterpCurves = new Chart(document.getElementById("chart-interp-curves
             return `Points: ${ctx[0].parsed.x} (${(ctx[0].parsed.x * scale.toPermille).toLocaleString(...chartFormat)})`;
           },
           label: function (ctx) {
-            console.log(ctx);
             return `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString(...extraFormat)}${ctx.dataset.unit}`;
           },
         },

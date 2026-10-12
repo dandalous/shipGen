@@ -138,16 +138,16 @@
       "nick": "Lunare",
       "code": "LUN",
       "desc": "A sporty platform with excellent performance for building a strong Engine.",
-      "power": 184,
-      "stats": [ 2, 3, 5, 3, 8, 3 ]
+      "power": 195,
+      "stats": [ 2, 3, 6, 4, 7, 3 ]
     },
     {
       "name": "Conqueror",
       "nick": "Conq",
       "code": "CNQ",
       "desc": "Raw power and strong strafing. A stubborn-handling ship that can take a hit.",
-      "power": 186,
-      "stats": [ 4, 3, 7, 1, 0, 7 ]
+      "power": 196,
+      "stats": [ 4, 4, 7, 1, 0, 7 ]
     },
     {
       "name": "Helix",
@@ -194,8 +194,8 @@
       "nick": "Mantis",
       "code": "MAN",
       "desc": "A mean engine that stays agile but has subpar durability.",
-      "power": 183,
-      "stats": [ 2, 7, 4, 3, 4, 2 ]
+      "power": 188,
+      "stats": [ 2, 7, 4, 4, 4, 2 ]
     },
     {
       "name": "Akhal-Tech",
@@ -326,23 +326,23 @@
           "name": "Signature Sulha",
           "code": "PSSU",
           "desc": "The embodiment of Sulha's philosophy of going fast, avoiding walls, and overheating easily.",
-          "power": 237,
-          "stats": [ -6, 5, 20, 0, 0, -1 ],
+          "power": 275,
+          "stats": [ -6, 5, 24, 0, 0, -3 ],
           "class": "X"
         },
         {
           "name": "Signature Mantis",
-          "code": "PSBU",
+          "code": "PSMA",
           "desc": "The custom Mantis Propulsor provides the most balanced Propulsor of its class.",
-          "power": 237,
-          "stats": [ -1, 10, 14, 0, 0, -7 ],
+          "power": 276,
+          "stats": [ -1, 11, 17, 0, 0, -6 ],
           "class": "X"
         },
         {
           "name": "Signature Lunare",
           "code": "PSLN",
           "desc": "Fragile and light, but with mighty Top Speed & Thrust bite. A-la Lunare glass cannon.",
-          "power": 238,
+          "power": 274,
           "stats": [ -5, 8, 22, 0, 0, -6 ],
           "class": "X"
         },
@@ -350,8 +350,8 @@
           "name": "Signature Conqueror",
           "code": "PSCO",
           "desc": "An all or nothing Propulsor by Conqueror. Lots of Thrust is for chumps!",
-          "power": 237,
-          "stats": [ -4, 2, 22, 0, 0, -3 ],
+          "power": 276,
+          "stats": [ -3, 2, 25, 0, 0, -4 ],
           "class": "X"
         }
       ]
@@ -484,7 +484,7 @@
           "code": "SSES",
           "desc": "'Perfectly balanced, as all things should be.' The mantra ESA-AGR goes by. No exceptions.",
           "power": 122,
-          "stats": [ 0, 0, -4, 16, 9, 0 ],
+          "stats": [ 0, 0, -1, 16, 9, 0 ],
           "class": "X"
         },
         {
@@ -608,32 +608,32 @@
           "name": "Signature Wallace",
           "code": "RSWR",
           "desc": "By sacrificing Durability, WRC pulls the ultimate Steering & Strafing power out of their Rudder.",
-          "power": 119,
-          "stats": [ -6, 0, 0, -3, 22, 10 ],
+          "power": 148,
+          "stats": [ -5, 0, 0, -1, 23, 11 ],
           "class": "X"
         },
         {
           "name": "Signature Lunare",
           "code": "RSLU",
           "desc": "The Lunare Rudder strives for the best Steer/Strafe stats while sacrificing as little as possible.",
-          "power": 119,
-          "stats": [ -3, 0, 0, -1, 18, 8 ],
+          "power": 149,
+          "stats": [ -2, 0, 0, 0, 20, 9 ],
           "class": "X"
         },
         {
           "name": "Signature Behemoth",
           "code": "RSBE",
           "desc": "Behemoth's answer to ESA's Rudder. No strafing power, but less stat sacrifice overall.",
-          "power": 122,
-          "stats": [ -1, 0, 0, -1, 20, 3 ],
+          "power": 145,
+          "stats": [ -1, 0, 0, -1, 23, 4 ],
           "class": "X"
         },
         {
           "name": "Signature ESA-AGR",
           "code": "RSES",
           "desc": "ESA-AGR again strives for best stat balance distribution, but had to sacrifice Stability.",
-          "power": 121,
-          "stats": [ 0, 0, 0, -5, 16, 10 ],
+          "power": 147,
+          "stats": [ 0, 0, 0, -2, 17, 11 ],
           "class": "X"
         }
       ]
@@ -733,8 +733,8 @@
           "name": "Signature Koeniggswerth",
           "code": "HSKO",
           "desc": "Complete protection as expected from the armor pioneers at Koeniggswerth!",
-          "power": 182,
-          "stats": [ 22, 0, 0, 0, -3, 0 ],
+          "power": 170,
+          "stats": [ 22, 0, 1, 0, -3, 0 ],
           "class": "X"
         },
         {
@@ -758,7 +758,7 @@
           "code": "HSBE",
           "desc": "Behemoth is new in the Durability market. They built this Hull as an alternative to Koeniggswerth.",
           "power": 180,
-          "stats": [ 19, -2, 3, 0, 0, 0 ],
+          "stats": [ 19, -2, 4, 0, 0, 0 ],
           "class": "X"
         }
       ]
@@ -859,7 +859,7 @@
           "code": "ISBE",
           "desc": "'A massive kick in the neck when you hit the gas' is Behemoth's tagline for this module.",
           "power": 190,
-          "stats": [ 10, 20, -8, -6, 0, 0 ],
+          "stats": [ 10, 20, -5, -6, 0, 0 ],
           "class": "X"
         },
         {
@@ -875,15 +875,15 @@
           "code": "ISKO",
           "desc": "Great Thrust and good Durability with minimal sacrifice. The benchmark intercooler.",
           "power": 189,
-          "stats": [ 9, 19, -5, -5, 0, 0 ],
+          "stats": [ 9, 19, -4, -5, 0, 0 ],
           "class": "X"
         },
         {
           "name": "Signature Buran",
           "code": "ISBU",
           "desc": "Buran resorts again to lightweight materials. Achieves great Thrust, but has to let go of Durability.",
-          "power": 184,
-          "stats": [ 2, 22, -1, -8, 0, 0 ],
+          "power": 189,
+          "stats": [ 2, 22, -1, -7, 0, 0 ],
           "class": "X"
         }
       ]
@@ -999,32 +999,32 @@
           "name": "Signature Lunare",
           "code": "ESLU",
           "desc": "Lunare made minimal stat sacrifices to get this mix of Stability/Strafing power.",
-          "power": 96,
-          "stats": [ -3, 0, -1, 6, 0, 18 ],
+          "power": 102,
+          "stats": [ -2, 0, -1, 7, 0, 19 ],
           "class": "X"
         },
         {
           "name": "Signature Koeniggswerth",
           "code": "ESKO",
           "desc": "No Durability compromise. Top Speed takes a hit, other stats remain strong. A competitive package.",
-          "power": 99,
-          "stats": [ 0, 0, -4, 5, 0, 22 ],
+          "power": 104,
+          "stats": [ 0, 0, -3, 6, 0, 22 ],
           "class": "X"
         },
         {
           "name": "Signature Mantis",
           "code": "ESMA",
           "desc": "A minimal sacrifice of Top Speed to maximize everything else. That was Mantis's vision.",
-          "power": 95,
-          "stats": [ -6, 0, -1, 10, 0, 21 ],
+          "power": 103,
+          "stats": [ -5, 0, -1, 10, 0, 21 ],
           "class": "X"
         },
         {
           "name": "Signature Asera",
           "code": "ESAS",
           "desc": "Maximized Strafing & Stability while balancing out the disadvantages.",
-          "power": 97,
-          "stats": [ -3, 0, -3, 10, 0, 19 ],
+          "power": 100,
+          "stats": [ -3, 0, -3, 10, 0, 22 ],
           "class": "X"
         }
       ]

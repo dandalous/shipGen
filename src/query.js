@@ -1,6 +1,3 @@
-/**
- * Parses a given ID into its loadout and stats.
- */
 function parseResult(id, delta = 0) {
   id = id.split("-");
   const glider = redoutDB.gliders.filter((glider) => glider.code === id[0]);
@@ -8,18 +5,13 @@ function parseResult(id, delta = 0) {
   let power = glider[0].power;
   rig.forEach((part) => (power += part.power));
   const stats = addArrays([glider[0].stats, ...Array.from(rig, (part) => part.stats)]);
-  let weightedPower = 0;
   stats.forEach((stat, i) => {
     stat = clamp(stat, 0, 40);
     stats[i] = stat;
-    weightedPower += stat * redoutDB.weights[i];
   });
-  return { id: id.join("-"), glider: glider[0], rig: rig, power: power, weightedPower: weightedPower, stats: stats, delta: delta };
+  return { id: id.join("-"), glider: glider[0], rig: rig, power: power, stats: stats, delta: delta };
 }
 
-/**
- * Creates a range array given two values.
- */
 function getRange(a, b) {
   let min = a < b ? a : b;
   let max = a >= b ? a : b;
@@ -28,16 +20,10 @@ function getRange(a, b) {
   return range;
 }
 
-/**
- * Formats build count.
- */
 function getLocalBuilds(count) {
   return `${count.toLocaleString()} ${(count == 1) ? "build" : "builds"}`;
 }
 
-/**
- * Prepares a query to be submitted to be searched.
- */
 async function querySubmit(e, quickSearch = false) {
   let isRandom = false;
   if (e) {
@@ -62,14 +48,12 @@ async function querySubmit(e, quickSearch = false) {
     limit: 120,
     targeted: rigs.targeted,
     ratios: false,
-    // precision: 3,
   };
-
-  // rigs.selected = "";
 
   // Parse the ShipGen ID (if any specified)
   let gliderCodes = Array.from(redoutDB.gliders, (glider) => glider.code);
   let idSpecified = false;
+
   // Shuffle mode
   if (isRandom) {
     query.gliders = getRange(getRandomInt(0, redoutDB.gliders.length - 1), getRandomInt(0, redoutDB.gliders.length - 1));
@@ -85,8 +69,6 @@ async function querySubmit(e, quickSearch = false) {
   }
   // Possible Ratio code
   if (input.id.value.includes(":") && !input.id.value.includes("-") && !quickSearch) {
-    // let id = input.id.value.split("@");
-    // query.precision = Math.pow(10, id[1] ? id[1] : query.precision);
     let ratios = input.id.value.split(":").map((ratio) => Number(ratio));
     let proportions = [];
     let sum = 0;
@@ -169,20 +151,22 @@ async function querySubmit(e, quickSearch = false) {
     console.warn(`Reusing result #${queries.current}`);
   } else {
     // Otherwise run the query and set the current query to the last in the queries array
-    // If browser supports Web Workers and we're searching for more than one ship, run threaded
-    // Else run on a single thread for faster results.
-    results = window.Worker && query.gliders.length > 1 ? await runQueryThreaded(query, count) : await runQuery(query, count);
+    // If browser supports Web Workers run threaded, else run on a single thread for faster results.
+    results = window.Worker ? await runQueryThreaded(query, count) : await runQuery(query, count);
 
     // If there are results, push them to queries and save locally for reuse
     if (results) {
+      results.sort(function (a, b) {
+        return b.power - a.power;
+      });
       results.sort(function (a, b) {
         return a.delta - b.delta;
       });
       queries.results.push(results);
       queries.inputs.push(query);
       try {
-        // if (!quickSearch)
-        localStorage.setItem("lastQuery", JSON.stringify(query));
+        if (!quickSearch)
+          localStorage.setItem("lastQuery", JSON.stringify(query));
       } catch (e) {
         console.warn(e);
       }
@@ -215,9 +199,6 @@ async function querySubmit(e, quickSearch = false) {
   input.buttons.queryIcon.classList.add("fa-magnifying-glass");
 }
 
-/**
- * Combines multiple arrays into one.
- */
 function addArrays(arrays) {
   const numArrays = arrays.length;
   const arrayLength = arrays[0].length;
@@ -237,10 +218,6 @@ function addArrays(arrays) {
   return result;
 }
 
-/**
- * Calculates the delta of a candidate to the target, ignoring a stat if it's 0.
- * @param {boolean} greaterOnly - Discards any negative delta when true.
- */
 function calculateDelta(candidate, query, greaterOnly = false) {
   let delta = 0;
 
@@ -255,17 +232,14 @@ function calculateDelta(candidate, query, greaterOnly = false) {
   return delta;
 }
 
-/**
- * Iterates through the ships and parts to get their stats and compare them to the target (single threaded).
- */
 async function runQuery(query, count) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       console.time("Query");
 
       // Get detailed info of query from RedoutDB
-      let gliders = Array.from(query.gliders, (glider) => redoutDB.gliders[glider]);
-      let parts = Array.from(query.parts, (type, i) => Array.from(type, (part) => redoutDB.parts[i].details[part]));
+      const gliders = Array.from(query.gliders, (glider) => [redoutDB.gliders[glider].power, redoutDB.gliders[glider].stats, redoutDB.gliders[glider].code]);
+      const parts = Array.from(query.parts, (type, i) => Array.from(type, (part) => [redoutDB.parts[i].details[part].power, redoutDB.parts[i].details[part].stats, redoutDB.parts[i].details[part].id]));
 
       let worst = 0;
       let maxDelta = 9999;
@@ -317,7 +291,7 @@ async function runQuery(query, count) {
 
       const mergedResults = candidates.filter((candidate) => candidate.delta != 9999);
       console.timeEnd("Query");
-      console.warn(`Searched ${count.toLocaleString()} build(s) on a single thread!`);
+      console.warn(`Searched ${count.toLocaleString()} loadouts(s) on a single thread!`);
       if (mergedResults.length === 0) {
         reject("No results found!");
         output.info.innerHTML = "No results found!";
@@ -334,35 +308,34 @@ async function runQuery(query, count) {
   });
 }
 
-/**
- * Iterates through the ships and parts to get their stats and compare them to the target (multi threaded).
- */
 async function runQueryThreaded(query, count) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       console.time("Query");
 
-      let workers = {
-        count: query.gliders.length,
+      const workers = {
+        count: window.navigator.hardwareConcurrency,
+        limit: Math.round(query.limit / (window.navigator.hardwareConcurrency)),
         results: [],
         done: 0,
       };
 
       // Get detailed info of query from RedoutDB
-      let gliders = Array.from(query.gliders, (glider) => redoutDB.gliders[glider]);
-      let parts = Array.from(query.parts, (type, i) => Array.from(type, (part) => redoutDB.parts[i].details[part]));
+      const gliders = Array.from(query.gliders, (glider) => [redoutDB.gliders[glider].power, redoutDB.gliders[glider].stats, redoutDB.gliders[glider].code]);
+      const parts = Array.from(query.parts, (type, i) => Array.from(type, (part) => [redoutDB.parts[i].details[part].power, redoutDB.parts[i].details[part].stats, redoutDB.parts[i].details[part].id]));
 
-      gliders.forEach((glider) => {
-        let arrayWorker = new Worker("./src/worker.js");
-        arrayWorker.postMessage([query, glider, parts, workers.count]);
-        arrayWorker.onmessage = (e) => {
+      // Give the workers their tasks
+      for (let i = 0; i < workers.count; i++) {
+        let worker = new Worker("./src/worker.js");
+        worker.postMessage([i, query, gliders, parts, workers.limit, workers.count]);
+        worker.onmessage = (e) => {
           workers.results.push(e.data);
           workers.done++;
           if (workers.done === workers.count) {
             const mergedResults = [].concat(...workers.results);
 
             console.timeEnd("Query");
-            console.info(`Searched ${count.toLocaleString()} build(s) with ${workers.count} thread(s)`);
+            console.info(`Searched ${count.toLocaleString()} loadouts(s) with ${workers.count} thread(s)`);
             if (mergedResults.length === 0) {
               reject("No results found!");
               output.info.innerHTML = "No results found!";
@@ -374,18 +347,15 @@ async function runQueryThreaded(query, count) {
               resolve(mergedResults);
             }
           }
-          arrayWorker.terminate();
+          worker.terminate();
         };
-      });
+      };
     }, 0);
   }).catch((e) => {
     console.warn(e);
   });
 }
 
-/**
- * Parses results into HTML to be displayed into a list.
- */
 function parseResults(candidates, query) {
   let html = "";
   candidates.forEach((candidate) => {
@@ -394,7 +364,7 @@ function parseResults(candidates, query) {
     candidate.rig.forEach((part, i) => {
       html += `<td class='results-cell-bottom cell-class-${part.class}' title="${part.name} &quot;${code[i]}&quot; \(${part.class}\) \{${part.power}\} \[${part.stats}\]\n\n${part.desc}">${part.code}</td>`;
     });
-    html += `<td class='results-cell-bottom results-cell-left results-cell-right cell-power ${candidate.power != candidate.weightedPower ? "cell-power-fault" : "cell-power-normal"}' title='Actual power rating: ${candidate.weightedPower}'><span>${candidate.power}</span></td>`;
+    html += `<td class='results-cell-bottom results-cell-left results-cell-right cell-power' title='Power rating: ${candidate.power}'><span>${candidate.power}</span></td>`;
     candidate.stats.forEach((stat, i) => {
       // Stat quality
       let cellType = "cell-neutral";

@@ -1,6 +1,5 @@
-/**
- * Evaluates a 1D cubic Bézier coordinate or its derivative at parameter t.
- */
+
+// Evaluates a 1D cubic Bézier coordinate or its derivative at parameter t.
 function evalBezier1D(p0, p1, p2, p3, t) {
   const u = 1 - t;
   return u * u * u * p0 + 3 * u * u * t * p1 + 3 * u * t * t * p2 + t * t * t * p3;
@@ -11,9 +10,7 @@ function evalBezierDerivative1D(p0, p1, p2, p3, t) {
   return 3 * u * u * (p1 - p0) + 6 * u * t * (p2 - p1) + 3 * t * t * (p3 - p2);
 }
 
-/**
- * Finds parameter t for a target X using Newton-Raphson iteration.
- */
+// Finds parameter t for a target X using Newton-Raphson iteration.
 function solveTForX(p0x, p1x, p2x, p3x, targetX, maxIterations = 8, epsilon = 1e-6) {
   // Initial guess using linear interpolation
   let t = (targetX - p0x) / (p3x - p0x);
@@ -37,9 +34,8 @@ function solveTForX(p0x, p1x, p2x, p3x, targetX, maxIterations = 8, epsilon = 1e
   return t;
 }
 
-/**
- * Evaluates Y for a given target X on a weighted/unweighted UE cubic segment.
- */
+
+// Evaluates Y for a given target X on a weighted/unweighted UE cubic segment.
 function evalUECubicSegment(k0, k1, targetX, isWeighted = true) {
   const dx = k1.x - k0.x;
   if (dx === 0) return k0.y;
@@ -66,12 +62,7 @@ function evalUECubicSegment(k0, k1, targetX, isWeighted = true) {
   return evalBezier1D(p0.y, p1.y, p2.y, p3.y, t);
 }
 
-/**
- * Converts UE FloatCurve raw array to Chart.js sample points.
- *
- * @param {Array<Array<number>>} ueKeys - [isCubic, X, Y, ArriveTan, ArriveWeight, LeaveTan, LeaveWeight]
- * @param {number} samplesPerSegment - Resolution of output samples
- */
+// Converts UE FloatCurve raw array to Chart.js sample points.
 function parseUECurveToChartJS(ueKeys, samplesPerSegment = 20) {
   if (!ueKeys || ueKeys.length === 0) return [];
 
@@ -114,10 +105,8 @@ function parseUECurveToChartJS(ueKeys, samplesPerSegment = 20) {
   return chartPoints;
 }
 
-/**
- * Evaluates an interpsolated Y value at targetX from a sorted array of [{x, y}] points.
- * Uses linear interpolation between surrounding points.
- */
+// Evaluates an interpsolated Y value at targetX from a sorted array of [{x, y}] points.
+// Uses linear interpolation between surrounding points.
 function interpsolateAtX(points, targetX) {
   if (!points || points.length === 0) return 0;
   if (targetX <= points[0].x) return points[0].y;
@@ -142,9 +131,7 @@ function interpsolateAtX(points, targetX) {
   return p0.y + t * (p1.y - p0.y);
 }
 
-/**
- * Extracts and sorts all unique X coordinates across multiple parsed point arrays.
- */
+// Extracts and sorts all unique X coordinates across multiple parsed point arrays.
 function getUnifiedXCoordinates(curves) {
   const xSet = new Set();
   for (const curve of curves) {
@@ -155,14 +142,9 @@ function getUnifiedXCoordinates(curves) {
   return Array.from(xSet).sort((a, b) => a - b);
 }
 
-/**
- * Mode 1: Merges multiple parsed UE curves into a single combined {x, y} curve
- * using an aggregation operation ('sum' | 'average' | 'min' | 'max').
- *
- * @param {Array<Array<{x: number, y: number}>>} curves - Array of parsed UE curves
- * @param {string} operation - Composite mode: 'sum' | 'average' | 'min' | 'max'
- * @returns {Array<{x: number, y: number}>} Single combined curve dataset
- */
+
+// Mode 1: Merges multiple parsed UE curves into a single combined {x, y} curve
+// using an aggregation operation ('sum' | 'average' | 'min' | 'max').
 function combineUECurvesToOne(curves, operation = "sum") {
   if (!curves || curves.length === 0) return [];
   if (curves.length === 1) return curves[0];
@@ -193,14 +175,8 @@ function combineUECurvesToOne(curves, operation = "sum") {
   });
 }
 
-/**
- * Mode 2: Aligns multiple parsed UE curves onto a shared set of X-coordinates,
- * returning multi-series datasets suitable for separate Chart.js lines.
- *
- * @param {Array<Array<{x: number, y: number}>>} curves
- * @param {Array<string>} labels - Optional dataset labels
- * @returns {Array<Object>} Array of Chart.js dataset objects
- */
+// Mode 2: Aligns multiple parsed UE curves onto a shared set of X-coordinates,
+// returning multi-series datasets suitable for separate Chart.js lines.
 function alignUECurvesMultiSeries(curves, labels = []) {
   if (!curves || curves.length === 0) return [];
 
@@ -219,14 +195,8 @@ function alignUECurvesMultiSeries(curves, labels = []) {
   });
 }
 
-/**
- * Evaluates a parsed UE curve at an arbitrary X position.
- *
- * @param {Array<{x: number, y: number}>} curve - Parsed Chart.js point array sorted by X.
- * @param {number} targetX - The arbitrary X position to query.
- * @param {Object} options - Extrapolation modes: 'clamp' | 'linear' | 'zero'
- * @returns {number} The evaluated Y value.
- */
+
+// Evaluates a parsed UE curve at an arbitrary X position.
 function evaluateUECurve(curve, targetX, options = {}) {
   const { extrapolate = "clamp" } = options;
 
@@ -284,14 +254,7 @@ function evaluateUECurve(curve, targetX, options = {}) {
   return p0.y + t * (p1.y - p0.y);
 }
 
-/**
- * Blends two parsed UE curves into a single curve based on a bias percentage.
- * 
- * @param {Array<{x: number, y: number}>} curveA - First curve (0% bias target)
- * @param {Array<{x: number, y: number}>} curveB - Second curve (100% bias target)
- * @param {number} bias - Blend factor from 0.0 (0% -> 100% Curve A) to 1.0 (100% -> 100% Curve B)
- * @returns {Array<{x: number, y: number}>} Blended curve dataset for Chart.js
- */
+// Blends two parsed UE curves into a single curve based on a bias percentage.
 function blendUECurves(curveA, curveB, bias = 0.5) {
   // Clamp bias between 0.0 (0%) and 1.0 (100%)
   const clampedBias = Math.max(0, Math.min(1, bias));
@@ -323,12 +286,7 @@ function blendUERange(range, interp, bias) {
   return range[0] + ((range[1] - range[0]) * evaluateUECurve(interp, bias));
 }
 
-/**
- * Calculates the total area under a curve using the trapezoidal rule.
- * 
- * @param {Array<{x: number, y: number}>} curve - Array of point objects with 'x' and 'y' values.
- * @returns {number} The total area under the curve.
- */
+// Calculates the total area under a curve using the trapezoidal rule.
 function calculateCurveArea(curve, isAbsolute = false) {
   if (!Array.isArray(curve) || curve.length < 2) {
     return 0;
@@ -835,7 +793,20 @@ const chartInterpCurves = new Chart(document.getElementById("chart-interp-curves
   {
     aspectRatio: 1.33,
     scales: {
-      x: { type: "linear", position: "bottom" },
+      x: {
+        type: "linear",
+        position: "bottom",
+        min: 0,
+        suggestedMax: 40,
+        beginAtZero: true,
+        ticks: {
+          callback: function (value, i, ticks) {
+            return input.option.percentageScale.checked ? ((value * 100) * scale.toPermille).toLocaleString(...statFormat) : value.toLocaleString(...statFormat);
+          },
+          display: !window.mobileCheck(),
+          stepSize: 40 / 7,
+        },
+      },
       low: {
         type: 'linear',
         display: false,
@@ -865,7 +836,6 @@ const chartInterpCurves = new Chart(document.getElementById("chart-interp-curves
       tooltip: {
         callbacks: {
           title: function (ctx) {
-            const speed = getSpeeds(ctx[0].parsed.x);
             return `Points: ${ctx[0].parsed.x} (${(ctx[0].parsed.x * scale.toPermille).toLocaleString(...chartFormat)})`;
           },
           label: function (ctx) {

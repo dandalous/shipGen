@@ -81,7 +81,7 @@ let rigs = {
   },
   target: {
     power: 0,
-    stats: [0, 0, 0, 0, 0, 0],
+    stats: Array.from(input.targets, (target) => Number(target.value)),
   },
 }
 
@@ -146,10 +146,6 @@ fetch(debugMode ? "./src/debug.json" : "./src/data.json")
     powerChange();
   });
 
-/**
- * Triggered by the Show Percentages checkbox changing.
- * Changes the scaling of the target inputs and outputs to either percentage or out of 40.
- */
 function scaleChange(e) {
   e.preventDefault();
   let max = e.srcElement.checked ? 100 : 40;
@@ -169,10 +165,6 @@ function scaleChange(e) {
   updateStatCharts(0, rigs.target.stats, rigs.targeted != "" ? parseResult(rigs.targeted) : null);
 }
 
-/**
- * Triggered by the part class buttons below the parts in the part selection box.
- * Sets the part pool or all modules to a certain class, depending if <Ctrl> is held.
- */
 function quickSelect(e, parts, override = false) {
   e.preventDefault();
   const isCtrl = e.ctrlKey || override;
@@ -205,10 +197,6 @@ function quickSelect(e, parts, override = false) {
   });
 }
 
-/**
- * Triggered by the max and min power ranges changing value.
- * Properly rounds and clamps the new values, and updates how they look.
- */
 function powerChange(e, range) {
   if (e) {
     e.preventDefault();
@@ -231,10 +219,6 @@ function powerChange(e, range) {
   output.power.innerHTML = `${input.power.min.value}-${input.power.max.value}`;
 }
 
-/**
- * Triggered by any of the parts in the part selection box being changed, and by quickSelect to update the parts.
- * Updates the power range when parts are changed, and resets to all parts being selected if there's none selected.
- */
 function partsCheck(e, i, canReset = true) {
   e.preventDefault();
   const type = moduleCode[i];
@@ -257,10 +241,6 @@ function partsCheck(e, i, canReset = true) {
   powerChange();
 }
 
-/**
- * Triggered by any of the ships in the ship selection box being changed.
- * Resets to all ships if there's none selected.
- */
 function glidersCheck(e) {
   e.preventDefault();
   let checked = document.querySelectorAll(`#select-ship input[type = "checkbox"]:checked`);
@@ -272,10 +252,6 @@ function glidersCheck(e) {
   }
 }
 
-/**
- * Triggered by the tabs above the charts.
- * Updates which charts are visible.
- */
 function changeChart(e, chart) {
   e.preventDefault();
   Array.from(document.getElementsByClassName("chart-tab")).forEach((tabBtn) => {
@@ -289,10 +265,6 @@ function changeChart(e, chart) {
   if (chart == 'extra') randomizeChartCurvesColors();
 }
 
-/**
- * Triggered by the tabs above the parts.
- * Updates which parts are visible.
- */
 function changeParts(e, part) {
   e.preventDefault();
   Array.from(document.getElementsByClassName("column-select")).forEach((column) => {
@@ -305,10 +277,6 @@ function changeParts(e, part) {
   document.getElementById(`select-${part}`).classList.remove("hide");
 }
 
-/**
- * Triggered by clicking the icons above columns.
- * Sorts the results in various ways depending on the column. Such as alphabetical, value, or class.
- */
 function columnSort(e) {
   e.preventDefault();
   if (output.table.innerHTML != "") {
@@ -323,6 +291,9 @@ function columnSort(e) {
       if (e.currentTarget.classList.contains("asc")) {
         // Reset order
         output.headings.forEach((head) => head.classList.remove("active"));
+        candidates.sort((a, b) => {
+          return b.power - a.power;
+        });
         candidates.sort((a, b) => {
           return a.delta - b.delta;
         });
@@ -340,9 +311,6 @@ function columnSort(e) {
   }
 }
 
-/**
- * Part of columnSort. Reads the values of a candidate to determine how to sort it.
- */
 function candidateSort(candidates, i, isAscending) {
   if (i == 0) {
     candidates.sort((a, b) => {
@@ -363,15 +331,13 @@ function candidateSort(candidates, i, isAscending) {
   }
 }
 
-/**
- * Downloads the results into a CSV format.
- */
 function downloadTable(e) {
   e.preventDefault();
   if (queries.results.length > 0) {
     const separator = ",";
-    let csv = ["ID, Ship, Propulsor, Stabilizer, Rudder, Hull, Intercooler, ESC, Power, Durability, Thrust, Top_Speed, Stability, Steer, Strafe, Delta"];
-    queries.results.at(queries.current).forEach((result) => {
+    const csv = ["ID, Ship, Propulsor, Stabilizer, Rudder, Hull, Intercooler, ESC, Power, Durability, Thrust, Top_Speed, Stability, Steer, Strafe, Delta"];
+    let pinnedCandidates = Array.from(rigs.pinned, (rig) => { return { id: rig } });
+    pinnedCandidates.concat(queries.results.at(queries.current)).forEach((result) => {
       result = parseResult(result.id, result.delta);
       let row = [];
       row.push(result.id);
@@ -396,9 +362,6 @@ function downloadTable(e) {
   }
 }
 
-/**
- * Triggered by the target input values changing, either manually or by a quick search being performed.
- */
 function targetInputChange(e, i, value = -1) {
   if (!input.targets[i].checkValidity()) input.targets[i].value = Math.round(Number(input.targets[i].value));
   if (!input.targets[i].checkValidity()) input.targets[i].value = Number(input.targets[i].defaultValue);
@@ -417,10 +380,6 @@ function targetInputChange(e, i, value = -1) {
   updateStatCharts(0, rigs.target.stats);
 }
 
-/**
- * Triggered when the ShipGen ID field is changed.
- * Validates and formats it properly.
- */
 function selectIDChange(e) {
   if (!e.target.checkValidity()) e.target.value = e.target.defaultValue;
   e.target.value = e.target.value.toUpperCase();
@@ -471,10 +430,6 @@ function toggleDataset(e, datasetIndex) {
   chartForceCurves.update();
 }
 
-/**
- * Triggered by the reset button being clicked.
- * Resets all values to their defaults.
- */
 function resetClick(e) {
   e.preventDefault();
   input.id.value = input.id.defaultValue;
@@ -483,9 +438,6 @@ function resetClick(e) {
   glidersCheck(new Event("reset"));
 }
 
-/**
- * Balances all targets by averages if they're not 0.
- */
 function balanceTargets(e) {
   e.preventDefault();
   let nonZero = rigs.target.stats.filter((target) => target != 0);
@@ -498,9 +450,6 @@ function balanceTargets(e) {
   });
 }
 
-/**
- * Randomizes all targets by a small amount if they're not 0.
- */
 function randomTargets(e) {
   e.preventDefault();
   input.targets.forEach((target, i) => {
@@ -510,16 +459,10 @@ function randomTargets(e) {
   });
 }
 
-/**
- * Clamps values.
- */
 function clamp(val, min, max) {
   return val > max ? max : val < min ? min : val;
 }
 
-/**
- * Returns a pseudo random value by range.
- */
 function getRandomInt(a, b) {
   let min = a < b ? a : b;
   let max = a >= b ? a : b;
@@ -528,9 +471,6 @@ function getRandomInt(a, b) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-/**
- * Decreases targets by 10% relatively if they're not 0.
- */
 function decreaseTargets(e) {
   e.preventDefault();
   input.targets.forEach((target, i) => {
@@ -540,9 +480,6 @@ function decreaseTargets(e) {
   });
 }
 
-/**
- * Increases targets by 10% relatively if they're not 0.
- */
 function increaseTargets(e) {
   e.preventDefault();
   input.targets.forEach((target, i) => {
@@ -552,9 +489,6 @@ function increaseTargets(e) {
   });
 }
 
-/**
- * Shifts all targets to the right, wrapping around if they're at the end.
- */
 function shiftTargetsRight(e) {
   e.preventDefault();
   let newTargets = new Array(6).fill(0);
@@ -566,9 +500,6 @@ function shiftTargetsRight(e) {
   });
 }
 
-/**
- * Shifts all targets to the left, wrapping around if they're at the end.
- */
 function shiftTargetsLeft(e) {
   e.preventDefault();
   let newTargets = new Array(6).fill(0);
@@ -584,10 +515,6 @@ function shiftTargetsLeft(e) {
   });
 }
 
-/**
- * Triggered when the ID of a result is clicked.
- * Pins or unpins it to the top of the results list.
- */
 function idClick(e, cell) {
   e.preventDefault();
   let result = parseResult(cell.parentElement.title);
@@ -610,10 +537,6 @@ function idClick(e, cell) {
   rigs.isPinning = true;
 }
 
-/**
- * Triggered when a result is hovered over.
- * Sets the Comparison information to the result.
- */
 function rowHover(e, row) {
   e.preventDefault();
   let result = parseResult(row.title);
@@ -622,10 +545,6 @@ function rowHover(e, row) {
   updateStatCharts(1, result.stats, result);
 }
 
-/**
- * Triggered when a result is clicked or double clicked.
- * Also sets the Comparison information to the result. If it's already selected then it's set to the Target too and a quick search is performed.
- */
 function rowClick(e, row) {
   e.preventDefault();
   if (rigs.isPinning) {
@@ -644,16 +563,6 @@ function rowClick(e, row) {
   let selectedRows = document.querySelectorAll("#tbody-results .selected");
   selectedRows.forEach((_row) => _row.classList.remove("selected"));
   row.classList.toggle("selected");
-  // let candidates = Array.from(
-  //   queries.results.at(queries.current).filter((result) => rigs.pinned.indexOf(result.id) === -1),
-  //   (result) => parseResult(result.id, result.delta),
-  // );
-  // let active = Array.from(output.headings).filter((head) => head.classList.contains("active"))[0];
-  // if (active) {
-  //   let isAscending = active.classList.contains("asc") ? -1 : 1;
-  //   candidateSort(candidates, active.cellIndex, isAscending);
-  // }
-  // output.table.innerHTML = parseResults(pinnedCandidates.concat(candidates), queries.inputs.at(queries.current));
   if (rigs.selected === rigs.prevSelected) {
     rigs.targeted = rigs.selected;
     input.targets.forEach((target, i) => {
@@ -665,9 +574,6 @@ function rowClick(e, row) {
   }
 }
 
-/**
- * Formats stats for the VS. table.
- */
 function statChange(comparison, target) {
   const change = new Array(6).fill("");
   const colors = new Array(6).fill(foregroundColor);
@@ -692,9 +598,6 @@ function statChange(comparison, target) {
   return { delta: change, color: colors, style: styles };
 }
 
-/**
- * Formats power for the VS. table.
- */
 function powerDelta(comparison, target) {
   let delta = comparison - target;
   if (delta == 0 || target == 0) {
@@ -706,21 +609,12 @@ function powerDelta(comparison, target) {
   return `${delta}`;
 }
 
-/**
- * Formats speed in both Km/h and Mph.
- */
 function getSpeeds(speed) {
   return { kmh: speed, mph: speed * scale.toMph };
 }
 
-/**
- * Triggered any time stats are changed.
- * Updates both the Comparison or Target stats on the charts, VS. table or inputs.
- */
 function updateStatCharts(dataset, data, result = false) {
   chartRadar, chartBars.data.datasets[dataset].data = data;
-  // chartRadar, chartBars.data.datasets[dataset].label = result ? result.id : "Target";
-  // chartRadar, chartBars.data.datasets[dataset].hidden = false;
 
   let changes = statChange(rigs.comparison.stats, rigs.target.stats);
   let chartTable = dataset ? output.chart.comparison : output.chart.target;
@@ -732,9 +626,7 @@ function updateStatCharts(dataset, data, result = false) {
   chartTable.ship.innerHTML = result ? result.glider.nick : "Ship";
   chartTable.ship.title = result ? `${result.glider.name} \"${result.glider.code}\" \{${result.glider.power}\} \[${result.glider.stats}\]\n\n${result.glider.desc}` : `${datasetType[dataset]} Ship`;
   chartTable.power.innerHTML = result ? result.power : "N/A";
-  chartTable.power.title = result ? `Actual power rating: ${result.weightedPower}` : `${datasetType[dataset]} Power`;
-  chartTable.power.parentElement.classList.remove("cell-power-fault");
-  if (result && result.power != result.weightedPower) chartTable.power.parentElement.classList.add("cell-power-fault");
+  chartTable.power.title = result ? `Power rating: ${result.power}` : `${datasetType[dataset]} Power`;
   output.chart.delta.power.innerHTML = powerDelta(rigs.comparison.power, rigs.target.power);
 
   let baseBoostVelocity = 0;
@@ -820,5 +712,4 @@ function updateStatCharts(dataset, data, result = false) {
   chartRadar.update();
   chartBars.update();
   chartForceCurves.update();
-  // chartAngleCurves.update();
 }

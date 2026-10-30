@@ -624,8 +624,8 @@ const statRanges = {
   heatDecrease: [0, 19],                // slowestIncrease      - Durability
   heatIncrease: [38, 55],               // fastIncrease         - Thrust
   heatHyperIncrease: [0, 32],           // linear(?)            - Thrust
-  topSpeed: [900, 1250],                // eightyTwentyIncrease - Top Speed
-  flightTopSpeed: [750, 1100],          // eightyTwentyIncrease - Top Speed
+  topSpeed: [927, 1287.5],              // eightyTwentyIncrease - Top Speed
+  flightTopSpeed: [772.5, 1133],        // eightyTwentyIncrease - Top Speed
   brakePower: [0.12, 0.35],             // slowIncrease         - Stability
   gripBoostMulti: [0, 0.55],            // linear(?)            - Stability
   angSpeedBraking: [1.05, 1.3],         // slowestIncrease      - Steer

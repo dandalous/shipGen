@@ -2,34 +2,19 @@
   "weights": [ 8, 10, 12, 5, 6, 5 ],
   "cheatcodes": [
     {
-      "code": [ "BASE" ],
+      "code": [ "BASE", "STOCK" ],
       "gliders": [ ],
       "parts": [ [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 0 ] ]
     },
     {
-      "code": [ "META" ],
+      "code": [ "META", "STANDARD" ],
       "gliders": [ ],
-      "parts": [ [ 13 ], [ 12, 13, 14, 16 ], [ 10, 11, 12 ], [ 11, 12 ], [ 8, 12, 13 ], [ 9, 10, 11, 12, 15, 16 ] ]
+      "parts": [ [ 12, 13, 14 ], [ 12, 13, 14, 16 ], [ 10, 11, 12, 15 ], [ 11, 12, 14 ], [ 8, 11, 12, 13 ], [ 10, 13, 14, 15, 16 ] ]
     },
     {
-      "code": [ "KOKO" ],
-      "gliders": [ ],
-      "parts": [ [ 13 ], [ 12, 13, 14, 16 ], [ 10, 11, 12 ], [ 11, 12 ], [ 13 ], [ 9, 10, 11, 12, 15, 16 ] ]
-    },
-    {
-      "code": [ "ROKI", "STANDARD" ],
+      "code": [ "ROKI" ],
       "gliders": [ 3 ],
       "parts": [ [ 13 ], [ 16 ], [ 12 ], [ 11 ], [ 12 ], [ 10, 11 ] ]
-    },
-    {
-      "code": [ "SWEATIKETI" ],
-      "gliders": [ 0 ],
-      "parts": [ [ 13 ], [ 16 ], [ 11 ], [ 11 ], [ 13 ], [ 10 ] ]
-    },
-    {
-      "code": [ "FUNINUMBR" ],
-      "gliders": [ 6 ],
-      "parts": [ [ 13 ], [ 16 ], [ 11 ], [ 11 ], [ 12 ], [ 12 ] ]
     },
     {
       "code": [ "PRETHRUST" ],
@@ -48,18 +33,8 @@
     },
     {
       "code": [ "GLORYDAYS" ],
-      "gliders": [ 0, 6, 9, 11 ],
+      "gliders": [ 0, 1, 3, 4, 6, 9, 11 ],
       "parts": [ [ 11 ], [ 0 ], [ 12 ], [ 14 ], [ 12 ], [ 12 ] ]
-    },
-    {
-      "code": [ "MITSUBISHI" ],
-      "gliders": [ 5 ],
-      "parts": [ [ 6 ], [ 4 ], [ 15 ], [ 13 ], [ 8 ], [ 1 ] ]
-    },
-    {
-      "code": [ "CHEVRON" ],
-      "gliders": [ 2 ],
-      "parts": [ [ 13 ], [ 11 ], [ 11 ], [ 0 ], [ 7 ], [ 14 ] ]
     },
     {
       "code": [ "NOMANSKY" ],
@@ -67,69 +42,64 @@
       "parts": [ [ 0 ], [ 6 ], [ 0 ], [ 3 ], [ 0 ], [ 2 ] ]
     },
     {
-      "code": [ "1000POINTS" ],
-      "gliders": [ 4 ],
-      "parts": [ [ 14 ], [ 12 ], [ 11 ], [ 14 ], [ 6 ], [ 10 ] ]
-    },
-    {
       "code": [ "SIGLUNARE" ],
       "gliders": [ 0 ],
-      "parts": [ [ 13 ], [ 11 ], [ 15 ], [ 12 ], [ 8 ], [ 14 ] ]
+      "parts": [ [ 13 ], [ 10 ], [ 14 ], [ 11 ], [ 8 ], [ 13 ] ]
     },
     {
       "code": [ "SIGCONQ" ],
       "gliders": [ 1 ],
-      "parts": [ [ 14 ], [ 16 ], [ 10 ], [ 13 ], [ 11 ], [ 12 ] ]
+      "parts": [ [ 14 ], [ 12 ], [ 10 ], [ 14 ], [ 10 ], [ 12 ] ]
     },
     {
       "code": [ "SIGHELIX" ],
       "gliders": [ 2 ],
-      "parts": [ [ 13 ], [ 14 ], [ 12 ], [ 13 ], [ 13 ], [ 14 ] ]
+      "parts": [ [ 9 ], [ 14 ], [ 11 ], [ 13 ], [ 9 ], [ 11 ] ]
     },
     {
       "code": [ "SIGASERA" ],
       "gliders": [ 3 ],
-      "parts": [ [ 13 ], [ 12 ], [ 10 ], [ 12 ], [ 11 ], [ 13 ] ]
+      "parts": [ [ 13 ], [ 12 ], [ 11 ], [ 11 ], [ 14 ], [ 16 ] ]
     },
     {
       "code": [ "SIGESAAGR" ],
       "gliders": [ 4 ],
-      "parts": [ [ 13 ], [ 13 ], [ 10 ], [ 10 ], [ 12 ], [ 12 ] ]
+      "parts": [ [ 14 ], [ 11 ], [ 12 ], [ 11 ], [ 9 ], [ 14 ] ]
     },
     {
       "code": [ "SIGWALLACE" ],
       "gliders": [ 5 ],
-      "parts": [ [ 11 ], [ 14 ], [ 12 ], [ 10 ], [ 12 ], [ 12 ] ]
+      "parts": [ [ 12 ], [ 13 ], [ 13 ], [ 12 ], [ 10 ], [ 10 ] ]
     },
     {
       "code": [ "SIGSULHA" ],
       "gliders": [ 6 ],
-      "parts": [ [ 13 ], [ 11 ], [ 10 ], [ 13 ], [ 13 ], [ 10 ] ]
+      "parts": [ [ 11 ], [ 11 ], [ 11 ], [ 12 ], [ 12 ], [ 12 ] ]
     },
     {
       "code": [ "SIGMANTIS" ],
       "gliders": [ 7 ],
-      "parts": [ [ 13 ], [ 14 ], [ 15 ], [ 12 ], [ 13 ], [ 14 ] ]
+      "parts": [ [ 12 ], [ 11 ], [ 10 ], [ 13 ], [ 10 ], [ 15 ] ]
     },
     {
       "code": [ "SIGAKHAL" ],
       "gliders": [ 8 ],
-      "parts": [ [ 13 ], [ 12 ], [ 12 ], [ 12 ], [ 8 ], [ 14 ] ]
+      "parts": [ [ 12 ], [ 14 ], [ 10 ], [ 12 ], [ 14 ], [ 10 ] ]
     },
     {
       "code": [ "SIGKOEN" ],
       "gliders": [ 9 ],
-      "parts": [ [ 13 ], [ 14 ], [ 16 ], [ 11 ], [ 8 ], [ 16 ] ]
+      "parts": [ [ 13 ], [ 12 ], [ 12 ], [ 11 ], [ 8 ], [ 14 ] ]
     },
     {
       "code": [ "SIGBMOTH" ],
       "gliders": [ 10 ],
-      "parts": [ [ 9 ], [ 14 ], [ 10 ], [ 12 ], [ 11 ], [ 10 ] ]
+      "parts": [ [ 12 ], [ 12 ], [ 15 ], [ 12 ], [ 11 ], [ 16 ] ]
     },
     {
       "code": [ "SIGBURAN" ],
       "gliders": [ 11 ],
-      "parts": [ [ 13 ], [ 16 ], [ 10 ], [ 11 ], [ 13 ], [ 11 ] ]
+      "parts": [ [ 11 ], [ 16 ], [ 10 ], [ 11 ], [ 14 ], [ 12 ] ]
     }
   ],
   "gliders": [
@@ -142,7 +112,7 @@
       "stats": [ 2, 3, 6, 4, 7, 3 ]
     },
     {
-      "name": "Conqueror",
+      "name": "Conqueror Tech",
       "nick": "Conq",
       "code": "CNQ",
       "desc": "Raw power and strong strafing. A stubborn-handling ship that can take a hit.",
@@ -182,7 +152,7 @@
       "stats": [ 4, 2, 4, 4, 8, 3 ]
     },
     {
-      "name": "Sulha",
+      "name": "Sulha AG",
       "nick": "Sulha",
       "code": "SUL",
       "desc": "Fearsome engine capabilities and a bare-bones chassis. A true glass cannon.",
@@ -214,7 +184,7 @@
       "stats": [ 6, 2, 2, 8, 4, 6 ]
     },
     {
-      "name": "Behemoth",
+      "name": "Behemoth AG",
       "nick": "Bmoth",
       "code": "BEH",
       "desc": "The tank among tanks, made on Io to weather any condition.",

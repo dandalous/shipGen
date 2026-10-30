@@ -7,12 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/x-icon" href="./favicon.ico" />
   <link rel="stylesheet" href="./src/styles.css" />
-  <!-- <link rel="stylesheet" href="./src/fa/css/fontawesome.css" /> -->
   <link rel="stylesheet" id="google-fonts-1-css"
     href="https://fonts.googleapis.com/css?family=Roboto+Condensed%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CRoboto%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic&amp;display=auto&amp;ver=6.1.1"
     media="all" />
   <script src="https://kit.fontawesome.com/4a4b78b25c.js" crossorigin="anonymous"></script>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="text/javascript">
     window.mobileCheck = function () {
@@ -224,9 +222,9 @@
             </tr>
             <tr class="row-query" id="row-query">
               <th class="column-ship border-right border-bottom"
-                title="Search ship(s) and ID&#013;&#013;When a ship or part code is given, it'll take priority over all other ship or part selections. Ratios can be paired in 2, 3, or 6 numbers divided by ':'">
+                title="Search ship(s) and ID&#013;&#013;When a ship or part code is given, it'll take priority over all other ship or part selections. If a letter in the part code is invalid, it'll fallback to the part selection, allowing you to use it as a placeholder. Ratios can be paired in 2, 3, or 6 numbers divided by ':'">
                 <input list="ship-datalist" pattern="[a-zA-Z0-9:.\-]{3,99}" size="9" id="select-id" class="column-input"
-                  type="search" placeholder="ANY-XXXXXX" autocomplete="off" onchange="selectIDChange(event)" />
+                  type="search" placeholder="ANY-XXXXXX" autocomplete="on" onchange="selectIDChange(event)" />
                 <datalist id="ship-datalist">
                   <option value="ANY"></option>
                 </datalist>

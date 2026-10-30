@@ -75,6 +75,7 @@ let rigs = {
   targeted: "",
   selected: "",
   prevSelected: "",
+  hovered: "",
   comparison: {
     power: 0,
     stats: [0, 0, 0, 0, 0, 0],
@@ -115,6 +116,11 @@ fetch(debugMode ? "./src/debug.json" : "./src/data.json")
     redoutDB.gliders.forEach((glider, i) => {
       input.ships.innerHTML += `<input class="checkbox-part" value="${i}" type="checkbox" onchange="glidersCheck(event)" id="checkbox-${glider.code}" ${lastQuery ? lastQuery.gliders.includes(i) && "checked" : "checked"} hidden /><label for="checkbox-${glider.code}" class="label-checkbox" title="${glider.name} &quot;${glider.code}&quot; \{${glider.power}\} \[${glider.stats}\]\n\n${glider.desc}"><img src='./img/${glider.code}.webp'></label>`;
       output.ships.innerHTML += `<option value='${glider.code}'>`;
+    });
+    redoutDB.cheatcodes.forEach((cheat) => {
+      cheat.code.forEach((code) => {
+        output.ships.innerHTML += `<option value='${code}'>`;
+      });
     });
     redoutDB.parts.forEach((part, i) => {
       part.details.forEach((detail, j) => {
@@ -163,6 +169,7 @@ function scaleChange(e) {
     output.table.innerHTML = parseResults(pinnedCandidates.concat(candidates), queries.inputs.at(queries.current));
   }
   updateStatCharts(0, rigs.target.stats, rigs.targeted != "" ? parseResult(rigs.targeted) : null);
+  updateStatCharts(1, rigs.comparison.stats, rigs.hovered != "" ? parseResult(rigs.hovered) : null);
 }
 
 function quickSelect(e, parts, override = false) {
@@ -540,6 +547,7 @@ function idClick(e, cell) {
 function rowHover(e, row) {
   e.preventDefault();
   let result = parseResult(row.title);
+  rigs.hovered = row.title;
   rigs.comparison.stats = result.stats;
   rigs.comparison.power = result.power;
   updateStatCharts(1, result.stats, result);
@@ -712,4 +720,5 @@ function updateStatCharts(dataset, data, result = false) {
   chartRadar.update();
   chartBars.update();
   chartForceCurves.update();
+  chartInterpCurves.update();
 }

@@ -50,7 +50,7 @@ function runQuery(worker, query, gliders, parts, limit, count) {
           parts[3].forEach((hull) => {
             parts[4].forEach((intercooler) => {
               parts[5].forEach((esc) => {
-                if (i == worker) {
+                if (!(i ^ worker)) {
                   const rig = [propulsor, stabilizer, rudder, hull, intercooler, esc];
                   let power = glider[0];
                   rig.forEach((part) => (power += part[0]));

@@ -139,6 +139,7 @@ fetch(debugMode ? "./src/debug.json" : "./src/data.json")
       input.power.min.value = lastQuery.power[0];
       input.power.max.value = lastQuery.power[1];
       input.targets.forEach((target, i) => targetInputChange(new Event("init"), i, lastQuery.stats[i]));
+      updateStatCharts(0, rigs.target.stats);
       queries.inputs.at(queries.current).stats = lastQuery.stats;
       queries.inputs.at(queries.current).targeted = lastQuery.targeted;
     }
@@ -384,7 +385,7 @@ function targetInputChange(e, i, value = -1) {
     rigs.target.power = 0;
     rigs.targeted = "";
   }
-  updateStatCharts(0, rigs.target.stats);
+  if (e.type != "init" && e.type != "reset" && e.type != "quick") updateStatCharts(0, rigs.target.stats);
 }
 
 function selectIDChange(e) {
@@ -443,6 +444,7 @@ function resetClick(e) {
   input.targets.forEach((target, i) => targetInputChange(new Event("reset"), i, Number(target.defaultValue) * (input.option.percentageScale.checked ? scale.toGame : 1)));
   quickSelect(new Event("reset"), "X", true);
   glidersCheck(new Event("reset"));
+  updateStatCharts(0, rigs.target.stats);
 }
 
 function balanceTargets(e) {
@@ -455,6 +457,7 @@ function balanceTargets(e) {
       targetInputChange(new Event("reset"), i, average);
     }
   });
+  updateStatCharts(0, rigs.target.stats);
 }
 
 function randomTargets(e) {
@@ -464,6 +467,7 @@ function randomTargets(e) {
       targetInputChange(new Event("reset"), i, Math.random() < 0.5 ? Math.floor(Math.max(1, Number(rigs.target.stats[i]) * 0.9)) : Math.ceil(Math.min(40, Number(rigs.target.stats[i]) * 1.1)));
     }
   });
+  updateStatCharts(0, rigs.target.stats);
 }
 
 function clamp(val, min, max) {
@@ -485,6 +489,7 @@ function decreaseTargets(e) {
       targetInputChange(new Event("reset"), i, Math.floor(Math.max(1, Number(rigs.target.stats[i]) * 0.9)));
     }
   });
+  updateStatCharts(0, rigs.target.stats);
 }
 
 function increaseTargets(e) {
@@ -494,6 +499,7 @@ function increaseTargets(e) {
       targetInputChange(new Event("reset"), i, Math.ceil(Math.min(40, Number(rigs.target.stats[i]) * 1.1)));
     }
   });
+  updateStatCharts(0, rigs.target.stats);
 }
 
 function shiftTargetsRight(e) {
@@ -505,6 +511,7 @@ function shiftTargetsRight(e) {
   input.targets.forEach((target, i) => {
     targetInputChange(new Event("reset"), i, newTargets[i]);
   });
+  updateStatCharts(0, rigs.target.stats);
 }
 
 function shiftTargetsLeft(e) {
@@ -520,6 +527,7 @@ function shiftTargetsLeft(e) {
   input.targets.forEach((target, i) => {
     targetInputChange(new Event("reset"), i, newTargets[i]);
   });
+  updateStatCharts(0, rigs.target.stats);
 }
 
 function idClick(e, cell) {
@@ -562,7 +570,6 @@ function rowClick(e, row) {
   rigs.prevSelected = rigs.selected;
   rigs.selected = row.title;
   let result = parseResult(rigs.selected);
-  let pinnedCandidates = Array.from(rigs.pinned, (rig) => parseResult(rig));
   rigs.comparison.power = result.power;
   rigs.comparison.stats = result.stats;
   updateStatCharts(1, result.stats, result);

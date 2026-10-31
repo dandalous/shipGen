@@ -39,7 +39,7 @@ function runQuery(worker, query, gliders, parts, limit, count) {
   console.time(`Thread ${worker}`);
   let worst = 0;
   let maxDelta = 9999;
-  let candidates = new Array(limit).fill({ id: "", delta: maxDelta }, 0, limit);
+  let candidates = new Array(limit).fill({ id: "", power: 0, delta: maxDelta }, 0, limit);
 
   // 0 = power, 1 = stats, 2 = id
   let i = 0;

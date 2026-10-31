@@ -243,8 +243,9 @@ async function runQuery(query, count) {
 
       let worst = 0;
       let maxDelta = 9999;
-      let candidates = new Array(query.limit).fill({ id: "", delta: maxDelta }, 0, query.limit);
+      let candidates = new Array(query.limit).fill({ id: "", power: 0, delta: maxDelta }, 0, query.limit);
 
+      // 0 = power, 1 = stats, 2 = id
       gliders.forEach((glider) => {
         parts[0].forEach((propulsor) => {
           parts[1].forEach((stabilizer) => {
@@ -253,10 +254,10 @@ async function runQuery(query, count) {
                 parts[4].forEach((intercooler) => {
                   parts[5].forEach((esc) => {
                     const rig = [propulsor, stabilizer, rudder, hull, intercooler, esc];
-                    let power = glider.power;
-                    rig.forEach((part) => (power += part.power));
+                    let power = glider[0];
+                    rig.forEach((part) => (power += part[0]));
                     if (query.power[0] <= power && power <= query.power[1]) {
-                      const stats = addArrays([glider.stats, ...Array.from(rig, (part) => part.stats)]);
+                      const stats = addArrays([glider[1], ...Array.from(rig, (part) => part[1])]);
                       let delta = 0;
                       // Ratio mode or Stat mode
                       if (query.ratios) {
@@ -269,7 +270,8 @@ async function runQuery(query, count) {
                       if (delta <= maxDelta) {
                         maxDelta = 0;
                         const candidate = {
-                          id: `${glider.code}-${Array.from(rig, (part) => part.id).join("")}`,
+                          id: `${glider[2]}-${Array.from(rig, (part) => part[2]).join("")}`,
+                          power: power,
                           delta: delta,
                         };
                         candidates[worst] = candidate;
